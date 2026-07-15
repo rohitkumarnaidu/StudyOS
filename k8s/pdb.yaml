@@ -1,0 +1,22 @@
+# StudyOS — PodDisruptionBudget
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: studyos-api-pdb
+  namespace: studyos
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: studyos-api
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: studyos-web-pdb
+  namespace: studyos
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: studyos-web
