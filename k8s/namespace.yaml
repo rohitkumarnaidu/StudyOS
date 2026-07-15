@@ -1,0 +1,9 @@
+# StudyOS — Kubernetes base namespace and common labels
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: studyos
+  labels:
+    app.kubernetes.io/name: studyos
+    app.kubernetes.io/part-of: studyos
+    environment: production
