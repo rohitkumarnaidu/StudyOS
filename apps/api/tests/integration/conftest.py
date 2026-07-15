@@ -8,7 +8,7 @@ import pytest
 def configure_integration_db():
     """Configure remote Supabase for integration tests only."""
     original = os.environ.get("STUDYOS_DATABASE_URL")
-    db_url = "postgresql://postgres.lgyvkatfhcftoozgsevo:***@aws-1-ap-south-1.pooler.supabase.com:5432/postgres"
+    db_url = os.environ.get("STUDYOS_INTEGRATION_DB_URL", "postgresql://studyos:studyos@localhost:5432/studyos_test")
     os.environ["STUDYOS_DATABASE_URL"] = db_url
     # Clear settings cache
     from studyos_api.core.config import get_settings
