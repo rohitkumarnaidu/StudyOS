@@ -1,0 +1,161 @@
+﻿============================= test session starts =============================
+platform win32 -- Python 3.14.3, pytest-9.0.3, pluggy-1.6.0
+rootdir: C:\PROJECTS\studyos-complete\STUDYOS\apps\api
+configfile: pyproject.toml
+plugins: anyio-4.13.0, asyncio-1.3.0, cov-7.1.0, respx-0.23.1
+asyncio: mode=Mode.AUTO, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collected 369 items
+
+tests\ai\mcp\test_jsonrpc.py .........                                   [  2%]
+tests\ai\mcp\test_registry.py ...............                            [  6%]
+tests\ai\providers\test_anthropic_provider.py ...............            [ 10%]
+tests\ai\providers\test_ollama_provider.py ..............                [ 14%]
+tests\ai\providers\test_openai_provider.py ..............                [ 18%]
+tests\ai\test_ai_schemas.py ..........                                   [ 20%]
+tests\ai\test_mcp_jsonrpc.py ....                                        [ 21%]
+tests\ai\test_mcp_registry.py ..                                         [ 22%]
+tests\ai\test_service.py ....                                            [ 23%]
+tests\ai\test_service_complete.py .                                      [ 23%]
+tests\ai\test_usage.py .......                                           [ 25%]
+tests\ai\test_usage_postgres.py .........                                [ 28%]
+tests\api\test_ai_mcp.py ..                                              [ 28%]
+tests\api\test_ai_routes.py .....                                        [ 30%]
+tests\api\test_auth_login.py .                                           [ 30%]
+tests\api\test_auth_register.py .........                                [ 32%]
+tests\api\test_auth_routes.py ....                                       [ 33%]
+tests\api\test_health.py ..                                              [ 34%]
+tests\api\test_identity.py ......                                        [ 36%]
+tests\api\test_openapi.py .                                              [ 36%]
+tests\api\test_privacy.py ..                                             [ 36%]
+tests\api\test_privacy_extended.py ....                                  [ 37%]
+tests\api\test_privacy_routes.py ........                                [ 40%]
+tests\api\test_progress.py .....                                         [ 41%]
+tests\api\test_progress_routes.py ..........                             [ 44%]
+tests\api\test_syllabus.py .....                                         [ 45%]
+tests\controllers\test_progress_controller.py .....                      [ 46%]
+tests\core\test_errors.py ..........                                     [ 49%]
+tests\core\test_telemetry.py .....                                       [ 50%]
+tests\integration\test_api_real.py ........                              [ 53%]
+tests\integration\test_database_optional.py s                            [ 53%]
+tests\integration\test_syllabus_service.py ........                      [ 55%]
+tests\security\test_passwords.py ...                                     [ 56%]
+tests\services\test_auth_login_service.py ...........                    [ 59%]
+tests\services\test_auth_service.py ..........                           [ 62%]
+tests\services\test_cache.py ...........                                 [ 65%]
+tests\services\test_cache_extended.py .......                            [ 66%]
+tests\services\test_feature_flags.py ............                        [ 70%]
+tests\services\test_feature_flags_extended.py .....                      [ 71%]
+tests\services\test_postgres_refresh_store.py ............               [ 74%]
+tests\services\test_progress_service.py ......                           [ 76%]
+tests\services\test_refresh_sessions.py .................                [ 81%]
+tests\services\test_webhooks.py ........................                 [ 87%]
+tests\unit\test_ai_domain.py ..                                          [ 88%]
+tests\unit\test_ai_memory.py .......                                     [ 89%]
+tests\unit\test_ai_prompts.py ...........                                [ 92%]
+tests\unit\test_ai_retry.py ...........                                  [ 95%]
+tests\unit\test_http_mocks_respx.py .                                    [ 96%]
+tests\unit\test_upload_security.py ............                          [ 99%]
+tests\utils\test_http.py ..                                              [100%]
+
+============================== warnings summary ===============================
+.venv\Lib\site-packages\slowapi\extension.py:717: 19 warnings
+  C:\PROJECTS\studyos-complete\STUDYOS\apps\api\.venv\Lib\site-packages\slowapi\extension.py:717: DeprecationWarning: 'asyncio.iscoroutinefunction' is deprecated and slated for removal in Python 3.16; use inspect.iscoroutinefunction() instead
+    if asyncio.iscoroutinefunction(func):
+
+tests/api/test_auth_register.py: 8 warnings
+tests/api/test_auth_routes.py: 6 warnings
+tests/api/test_progress.py: 4 warnings
+tests/api/test_progress_routes.py: 8 warnings
+tests/api/test_syllabus.py: 4 warnings
+tests/core/test_errors.py: 2 warnings
+  C:\PROJECTS\studyos-complete\STUDYOS\apps\api\.venv\Lib\site-packages\starlette\_exception_handler.py:59: DeprecationWarning: 'HTTP_422_UNPROCESSABLE_ENTITY' is deprecated. Use 'HTTP_422_UNPROCESSABLE_CONTENT' instead.
+    response = await handler(conn, exc)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=============================== tests coverage ================================
+_______________ coverage: platform win32, python 3.14.3-final-0 _______________
+
+Name                                                 Stmts   Miss  Cover   Missing
+----------------------------------------------------------------------------------
+src\studyos_api\__init__.py                              1      0   100%
+src\studyos_api\ai\__init__.py                           3      0   100%
+src\studyos_api\ai\http_client.py                       12      2    83%   16-20
+src\studyos_api\ai\mcp\__init__.py                       2      0   100%
+src\studyos_api\ai\mcp\jsonrpc.py                       20      1    95%   31
+src\studyos_api\ai\mcp\registry.py                      41      0   100%
+src\studyos_api\ai\mcp\types.py                          6      0   100%
+src\studyos_api\ai\memory\context.py                    23      0   100%
+src\studyos_api\ai\prompts\builtins.py                   1      0   100%
+src\studyos_api\ai\prompts\registry.py                  23      0   100%
+src\studyos_api\ai\protocols.py                         13      0   100%
+src\studyos_api\ai\provider_factory.py                  26      6    77%   26, 33, 43, 45-47
+src\studyos_api\ai\providers\__init__.py                 5      0   100%
+src\studyos_api\ai\providers\anthropic_provider.py      42      0   100%
+src\studyos_api\ai\providers\base.py                    16      3    81%   23, 26-27
+src\studyos_api\ai\providers\ollama.py                  60      2    97%   83-84
+src\studyos_api\ai\providers\openai_provider.py         58      0   100%
+src\studyos_api\ai\retry.py                             55      0   100%
+src\studyos_api\ai\service.py                           75     23    69%   104-105, 145-186
+src\studyos_api\ai\types.py                             22      0   100%
+src\studyos_api\ai\usage.py                             36      5    86%   63-64, 79, 104-105
+src\studyos_api\ai\usage_postgres.py                    23      0   100%
+src\studyos_api\api\v1\router.py                        11      0   100%
+src\studyos_api\api\v1\routes\ai.py                     48     16    67%   32, 43-65, 76-92, 118-120, 131-133
+src\studyos_api\api\v1\routes\auth.py                   74     22    70%   54, 68-115, 180-183
+src\studyos_api\api\v1\routes\examples.py                7      0   100%
+src\studyos_api\api\v1\routes\health.py                 15      0   100%
+src\studyos_api\api\v1\routes\me.py                     15      0   100%
+src\studyos_api\api\v1\routes\privacy.py                46      0   100%
+src\studyos_api\api\v1\routes\progress.py               45     12    73%   45-46, 58-59, 71-72, 84-85, 101-113
+src\studyos_api\api\v1\routes\syllabus.py               26      0   100%
+src\studyos_api\api\v2\router.py                         5      0   100%
+src\studyos_api\api\versions.py                          6      0   100%
+src\studyos_api\controllers\__init__.py                  2      0   100%
+src\studyos_api\controllers\me_controller.py            14      0   100%
+src\studyos_api\controllers\progress_controller.py      29      3    90%   48, 65, 82
+src\studyos_api\controllers\syllabus_controller.py      20      0   100%
+src\studyos_api\core\config.py                          65      4    94%   127-128, 130-131
+src\studyos_api\core\errors.py                          46      8    83%   98-111
+src\studyos_api\core\limiter.py                         13      3    77%   21, 26, 31
+src\studyos_api\core\logging.py                         14      1    93%   24
+src\studyos_api\core\responses.py                        5      0   100%
+src\studyos_api\core\telemetry.py                       26      0   100%
+src\studyos_api\deps\ai.py                              14      0   100%
+src\studyos_api\deps\auth.py                            18      0   100%
+src\studyos_api\deps\rbac.py                            26      5    81%   50-58
+src\studyos_api\main.py                                102     10    90%   60-61, 141-147, 159-161, 167
+src\studyos_api\middleware\__init__.py                   5      0   100%
+src\studyos_api\middleware\csrf.py                      30     14    53%   33-67
+src\studyos_api\middleware\rate_limit_headers.py        14      3    79%   22-24
+src\studyos_api\middleware\request_id.py                16      0   100%
+src\studyos_api\middleware\request_logging.py           17      0   100%
+src\studyos_api\middleware\security_headers.py          15      1    93%   22
+src\studyos_api\schemas\__init__.py                      2      0   100%
+src\studyos_api\schemas\ai.py                           28      0   100%
+src\studyos_api\schemas\auth.py                         16      0   100%
+src\studyos_api\schemas\common.py                        9      0   100%
+src\studyos_api\schemas\examples.py                      8      0   100%
+src\studyos_api\schemas\me.py                           12      0   100%
+src\studyos_api\security\passwords.py                   10      0   100%
+src\studyos_api\security\tokens.py                      16      3    81%   33-34, 36
+src\studyos_api\services\__init__.py                     3      0   100%
+src\studyos_api\services\auth_login_service.py          39      0   100%
+src\studyos_api\services\auth_service.py                22      0   100%
+src\studyos_api\services\cache.py                       48     15    69%   21-23, 33-37, 45-48, 56-59
+src\studyos_api\services\feature_flags.py               44      5    89%   30-34
+src\studyos_api\services\me_service.py                   7      0   100%
+src\studyos_api\services\progress_service.py            63     14    78%   30, 87, 134, 163-168, 196, 226-231
+src\studyos_api\services\refresh_sessions.py           169      7    96%   137, 142, 191, 197-198, 375-376
+src\studyos_api\services\syllabus_service.py            51      5    90%   40-53
+src\studyos_api\services\upload_security.py             29      1    97%   65
+src\studyos_api\services\webhooks.py                    75      0   100%
+src\studyos_api\types\__init__.py                        2      0   100%
+src\studyos_api\types\principal.py                       2      0   100%
+src\studyos_api\utils\http.py                            5      0   100%
+----------------------------------------------------------------------------------
+TOTAL                                                 2012    194    90%
+
+10 empty files skipped.
+Coverage HTML written to dir htmlcov
+Required test coverage of 64% reached. Total coverage: 90.36%
+================ 368 passed, 1 skipped, 51 warnings in 10.62s =================
