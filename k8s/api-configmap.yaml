@@ -1,0 +1,23 @@
+# StudyOS API — ConfigMap
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: studyos-api-config
+  namespace: studyos
+  labels:
+    app.kubernetes.io/name: studyos-api
+    app.kubernetes.io/component: api
+data:
+  STUDYOS_APP_ENV: "production"
+  STUDYOS_LOG_LEVEL: "WARNING"
+  STUDYOS_CORS_ORIGINS: "https://studyos.app"
+  STUDYOS_TRUSTED_HOSTS: "studyos.app,api.studyos.app"
+  STUDYOS_EXPOSE_ERROR_DETAIL: "false"
+  STUDYOS_OTEL_SERVICE_NAME: "studyos-api"
+  STUDYOS_OTEL_TRACES_SAMPLE_RATE: "0.1"
+  # OTLP endpoint — set via external OTEL collector or leave empty to disable
+  STUDYOS_OTEL_EXPORTER_OTLP_ENDPOINT: ""
+  # AI defaults
+  STUDYOS_AI_PRIMARY_PROVIDER: "openai"
+  STUDYOS_AI_DEFAULT_MODEL_OPENAI: "gpt-4o-mini"
+  STUDYOS_AI_MAX_RETRIES: "2"
