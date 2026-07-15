@@ -1,0 +1,75 @@
+# StudyOS — Pre-commit Hooks Configuration
+# Install: pre-commit install
+# Run manually: pre-commit run --all-files
+
+repos:
+  # Python linting
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.4.4
+    hooks:
+      - id: ruff
+        args: [--fix]
+        files: ^apps/api/
+      - id: ruff-format
+        files: ^apps/api/
+
+  # TypeScript/JavaScript linting
+  - repo: local
+    hooks:
+      - id: eslint
+        name: eslint
+        entry: bash -c 'cd apps/web && pnpm lint'
+        language: system
+        types: [file]
+        files: \.(ts|tsx)$
+        pass_filenames: false
+
+      - id: tsc
+        name: tsc --noEmit
+        entry: bash -c 'cd apps/web && pnpm exec tsc --noEmit'
+        language: system
+        types: [file]
+        files: \.(ts|tsx)$
+        pass_filenames: false
+
+  # Python tests
+  - repo: local
+    hooks:
+      - id: pytest
+        name: pytest (API)
+        entry: bash -c 'cd apps/api && uv run pytest tests/ -x -q'
+        language: system
+        types: [file]
+        files: ^apps/api/.*\.py$
+        pass_filenames: false
+
+  # Web tests
+  - repo: local
+    hooks:
+      - id: vitest
+        name: vitest (Web)
+        entry: bash -c 'cd apps/web && pnpm exec vitest run'
+        language: system
+        types: [file]
+        files: ^apps/web/.*\.(ts|tsx)$
+        pass_filenames: false
+
+  # Secret scanning
+  - repo: https://github.com/gitleaks/gitleaks
+    rev: v8.18.2
+    hooks:
+      - id: gitleaks
+        args: [--verbose, --redact]
+
+  # Large file check
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.6.0
+    hooks:
+      - id: check-added-large-files
+        args: ["--maxkb=1024"]
+      - id: check-merge-conflict
+      - id: check-yaml
+      - id: check-json
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+        exclude: \.snap$
