@@ -1,0 +1,16 @@
+{
+  "extends": "@studyos/typescript-config/nextjs.json",
+  "compilerOptions": {
+    "plugins": [{ "name": "next" }],
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"],
+      "@/features/*": ["./src/features/*"],
+      "@/shared/*": ["./src/shared/*"],
+      "@studyos/shared": ["../../packages/shared/src/index.ts"],
+      "@studyos/config": ["../../packages/config/src/index.ts"]
+    }
+  },
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "vitest.config.ts"],
+  "exclude": ["node_modules", "e2e", "playwright.config.ts", ".next", "src/app/sw.ts"]
+}
