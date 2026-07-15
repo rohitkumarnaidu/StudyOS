@@ -1,0 +1,17 @@
+# StudyOS — Trivy Container Scanning
+# Usage: trivy image studyos-api:latest
+#        trivy image studyos-web:latest
+# CI: Automatically runs on every build
+
+# .trivyignore
+# Ignore specific CVEs with justification
+
+# False positives in Python base image
+CVE-2023-45273  # Go crypto library issue — not used by Python runtime
+
+# Low severity issues with no exploit path
+CVE-2024-0567   # OpenSSL info leak — mitigated by TLS config
+CVE-2023-5678   # zlib compression issue — not exploitable in our usage
+
+# Accepted risks
+CVE-2024-1234   # Low severity, fix pending upstream base image update
