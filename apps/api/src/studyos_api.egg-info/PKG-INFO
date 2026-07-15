@@ -1,0 +1,41 @@
+Metadata-Version: 2.4
+Name: studyos-api
+Version: 0.1.0
+Summary: StudyOS service API (FastAPI) — AI orchestration, webhooks, jobs.
+Requires-Python: >=3.12
+Description-Content-Type: text/markdown
+Requires-Dist: fastapi>=0.115.6
+Requires-Dist: uvicorn[standard]>=0.34.0
+Requires-Dist: pydantic[email]>=2.9.0
+Requires-Dist: pydantic-settings>=2.7.0
+Requires-Dist: structlog>=25.1.0
+Requires-Dist: slowapi>=0.1.9
+Requires-Dist: argon2-cffi>=25.1.0
+Requires-Dist: pyjwt>=2.12.1
+Requires-Dist: asyncpg>=0.31.0
+Requires-Dist: httpx>=0.28.1
+Requires-Dist: celery[redis]>=5.4.0
+
+# StudyOS API (FastAPI)
+
+Service API under `apps/api`. See the monorepo [`README.md`](../../README.md).
+
+## Setup
+
+```bash
+cd apps/api   # or from repo root: pnpm --filter @studyos/api exec uv sync --all-groups
+uv sync --all-groups
+```
+
+## Commands
+
+| Command | Description |
+|--------|-------------|
+| `pnpm dev` | Uvicorn with reload |
+| `pnpm lint` | Ruff |
+| `pnpm typecheck` | Mypy |
+| `pnpm test` | Pytest |
+
+## Environment
+
+Copy `../../.env.example` into `apps/api/.env` for local overrides.
