@@ -1,0 +1,35 @@
+# StudyOS API — Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: studyos-api
+  namespace: studyos
+  labels:
+    app.kubernetes.io/name: studyos-api
+spec:
+  type: ClusterIP
+  ports:
+    - port: 8000
+      targetPort: 8000
+      protocol: TCP
+      name: http
+  selector:
+    app.kubernetes.io/name: studyos-api
+---
+# StudyOS Web — Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: studyos-web
+  namespace: studyos
+  labels:
+    app.kubernetes.io/name: studyos-web
+spec:
+  type: ClusterIP
+  ports:
+    - port: 3000
+      targetPort: 3000
+      protocol: TCP
+      name: http
+  selector:
+    app.kubernetes.io/name: studyos-web
