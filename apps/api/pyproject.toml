@@ -1,0 +1,97 @@
+[project]
+name = "studyos-api"
+version = "0.1.0"
+description = "StudyOS service API (FastAPI) — AI orchestration, webhooks, jobs."
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+  "fastapi>=0.115.6",
+  "uvicorn[standard]>=0.34.0",
+  "pydantic[email]>=2.9.0",
+  "pydantic-settings>=2.7.0",
+  "structlog>=25.1.0",
+  "slowapi>=0.1.9",
+  "argon2-cffi>=25.1.0",
+  "pyjwt>=2.12.1",
+  "asyncpg>=0.31.0",
+  "httpx>=0.28.1",
+  "celery[redis]>=5.4.0",
+]
+
+[build-system]
+requires = ["setuptools>=75", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[dependency-groups]
+dev = [
+  "mypy>=1.15.0",
+  "openapi-spec-validator>=0.7.1",
+  "pytest>=8.3.4",
+  "pytest-asyncio>=0.25.0",
+  "pytest-cov>=6.0.0",
+  "respx>=0.22.0",
+  "ruff>=0.11.0",
+]
+
+[tool.ruff]
+target-version = "py312"
+line-length = 100
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "ASYNC", "S", "T20"]
+ignore = ["S101"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**/*.py" = ["S101"]
+"src/studyos_api/services/auth_service.py" = ["S105"]
+"src/studyos_api/services/auth_login_service.py" = ["S105"]
+"src/studyos_api/services/quiz_service.py" = ["E501"]
+
+[tool.mypy]
+python_version = "3.12"
+mypy_path = "src"
+strict = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+check_untyped_defs = true
+plugins = []
+
+[[tool.mypy.overrides]]
+module = ["structlog.*"]
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = ["asyncpg.*", "jwt.*", "httpx.*", "openapi_spec_validator.*", "respx.*", "opentelemetry.*", "opentelemetry.exporter.*", "opentelemetry.instrumentation.*", "opentelemetry.sdk.*"]
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+pythonpath = ["tests"]
+addopts = "--cov=studyos_api --cov-report=term-missing --cov-report=html --cov-fail-under=64"
+markers = [
+  "unit: fast pure-Python tests (no ASGI)",
+  "api: HTTP tests via ASGI + httpx",
+  "auth: authentication and authorization flows",
+  "openapi: OpenAPI / Swagger contract validation",
+  "integration: requires external services (set STUDYOS_DATABASE_URL, etc.)",
+]
+
+[tool.coverage.run]
+source = ["src/studyos_api"]
+omit = ["**/tests/**", "**/__pycache__/**"]
+
+[tool.coverage.report]
+fail_under = 64
+show_missing = true
+skip_empty = true
+exclude_lines = [
+  "pragma: no cover",
+  "if TYPE_CHECKING:",
+  "raise NotImplementedError",
+]

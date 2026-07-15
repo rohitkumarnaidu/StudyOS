@@ -1,0 +1,17 @@
+{
+  "name": "@studyos/api",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "uv run uvicorn studyos_api.main:app --reload --host 0.0.0.0 --port 8000",
+    "lint": "uv run ruff check src tests",
+    "format": "uv run ruff format src tests",
+    "typecheck": "uv run mypy src",
+    "test": "uv run pytest -q",
+    "test:coverage": "uv run pytest --cov=studyos_api --cov-report=term-missing --cov-fail-under=60",
+    "clean": "rimraf .venv .ruff_cache .mypy_cache .pytest_cache"
+  },
+  "devDependencies": {
+    "rimraf": "^6.0.1"
+  }
+}
