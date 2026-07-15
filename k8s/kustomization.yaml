@@ -1,0 +1,31 @@
+# StudyOS — Kustomize base configuration
+# Usage: kubectl apply -k k8s/overlays/staging
+#        kubectl apply -k k8s/overlays/production
+
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: studyos
+
+resources:
+  - namespace.yaml
+  - api-configmap.yaml
+  - api-secrets.yaml
+  - api-deployment.yaml
+  - web-deployment.yaml
+  - services.yaml
+  - ingress.yaml
+  - api-hpa.yaml
+  - pdb.yaml
+  - rbac.yaml
+  - network-policy.yaml
+
+commonLabels:
+  app.kubernetes.io/part-of: studyos
+  app.kubernetes.io/managed-by: kustomize
+
+images:
+  - name: studyos/api
+    newTag: latest
+  - name: studyos/web
+    newTag: latest
