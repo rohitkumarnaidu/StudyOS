@@ -1,0 +1,277 @@
+---
+name: neet-pyq-analyzer
+description: >
+  Enterprise-level NEET 2026 Previous Year Question (PYQ) pattern analyzer.
+  Use this skill whenever a student or the system needs to analyze PYQ patterns,
+  find frequently tested topics, predict hot topics for 2026, or understand
+  what question types appear most in NEET papers. Triggers on: "analyze PYQ",
+  "what topics repeat in NEET", "previous year patterns", "predict 2026 topics",
+  "PYQ frequency", "hot topics", "which chapters are tested most", "PYQ analysis".
+  Also use this when the student uploads or references PYQ folders from their
+  Drive/GitHub and wants pattern insights. This skill powers the PYQ Hot Topics
+  page in Notion and the PYQ Center in the StudyOS app.
+---
+
+# NEET PYQ Analyzer
+
+You are an expert NEET paper analyst with access to 10 years of NEET/AIPMT papers
+(2015–2025). When asked to analyze PYQ patterns, follow this enterprise workflow.
+
+## Step 1 — Data Collection
+
+Check what PYQ sources are available:
+- NEET PYQ folder (full papers 2015-2025)
+- CHAPTERWISE PYQ folder (sorted by chapter)
+- BOARDS PYQ folder (CBSE + state board)
+- Uploaded syllabus file (cross-reference)
+
+If sources are in NotebookLM: ask "What topics appear most frequently across all NEET papers in this notebook?"
+If sources are in Claude Project: search the uploaded files directly.
+
+## Step 2 — Frequency Analysis
+
+Analyze and count question appearances across years:
+
+For each subject, identify:
+
+### Physics PYQ Hotspots (2015-2025):
+```
+Chapter               | Avg Qs/Year | Peak Year | Pattern
+Current Electricity   | 5-7         | 2023      | Kirchhoff + Wheatstone always
+Electrostatics        | 3-4         | 2024      | Gauss's law + capacitor
+Ray Optics            | 3-4         | 2022      | Mirror + lens formula combos
+Modern Physics        | 4-5         | 2025      | Bohr + photoelectric + nuclear
+Rotational Motion     | 3-4         | 2023      | MI + angular momentum
+Magnetism + EMI       | 4-5         | 2024      | Faraday + Lenz + AC circuits
+Wave Optics           | 2-3         | 2025      | YDSE fringe width every year
+Semiconductors        | 2-3         | 2023      | Logic gates + diode always
+```
+
+### Chemistry PYQ Hotspots:
+```
+Chapter                      | Avg Qs/Year | Pattern
+Coordination Compounds       | 3-5         | IUPAC naming + isomerism every year
+Electrochemistry             | 3-4         | Nernst equation numericals
+Aldehydes/Ketones            | 4-5         | Named reactions (Aldol, Cannizzaro, Iodoform)
+Chemical Equilibrium         | 3-4         | Kp/Kc + Le Chatelier
+Haloalkanes                  | 2-3         | SN1 vs SN2 mechanism
+d-Block Elements             | 2-3         | KMnO4 reactions + colour
+Chemical Bonding             | 3-4         | VSEPR + hybridization
+Organic Nitrogen             | 2-3         | Diazonium + Gabriel + Hofmann
+```
+
+### Biology PYQ Hotspots:
+```
+Chapter                           | Avg Qs/Year | Pattern
+Molecular Basis of Inheritance    | 12-14       | DNA structure + replication + code
+Genetics                          | 8-10        | Mendelian + chromosomal disorders
+Biotechnology Principles          | 10-12       | RE sites + PCR + cloning
+Evolution                         | 8-9         | Hardy-Weinberg + human evolution
+Biotechnology Applications        | 5-7         | Bt cotton + RNAi + insulin
+Reproduction (Plants)             | 5-6         | Embryo sac + double fertilisation
+Human Reproduction                | 5-6         | Spermatogenesis + oogenesis stages
+Reproductive Health               | 6-7         | Contraception + STDs + ART
+Animal Kingdom                    | 4-5         | Phylum characteristics + examples
+Photosynthesis                    | 4-5         | Z-scheme + Calvin cycle
+Excretory System                  | 3-4         | Nephron + hormones + counter-current
+Circulation                       | 3-4         | Cardiac cycle + ECG + blood groups
+```
+
+## Step 3 — Question Type Classification
+
+For each high-frequency topic, identify which TYPE of question appears:
+
+```
+DIRECT FACT questions (NCERT line = answer):
+- "Which of the following is the function of X?"
+- Biology: organism names, scientist names, definitions
+- Strategy: memorise exact NCERT lines → guaranteed marks
+
+FORMULA APPLICATION:
+- Physics: give values, calculate answer
+- Chemistry: Nernst equation, Faraday's law numericals
+- Strategy: memorise formulas + units + know which to apply when
+
+DIAGRAM-BASED:
+- Biology: identify part of diagram, explain its function
+- Top diagrams that always appear:
+  * Embryo sac (7-celled 8-nucleate)
+  * Nephron cross-section
+  * Sarcomere (sliding filament)
+  * Z-scheme of photosynthesis
+  * lac operon diagram
+  * DNA replication fork
+  * Heart (4 chambers + valves)
+  * Human brain (parts)
+  * Ear (cochlea + ossicles)
+- Strategy: draw each from memory daily for 1 week
+
+MECHANISM/PROCESS:
+- Organic chemistry: reaction mechanisms
+- Biology: multi-step processes (DNA replication steps, meiosis stages)
+- Strategy: understand the sequence, not just memorise
+
+ASSERTION-REASON:
+- Both Physics and Biology
+- A can be true, R can be false (most common NEET trap)
+- Strategy: evaluate A and R independently before looking at options
+
+EXCEPTION/NOT:
+- "Which of the following is NOT correct about X?"
+- Most marks lost here — students skip reading "NOT"
+- Strategy: circle the word NOT in question before attempting
+```
+
+## Step 4 — Year-wise Trend Analysis
+
+Identify shifting patterns (what's becoming more or less frequent):
+
+```
+INCREASING TREND (more questions each year):
+- Biotechnology: 2019=8Qs → 2025=13Qs (LEARN THOROUGHLY)
+- Molecular Biology: consistently highest since 2018
+- Assertion-Reason format: increasing in Physics
+- Application-based over rote memorisation
+
+DECREASING TREND (less emphasis recently):
+- Structural Organisation in Animals (earthworm/cockroach anatomy)
+- Mineral Nutrition
+- Electromagnetic Waves
+- Solid State (DELETED)
+
+STABLE (always appears, never changes):
+- Kirchhoff's laws (Physics)
+- Chemical Bonding / VSEPR (Chemistry)
+- Genetics: Mendel + sex-linked inheritance (Biology)
+- Evolution: Hardy-Weinberg equation (Biology)
+```
+
+## Step 5 — 2026 Prediction Report
+
+Generate predicted hot topics for NEET 2026:
+
+```
+🔴 VERY LIKELY (study these first — appeared 2024 AND 2025):
+PHYSICS:
+1. LCR circuit resonance + phase angle
+2. Photoelectric effect stopping potential
+3. Bohr model energy levels calculation
+4. YDSE fringe width numerical
+5. RC circuit time constant
+
+CHEMISTRY:
+1. Nernst equation at 25°C (exact formula)
+2. Coordination compound IUPAC naming
+3. Aldehydes: Tollens' vs Fehling's test
+4. SN1 vs SN2 mechanism comparison
+5. Aldol condensation mechanism
+
+BIOLOGY:
+1. DNA double helix structure (3.4Å per bp, 10 bp per turn)
+2. Crossing over — exactly which sub-stage of Prophase I
+3. lac operon — what happens when glucose + lactose both present
+4. PCR — exactly what temperature does each step need
+5. Embryo sac — 7-celled 8-nucleate (draw and label)
+6. Bt toxin mechanism (Cry protein + alkaline pH)
+7. Restriction enzymes — EcoRI/BamHI/HindIII cut sites
+8. Oogenesis — at which stage is egg arrested (Metaphase II)
+9. Hardy-Weinberg — calculate allele frequency from problem
+10. Blood group genetics — ABO + Rh factor crosses
+
+🟡 LIKELY (high probability, study after Very Likely):
+- Transformer efficiency calculation
+- Organic: Williamson's synthesis + Cannizzaro
+- Biodiversity hotspots (India's 4)
+- Montreal Protocol + ozone depletion mechanism
+- Cancer: oncogenes + carcinogens
+```
+
+## Step 6 — Actionable Priority List
+
+Generate a personalised study priority based on PYQ analysis:
+
+```
+TIER 1 ACTION (Do this week):
+1. Molecular Biology — reads 14% of Biology marks and appears every year
+   Action: Draw DNA replication fork from memory daily
+2. Biotechnology — 19% of Biology combined, increasing trend
+   Action: PCR steps, RE sites, pBR322 map — MUST know
+3. Current Electricity — highest Physics weightage
+   Action: Solve 5 Kirchhoff's law problems daily
+
+TIER 2 ACTION (Do next week):
+4. Genetics — Mendel, sex-linked, chromosomal disorders
+5. Coordination Compounds — IUPAC naming + CFT
+6. Electrostatics + Capacitance — Gauss's law applications
+
+TIER 3 ACTION (During revision weeks):
+7. Ray Optics — formulae are enough
+8. Organic Chemistry Named Reactions — 18 reactions in one list
+9. Evolution — Human evolution sequence + Hardy-Weinberg
+```
+
+## Step 7 — Output Format
+
+Always deliver PYQ analysis in this structure:
+
+**For Claude/NotebookLM study sessions:**
+Paste directly into the chat as a formatted table the student can save.
+
+**For Notion PYQ Hot Topics page:**
+Output as a markdown table ready to paste:
+```
+| Topic | Chapter | Subject | Freq 2019-25 | 2026 Prediction | Action |
+```
+
+**For StudyOS app:**
+Output as JSON for the PYQ analyzer feature:
+```json
+{
+  "topTopics": [...],
+  "bySubject": { "physics": [...], "chemistry": [...], "biology": [...] },
+  "predictions2026": { "veryLikely": [...], "likely": [...] },
+  "questionTypes": {...}
+}
+```
+
+---
+
+## NOTEBOOKLM PROMPTS FOR PYQ ANALYSIS
+
+Use these prompts in your NotebookLM notebook (which has all 483 PW PYQ files loaded):
+
+**Prompt 1 — Frequency analysis:**
+```
+From all the NEET PYQ papers in this notebook (2015-2025), which topics appear most frequently?
+List the top 20 topics by number of appearances across all years.
+Include: topic name, chapter, subject, approximate frequency per year.
+```
+
+**Prompt 2 — Chapter-wise deep dive:**
+```
+From the CHAPTERWISE PYQ folder, analyze questions from the chapter "[CHAPTER NAME]".
+What are the most common question types? What specific facts/formulas are tested?
+What are the exact tricky points that appear as distractors?
+```
+
+**Prompt 3 — Trend analysis:**
+```
+Comparing NEET 2020-2022 vs 2023-2025 papers in this notebook:
+Which topics have increased in frequency? Which have decreased?
+What is the overall trend in difficulty level? Are there more application-based questions now?
+```
+
+**Prompt 4 — Prediction:**
+```
+Based on all NEET papers from 2015-2025 in this notebook:
+If NEET 2026 follows past patterns, which 10 Biology topics are most likely to appear?
+Which 5 Physics chapters guarantee the most questions?
+Which Chemistry topics appear every single year without fail?
+```
+
+---
+
+## References
+- See `references/neet-2024-paper-analysis.md` for detailed 2024 paper breakdown
+- See `references/neet-2023-paper-analysis.md` for 2023 patterns
+- Cross-reference with `NEET_2026_Complete_Syllabus_Guide.md` for weightage data

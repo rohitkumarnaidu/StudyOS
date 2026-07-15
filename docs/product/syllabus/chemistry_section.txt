@@ -1,0 +1,167 @@
+### DELETED FROM CHEMISTRY (do NOT study)
+| Topic | Class | Rule |
+|-------|-------|------|
+| Solid State | 12 | ❌ Permanently deleted |
+| Surface Chemistry | 12 | ❌ Permanently deleted |
+| Metallurgy | 12 | ❌ Permanently deleted |
+| Hydrogen | 11 | ❌ Permanently deleted |
+| s-Block Elements | 11 | ❌ Permanently deleted |
+| Environmental Chemistry | 11 | ❌ Permanently deleted |
+| Chemistry in Everyday Life | 12 | ❌ Permanently deleted |
+| Polymers | 12 | ❌ Permanently deleted |
+
+### INORGANIC CHEMISTRY
+
+| # | Chapter | Class | Weightage | Avg Qs | Tier |
+|---|---------|-------|-----------|--------|------|
+| 1 | Classification of Elements and Periodicity | 11 | ~4% | 1–2 | 2 |
+| 2 | Chemical Bonding and Molecular Structure ⭐⭐ | 11 | ~7% | 3–4 | 1 |
+| 3 | Coordination Compounds ⭐ | 12 | ~5% | 2–3 | 1 |
+| 4 | d and f Block Elements ⭐ | 12 | ~6% | 2–3 | 1 |
+| 5 | Salt Analysis | — | ~2% | 1 | 2 |
+| 6 | p-Block Elements ⭐ | 11+12 | ~6% | 2–3 | 1 |
+
+**Ch 1: Periodic Table**
+- Modern periodic law; blocks (s, p, d, f); trends: atomic radius, ionic radius, ionization enthalpy (IE1 < IE2), electron gain enthalpy, electronegativity; diagonal relationship (Li-Mg, Be-Al, B-Si); anomalies in trends; nomenclature of Z > 100
+
+**Ch 2: Chemical Bonding ⭐⭐**
+- Ionic bonding; lattice energy; Born-Haber cycle; Lewis structures; formal charge; resonance; VSEPR (shapes of ALL common molecules: BeCl₂ linear, BF₃ trigonal planar, CH₄ tetrahedral, PCl₅ trigonal bipyramidal, SF₆ octahedral, H₂O bent, NH₃ pyramidal, XeF₂ linear, XeF₄ square planar); hybridization (sp, sp², sp³, sp³d, sp³d², sp³d³); MOT: MO diagrams (O₂, N₂, F₂, NO, CO); bond order; magnetic properties; H-bonding (inter vs intramolecular); dipole moment
+
+**Ch 3: Coordination Compounds ⭐**
+- Werner's theory; coordination number; ligand types (monodentate, bidentate, polydentate, ambidentate, chelate, bridging); IUPAC nomenclature (inner sphere first; anionic ligands end in -o; cationic/neutral same name; roman numeral for OS); isomerism types: ionization, linkage, hydrate, coordination, geometric (cis/trans for square planar and octahedral), optical (enantiomers); VBT; CFT (CFSE; high/low spin; Δo vs Δt; weak field = high spin; strong field = low spin; spectrochemical series); colour of complexes (Δo=hν; absorbed colour ≠ observed colour); applications: haemoglobin (Fe²⁺), cisplatin (cancer drug), EDTA (chelation therapy)
+
+**Ch 4: d and f Block ⭐**
+- Variable oxidation states; colour (d-d transitions); paramagnetism (unpaired electrons); catalytic properties; KMnO₄: acidic medium (purple→colourless; Mn⁷⁺→Mn²⁺); alkaline medium (MnO₄²⁻; green); neutral medium (MnO₂; brown); K₂Cr₂O₇: acidic medium oxidising agent; preparation; reactions; lanthanoid contraction (causes: poor shielding by 4f electrons; consequences: ionic radii similar, similar chemistry, Zr≈Hf); actinoids comparison
+
+**Ch 5: Salt Analysis**
+- Group reagents for basic radicals; Group I (HCl precipitate: Pb²⁺, Hg₂²⁺, Ag⁺); Group II (H₂S in acidic: Cu²⁺, Bi³⁺, As³⁺, Sb³⁺, Sn²⁺); Group III (NH₄OH+NH₄Cl: Al³⁺, Fe³⁺, Cr³⁺); Group IV (H₂S alkaline: Ni²⁺, Co²⁺, Mn²⁺, Zn²⁺); Group V (Ca²⁺, Ba²⁺, Sr²⁺); Group VI (Mg²⁺, NH₄⁺); acid radicals (CO₃²⁻, SO₄²⁻, Cl⁻, NO₃⁻, SO₃²⁻, PO₄³⁻); flame test (Na=yellow, K=violet, Ca=brick red, Ba=apple green, Cu=bluish green)
+
+**Ch 6: p-Block ⭐**
+- Group 13 (Boron family): anomalous behaviour of B; boric acid structure; borax; diborane; Al₂Cl₆ (bridged structure)
+- Group 14 (Carbon family): allotropes of carbon (diamond, graphite, fullerene — properties); SiO₂ structure; silicones; silicates
+- Group 15 (Nitrogen family): structure of N₂; HNO₃ (Ostwald process); NO₂, NO; PCl₃ and PCl₅ structures; H₃PO₄ and H₃PO₃ (basicity)
+- Group 16 (Oxygen family): O₃ structure; H₂SO₄ (contact process); SO₂ reducing agent; SO₃ Lewis acid
+- Group 17 (Halogens): HX reducing power (HI>HBr>HCl>HF); interhalogen compounds (ClF, ClF₃, BrF₅, IF₇); bleaching powder (Ca(OCl)Cl); oxoacids of Cl (HOCl, HClO₂, HClO₃, HClO₄ — acid strength increases, oxidising power decreases)
+- Group 18 (Noble gases): XeF₂ (linear), XeF₄ (square planar), XeF₆ (distorted octahedral) structures; XeO₃, XeOF₄
+
+### ORGANIC CHEMISTRY
+
+| # | Chapter | Class | Weightage | Avg Qs | Tier |
+|---|---------|-------|-----------|--------|------|
+| 1 | IUPAC Naming | 11 | ~2% | 1 | 2 |
+| 2 | Isomerism ⭐ | 11 | ~3% | 1–2 | 1 |
+| 3 | GOC ⭐ | 11 | ~4% | 2 | 1 |
+| 4 | Hydrocarbons ⭐⭐ | 11 | ~7% | 3–4 | 1 |
+| 5 | Haloalkanes and Haloarenes ⭐ | 12 | ~4% | 2 | 1 |
+| 6 | Alcohols, Phenols, Ethers ⭐ | 12 | ~4% | 2 | 1 |
+| 7 | Aldehydes, Ketones, Carboxylic Acids ⭐⭐ | 12 | ~9% | 4–5 | 1 |
+| 8 | Organic Compounds with Nitrogen ⭐ | 12 | ~5% | 2–3 | 1 |
+| 9 | Biomolecules | 12 | ~4% | 1–2 | 2 |
+| 10 | Practical Organic Chemistry | — | ~2% | 1 | 3 |
+
+**Ch 1: IUPAC Naming** — Rules for all functional groups; priority order (COOH > CHO > CO > OH > NH₂ > double bond > triple bond); cyclic and spiro compounds; common names of NEET-frequent compounds
+
+**Ch 2: Isomerism**
+- Structural: chain, position, functional group, metamerism, tautomerism (keto-enol; amino-imino)
+- Stereoisomerism: Geometric (E/Z; cis/trans; conditions for geometric isomerism); Optical: chirality, chiral centre, enantiomers, diastereomers, meso compounds; R/S CIP priority rules; specific rotation; racemic mixture; resolution
+
+**Ch 3: GOC ⭐**
+- Homolytic/heterolytic fission; carbocation stability (3°>2°>1°>methyl; resonance stabilised most stable); carbanion stability (reverse order); free radical (planar, sp²); inductive effect (+I, −I groups); resonance; hyperconjugation (σ-conjugation; alkyl groups stabilise carbocations); electromeric effect (+E, −E); nucleophile vs electrophile; types of reactions (addition, elimination, substitution, rearrangement)
+
+**Ch 4: Hydrocarbons ⭐⭐**
+- Alkanes: free radical substitution mechanism (initiation → propagation → termination); stability order of radicals; halogenation selectivity
+- Alkenes: Markovnikov's rule; peroxide effect (anti-Markovnikov; free radical mechanism); ozonolysis (O₃/Zn+H₂O → aldehydes; O₃/H₂O₂ → acids); oxidation (KMnO₄ cold dilute → diol; hot conc → oxidative cleavage); addition reactions (HX, H₂O, H₂, X₂, HOX)
+- Alkynes: acidic character (terminal H; forms acetylide with NaNH₂); Markovnikov addition (water → ketone; Kucherov reaction); trimerization to benzene
+- Benzene: aromaticity (Hückel's 4n+2; planar; cyclic; conjugated); EAS mechanism (halogenation/FeCl₃, nitration/HNO₃+H₂SO₄, sulphonation/H₂SO₄ fuming, Friedel-Crafts alkylation/acylation/AlCl₃); o/p directors (−NH₂, −OH, −OR, −R, halogens — activate except halogens which weakly deactivate) vs m-directors (−NO₂, −CN, −COOH, −SO₃H, −CHO — all deactivate)
+
+**Ch 5: Haloalkanes + Haloarenes**
+- SN1 (first order; tertiary; racemization; carbocation intermediate; polar protic solvent) vs SN2 (second order; primary; Walden inversion; backside attack; polar aprotic solvent)
+- E1 vs E2; Saytzeff's rule (more substituted alkene preferred)
+- Optical activity; DDT (health effects); freons (Cl → ozone depletion); iodoform test (CH₃CO— or CH₃CH(OH)— → CHI₃ yellow ppt)
+- Haloarenes: nucleophilic substitution (harsh conditions; Meisenheimer complex); diazonium salts
+
+**Ch 6: Alcohols, Phenols, Ethers**
+- Lucas test (HCl/ZnCl₂; 3°=immediate turbidity; 2°=5 min; 1°=no reaction at room temp); Victor Meyer test
+- Dehydration mechanism (acid-catalysed; primary→E2; tertiary→E1); order: 3°>2°>1°
+- Phenol: Kolbe's reaction (CO₂/NaOH→salicylic acid); Reimer-Tiemann reaction (CHCl₃/NaOH→ortho-hydroxybenzaldehyde); reactions with FeCl₃ (violet colour)
+- Williamson's synthesis (SN2; secondary and tertiary alkyl halides don't work due to elimination)
+- Phenol acidity vs alcohol acidity (phenol more acidic due to resonance stabilisation of phenoxide)
+
+**Ch 7: Aldehydes, Ketones, Carboxylic Acids ⭐⭐**
+
+NAMED REACTIONS — MUST MEMORISE ALL:
+| Reaction | Reagent | Product |
+|---------|---------|---------|
+| Aldol condensation | dilute NaOH, heat | β-hydroxy aldehyde/ketone → α,β-unsaturated |
+| Cannizzaro reaction | conc NaOH | HCHO or no α-H: one oxidised, one reduced |
+| Clemmensen reduction | Zn/Hg + conc HCl | C=O → CH₂ (acid-sensitive substrate) |
+| Wolff-Kishner reduction | NH₂NH₂ + KOH/ethylene glycol | C=O → CH₂ (base-sensitive substrate) |
+| Tollens' test | Ag(NH₃)₂OH | aldehyde → silver mirror (RCOOH) |
+| Fehling's test | Cu²⁺ (alkaline) | aliphatic aldehyde → brick red Cu₂O |
+| Iodoform test | I₂/NaOH | CH₃CO— or CH₃CH(OH)— → CHI₃ (yellow) |
+| Rosenmund reduction | H₂/Pd-BaSO₄ | acid chloride → aldehyde |
+| Stephen's reduction | SnCl₂/HCl then H₂O | nitrile → aldehyde |
+| Gattermann-Koch | CO+HCl/AlCl₃ | benzene → benzaldehyde |
+| Gattermann reaction | HCN/AlCl₃ | phenol → hydroxybenzaldehyde |
+| Hell-Volhard-Zelinsky | Br₂/P then H₂O | RCOOH → α-bromo acid |
+| Decarboxylation | heat with NaOH | RCOONa → RH + Na₂CO₃ |
+
+**Ch 8: Organic Nitrogen Compounds ⭐**
+- Amines: classification (primary, secondary, tertiary); basicity (alkyl>aniline; tertiary<secondary in aqueous due to solvation); Gabriel synthesis (phthalimide + KOH + RX → primary amine); Hofmann bromamide degradation (RCONH₂ + Br₂/KOH → RNH₂; carbon lost); carbylamine test (primary amine + CHCl₃/KOH → isocyanide; foul smell); diazotization (ArNH₂ + NaNO₂/HCl, 0-5°C → ArN₂⁺Cl⁻)
+- Sandmeyer reaction (ArN₂⁺ + CuCl/HCl → ArCl; CuBr/HBr → ArBr; CuCN → ArCN)
+- Balz-Schiemann reaction (ArN₂⁺BF₄⁻ → heat → ArF + N₂ + BF₃)
+- Coupling reaction (ArN₂⁺ + activated ArH → azo compound; dyes)
+- Cyanides vs isocyanides; Hoffmann vs Gabriel
+
+**Ch 9: Biomolecules**
+- Carbohydrates: classification (mono, di, polysaccharides); mutarotation; reducing (free anomeric OH) vs non-reducing (no free anomeric OH; sucrose non-reducing); anomers (α and β); glucose: open chain (Haworth projection); cyclic (pyranose ring); Benedict's and Fehling's test; starch (amylose + amylopectin); glycogen; cellulose
+- Proteins: amino acids (20; essential 9); peptide bond (condensation; CO-NH); primary structure (sequence); secondary (α-helix, β-sheet; H-bonds); tertiary (3D; disulfide, ionic, H-bonds, van der Waals); quaternary (multi-subunit; haemoglobin); denaturation (loss of 3D structure); enzymes (active site; lock-and-key vs induced fit)
+- Vitamins: fat-soluble (A — night blindness; D — rickets; E — antioxidant; K — blood clotting); water-soluble (B1 — beriberi; B2 — cheilosis; B3 — pellagra; B12 — pernicious anaemia; C — scurvy)
+- Nucleic acids: DNA (deoxyribose; A=T, G≡C; double helix; antiparallel; 3.4Å/bp); RNA types (mRNA, tRNA cloverleaf, rRNA); central dogma (DNA→RNA→Protein)
+
+**Ch 10: Practical Organic**
+- Lassaigne test: N (blue ring with FeSO₄); S (black ppt); halogen (white AgCl, pale yellow AgBr, yellow AgI)
+- Functional group tests: unsaturation (Br₂/CCl₄ decolouration; KMnO₄ decolouration); aldehyde (Tollens', Fehling's, Schiff's); ketone (NaHSO₃); alcohol (Lucas test, esterification); carboxylic acid (NaHCO₃ → CO₂); amine (carbylamine, Hinsberg)
+- TLC; column chromatography; paper chromatography (Rf value)
+
+### PHYSICAL CHEMISTRY
+
+| # | Chapter | Class | Weightage | Avg Qs | Tier |
+|---|---------|-------|-----------|--------|------|
+| 1 | Some Basic Concepts | 11 | ~4% | 1–2 | 2 |
+| 2 | Redox Reactions ➕ | 11 | ~3% | 1–2 | 2 |
+| 3 | Solutions ⭐ | 12 | ~4% | 2 | 1 |
+| 4 | Thermodynamics ⭐ | 11 | ~5% | 2–3 | 1 |
+| 5 | Equilibrium ⭐⭐ | 11 | ~6% | 3–4 | 1 |
+| 6 | Electrochemistry ⭐⭐ | 12 | ~5% | 3–4 | 1 |
+| 7 | Chemical Kinetics ⭐ | 12 | ~5% | 2–3 | 1 |
+| 8 | Structure of Atom ➕ | 11 | ~4% | 1–2 | 2 |
+| 9 | Practical Physical | — | ~2% | 1 | 3 |
+
+**Ch 1: Basic Concepts**
+- Mole concept; Avogadro number (6.022×10²³); stoichiometry; limiting reagent; % composition; empirical vs molecular formula; concentration units (molarity M, molality m, mole fraction, normality N)
+
+**Ch 2: Redox Reactions ➕**
+- Oxidation number (rules: F always −1; O usually −2 except peroxides −1, OF₂ +2; H usually +1 except metal hydrides −1; in ion ΣON=charge)
+- Balancing by oxidation number method; ion-electron (half-reaction) method (acidic and alkaline medium)
+- Disproportionation reactions (same element oxidised and reduced)
+
+**Ch 3: Solutions ⭐**
+- Raoult's law (PA=xA×PA°); Henry's law (p=KH×x; gas solubility); ideal vs non-ideal solutions; azeotropes; colligative properties (depend on number of solute particles, not identity): VP lowering (ΔP/P°=xsolute); BP elevation (ΔTb=iKbm); FP depression (ΔTf=iKfm); osmotic pressure (π=iCRT); van't Hoff factor i (i>1 dissociation; i<1 association; ideal i=1)
+
+**Ch 4: Thermodynamics ⭐**
+- System and surroundings; state functions; ΔU (internal energy); ΔH=ΔU+ΔnRT (ΔH=ΔU for solids/liquids); Hess's law; standard enthalpies: formation (ΔHf°), combustion, atomization, neutralisation (ΔH=−57.3 kJ/mol for strong acid+strong base), hydration, sublimation; Born-Haber cycle; ΔG=ΔH−TΔS; ΔG°=−RTlnK; spontaneity (ΔG<0); Gibbs-Helmholtz equation
+
+**Ch 5: Equilibrium ⭐⭐**
+- Dynamic equilibrium; Kc and Kp (Kp=Kc(RT)^Δn); Le Chatelier's principle (effect of T, P, concentration, catalyst — catalyst increases rate, doesn't change K); Ka (weak acid); Kb (weak base); Kw=[H⁺][OH⁻]=10⁻¹⁴ at 25°C; pH=−log[H⁺]; pOH=14−pH; buffer: pH=pKa+log([A⁻]/[HA]) Henderson-Hasselbalch; Ksp (molar solubility; common ion effect reduces solubility); hydrolysis of salts (acidic, basic, neutral); acid-base theories (Arrhenius, Brønsted-Lowry, Lewis)
+
+**Ch 6: Electrochemistry ⭐⭐**
+- Electrochemical cell vs electrolytic cell; SRP (standard reduction potentials); cell EMF=Ecathode−Eanode; Nernst equation: E=E°−(RT/nF)lnQ = E°−(0.0592/n)logQ at 25°C; Kohlrausch's law (Λ°m=Σλ°ions); degree of dissociation (α=Λm/Λ°m); Faraday's laws: W=MIt/nF (F=96500 C/mol); batteries (Daniell, lead-acid, fuel cell H₂-O₂); corrosion (electrochemical; prevention: galvanising, sacrificial anode, cathodic protection); electrolysis of water, molten NaCl, aqueous NaCl
+
+**Ch 7: Chemical Kinetics ⭐**
+- Rate of reaction; rate law (r=k[A]^m[B]^n); order (experimental, not from equation); integrated rate laws: zero order ([A]t=[A]₀−kt; t½=[A]₀/2k); first order ([A]t=[A]₀e^(−kt); t½=0.693/k); Arrhenius equation (k=Ae^(−Ea/RT); lnk=lnA−Ea/RT); activation energy from graph (slope=−Ea/R); effect of T (10°C rise ≈ doubles rate); collision theory; transition state theory
+
+**Ch 8: Structure of Atom ➕**
+- Thomson (plum pudding); Rutherford (nuclear model; limitations); Bohr model: En=−13.6Z²/n² eV; rn=0.529n²/Z Å; vn=2.18×10⁶Z/n m/s; spectral lines (ΔE=hν); quantum numbers (n, l, m, s); orbital shapes (s=spherical, p=dumbbell, d=cloverleaf); Aufbau principle; Pauli exclusion principle; Hund's rule; electronic configurations; anomalous: Cr ([Ar]3d⁵4s¹) and Cu ([Ar]3d¹⁰4s¹) — half-filled and fully-filled d sub-shell stability; de Broglie (λ=h/mv); Heisenberg uncertainty principle (Δx×Δp≥h/4π)
+
+---

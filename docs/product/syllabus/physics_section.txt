@@ -1,0 +1,120 @@
+(30 Chapters)
+
+### Chapter Overview Table
+
+| # | Chapter | Class | Weightage | Avg Qs | Tier |
+|---|---------|-------|-----------|--------|------|
+| 1 | Basic Maths + Vectors | 11 | 1–2% | 1 | 3 |
+| 2 | Units and Measurements | 11 | 2–3% | 1–2 | 3 |
+| 3 | Motion in a Straight Line | 11 | 2–3% | 1–2 | 2 |
+| 4 | Motion in a Plane | 11 | 2–3% | 1–2 | 2 |
+| 5 | Laws of Motion | 11 | 3–4% | 2–3 | 2 |
+| 6 | Work, Energy and Power | 11 | 3–4% | 2–3 | 2 |
+| 7 | Rotational Motion ⭐ | 11 | 4–5% | 3–4 | 1 |
+| 8 | Centre of Mass & Collisions | 11 | 3–4% | 2–3 | 2 |
+| 9 | Gravitation | 11 | 2–3% | 1–2 | 2 |
+| 10 | Mechanical Properties of Solids | 11 | 2–3% | 1–2 | 3 |
+| 11 | Mechanical Properties of Fluids | 11 | 2–3% | 1–2 | 3 |
+| 12 | Thermal Properties of Matter ➕ | 11 | 2–3% | 1–2 | 2 |
+| 13 | Kinetic Theory of Gases | 11 | 2–3% | 1–2 | 2 |
+| 14 | Thermodynamics | 11 | 3–4% | 2–3 | 2 |
+| 15 | Oscillations | 11 | 2–3% | 1–2 | 2 |
+| 16 | Waves | 11 | 2–3% | 1–2 | 2 |
+| 17 | Electric Charges and Fields ⭐ | 12 | 4–5% | 3–4 | 1 |
+| 18 | Electrostatic Potential and Capacitance ⭐ | 12 | 4–5% | 3–4 | 1 |
+| 19 | Current Electricity ⭐⭐ | 12 | 5–7% | 5–7 | 1 |
+| 20 | Moving Charges and Magnetism ⭐ | 12 | 4–5% | 3–4 | 1 |
+| 21 | Magnetism and Matter | 12 | 2–3% | 1–2 | 2 |
+| 22 | Electromagnetic Induction ⭐ | 12 | 3–4% | 2–3 | 1 |
+| 23 | Alternating Current ⭐ | 12 | 3–4% | 2–3 | 1 |
+| 24 | Electromagnetic Waves | 12 | 1–2% | 1 | 3 |
+| 25 | Ray Optics and Optical Instruments ⭐ | 12 | 4–5% | 3–4 | 1 |
+| 26 | Wave Optics ⭐ | 12 | 3–4% | 2–3 | 1 |
+| 27 | Dual Nature of Radiation and Matter ⭐ | 12 | 3–4% | 2–3 | 1 |
+| 28 | Atoms ⭐ | 12 | 3–4% | 2–3 | 1 |
+| 29 | Nuclei ⭐ | 12 | 3–4% | 2–3 | 1 |
+| 30 | Semiconductors ⭐ | 12 | 3–4% | 2–3 | 1 |
+
+### DELETED PHYSICS TOPICS (do NOT study)
+- Integration-based kinematic derivations
+- Rolling motion detailed calculations (rolling without slipping)
+- Compound pendulum
+- Poisson's ratio
+
+### Physics Subtopics — Detailed
+
+**Ch 1–2: Basic Maths + Vectors**
+- Differentiation and integration (kinematics application only); scalar vs vector; dot/cross products; unit vectors; resolution of components; angle between vectors
+
+**Ch 2: Units and Measurements**
+- SI system; dimensional analysis; significant figures; errors (absolute, relative, percentage); Vernier callipers; screw gauge
+
+**Ch 3–4: Kinematics**
+- Equations of motion (v=u+at; s=ut+½at²; v²=u²+2as); position/velocity/acceleration graphs; relative velocity; projectile motion (R=u²sin2θ/g; H=u²sin²θ/2g; T=2usinθ/g); uniform circular motion; centripetal acceleration
+- ❌ Deleted: Integration-based kinematic derivations
+
+**Ch 5: Laws of Motion**
+- Newton's 3 laws; impulse-momentum theorem; linear momentum conservation; friction (static, kinetic; rolling conceptual only); free body diagrams; banking of roads; Atwood machine; pulley systems
+
+**Ch 6: Work, Energy and Power**
+- Work-energy theorem; conservative vs non-conservative forces; spring PE (U=½kx²); elastic/inelastic collisions; coefficient of restitution; power (P=Fv); energy conservation
+
+**Ch 7: Rotational Motion ⭐**
+- Moment of inertia (I); parallel axis theorem (I=Icm+Md²); perpendicular axis theorem (Iz=Ix+Iy); MI of ring, disc, rod, solid sphere, hollow sphere, cylinder; torque (τ=Iα); angular momentum (L=Iω); conservation of L when τ=0; rotational KE=½Iω²
+- ❌ Deleted: Rolling motion (detailed rolling without slipping calculations)
+
+**Ch 8: Centre of Mass & Collisions**
+- COM formula (xcm=Σmixi/Σmi); motion of COM; perfectly elastic and inelastic collisions; 2D collisions; coefficient of restitution
+
+**Ch 9: Gravitation**
+- Newton's law (F=Gm₁m₂/r²); variation of g with altitude, depth, latitude; escape velocity (ve=√2gR); orbital velocity (vo=√gR); geostationary satellite (T=24h; height ~36000km); Kepler's laws (statement + numericals); gravitational PE; binding energy of satellite
+- ❌ Deleted: Compound pendulum
+
+**Ch 10–11: Properties of Matter**
+- Stress-strain curve; Young's modulus (Y=Stress/Strain); Bulk modulus; Shear modulus; Hooke's law
+- ❌ Deleted: Poisson's ratio
+- Pascal's law; Archimedes' principle; buoyancy; Bernoulli's equation (P+½ρv²+ρgh=constant); applications; viscosity; Stokes' law (F=6πηrv); terminal velocity; surface tension; capillary rise (h=2Tcosθ/rρg)
+
+**Ch 12: Thermal Properties of Matter ➕**
+- Thermal expansion: linear (ΔL=LαΔT); area (ΔA=AβΔT); volume (ΔV=VγΔT); γ=2β=3α
+- Specific heat capacity; calorimetry; latent heat (L); Stefan-Boltzmann law (E=σT⁴); Wien's displacement law (λmaxT=b); Newton's law of cooling
+- NOTE: Thermal Properties is a separate chapter from Thermodynamics — ensure both are covered
+
+**Ch 13: Kinetic Theory of Gases**
+- Postulates; rms speed (vrms=√3RT/M); mean speed (vmean=√8RT/πM); most probable speed (vmp=√2RT/M); degrees of freedom; equipartition of energy (each DoF = ½kT); mean free path; Avogadro number
+
+**Ch 14: Thermodynamics**
+- Zeroth, First, Second laws; ΔU, ΔH; processes: isothermal (ΔT=0; ΔU=0); adiabatic (Q=0; ΔU=W); isobaric (P constant); isochoric (V constant; W=0); Carnot engine (efficiency=1-T₂/T₁); heat pump; refrigerator COP; entropy (conceptual; ΔS=Q/T)
+
+**Ch 15–16: Oscillations + Waves**
+- SHM: x=Asinωt; v=Aωcosωt; a=−Aω²sinωt; T=2π√(m/k); energy (KE+PE=½mω²A²); simple pendulum (T=2π√L/g); spring systems (series: 1/k=1/k₁+1/k₂; parallel: k=k₁+k₂); damped/forced oscillations; resonance
+- Wave equation (y=Asin(kx−ωt)); standing waves; nodes/antinodes; strings (f=n/2L√T/μ); open pipe (f=nv/2L); closed pipe (f=(2n-1)v/4L); beats (fb=|f₁−f₂|); Doppler effect (all cases: source moving, observer moving, both moving)
+
+**Ch 17–18: Electrostatics ⭐**
+- Coulomb's law (F=kq₁q₂/r²; k=9×10⁹); superposition; electric field (E=F/q); Gauss's law (∮E·dA=q/ε₀); applications: sphere (E=kq/r² outside; 0 inside cavity); wire (E=λ/2πε₀r); infinite sheet (E=σ/2ε₀); dipole (p=qd; E at axial=2kp/r³; at equatorial=kp/r³); electric potential (V=kq/r); equipotential surfaces; conductors; dielectrics; capacitance (C=Q/V; parallel plate C=ε₀A/d; with dielectric C=κε₀A/d); capacitors series/parallel; energy stored (U=½CV²=Q²/2C); van de Graaff generator
+
+**Ch 19: Current Electricity ⭐⭐**
+- Drift velocity (vd=eEτ/m); Ohm's law; resistivity; temperature dependence (ρ=ρ₀(1+αΔT)); EMF; internal resistance (ε=V+Ir); Kirchhoff's laws (KCL: ΣI=0; KVL: ΣV=0); Wheatstone bridge (P/Q=R/S balanced); meter bridge; potentiometer (for EMF comparison and internal resistance); Joule heating (H=I²Rt); resistor colour code; cells in series/parallel
+
+**Ch 20–23: Magnetism + EMI + AC ⭐**
+- Biot-Savart law (dB=μ₀Idl×r/4πr³); Ampere's law; magnetic field: straight wire (B=μ₀I/2πr); circular loop; solenoid (B=μ₀nI); Lorentz force (F=qv×B); cyclotron; moving coil galvanometer; Earth's magnetism; dia/para/ferromagnetism; Curie's law (χ=C/T)
+- Faraday's law (ε=−dΦ/dt); Lenz's law; motional EMF (ε=Blv); self-inductance (e=−LdI/dt); mutual inductance; energy stored in inductor (U=½LI²)
+- LCR circuits: XL=ωL; XC=1/ωC; Z=√(R²+(XL−XC)²); resonance (XL=XC; fr=1/2π√LC); power factor (cosφ=R/Z); transformer (Ns/Np=Vs/Vp=Ip/Is)
+
+**Ch 24: EM Waves**
+- Displacement current (Id=ε₀dΦE/dt); Maxwell's equations (conceptual); EM spectrum (γ→X-ray→UV→Visible→IR→Microwave→Radio): frequency, wavelength, properties, uses; speed c=3×10⁸ m/s
+
+**Ch 25–26: Optics ⭐**
+- Reflection: mirror formula (1/v+1/u=1/f; f=R/2); magnification (m=−v/u); sign convention
+- Snell's law (n₁sinθ₁=n₂sinθ₂); TIR (critical angle sinC=n₂/n₁); optical fibre; lens formula (1/v−1/u=1/f); lensmaker's equation; power (P=1/f in metres); lens combination (P=P₁+P₂); prism (δm=r+e−A; at min deviation A=2r); dispersion; scattering (Rayleigh: blue sky, red sunset)
+- YDSE: fringe width β=λD/d; path difference Δx=dsinθ; bright (Δx=nλ); dark (Δx=(2n-1)λ/2); single slit diffraction (asinθ=mλ for minima); resolving power; Brewster's law (tanθB=n); Malus's law (I=I₀cos²θ)
+
+**Ch 27–29: Modern Physics ⭐**
+- Photoelectric effect: Einstein's equation (eVs=hν−φ; Vs=stopping potential; φ=work function); threshold frequency (ν₀=φ/h); slope of Vs vs ν = h/e; de Broglie wavelength (λ=h/mv=h/√2mKE)
+- Bohr model: En=−13.6Z²/n² eV; rn=0.529n²/Z Å; vn=2.18×10⁶ Z/n m/s; spectral series (Lyman in UV; Balmer in visible; Paschen, Brackett, Pfund in IR)
+- Nuclear: mass defect (Δm); binding energy (BE=Δmc²); BE per nucleon curve (Fe-56 most stable); radioactivity (N=N₀e^(−λt)); t½=0.693/λ; mean life τ=1/λ=1.44t½; α, β, γ decay; fission; fusion; nuclear reactor
+
+**Ch 30: Semiconductors**
+- Energy bands: conductor, semiconductor, insulator; intrinsic vs extrinsic (n-type: donor; p-type: acceptor); p-n junction; depletion layer; forward/reverse bias; I-V characteristics; rectifier (half-wave, full-wave); Zener diode (voltage regulation); BJT (npn/pnp; CE configuration; amplifier + switch); logic gates truth tables: AND, OR, NOT, NAND (universal), NOR (universal); Boolean algebra; De Morgan's theorems
+
+---
