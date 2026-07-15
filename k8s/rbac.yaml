@@ -1,0 +1,32 @@
+# StudyOS — ServiceAccount + RBAC
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: studyos-api
+  namespace: studyos
+  labels:
+    app.kubernetes.io/name: studyos-api
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: studyos-api-role
+  namespace: studyos
+rules:
+  - apiGroups: [""]
+    resources: ["configmaps", "secrets"]
+    verbs: ["get", "list", "watch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: studyos-api-rolebinding
+  namespace: studyos
+subjects:
+  - kind: ServiceAccount
+    name: studyos-api
+    namespace: studyos
+roleRef:
+  kind: Role
+  name: studyos-api-role
+  apiGroup: rbac.authorization.k8s.io
