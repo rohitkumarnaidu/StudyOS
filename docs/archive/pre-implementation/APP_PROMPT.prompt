@@ -1,0 +1,1318 @@
+# APP_PROMPT.prompt
+# StudyOS — Enterprise-Grade LLM Prompt Library
+# End-to-end build prompts: Auth, DB, Agents, UI, Analytics, MCP, Skills, Design
+# Use with: Cursor | Claude Projects | Windsurf | v0.dev | any LLM
+# CANONICAL REFERENCE: docs/STUDYOS_COMPLETE_SUMMARY.md
+
+---
+## ╔══════════════════════════════════════════════════════════╗
+## ║        MASTER CONTEXT — READ BEFORE ALL PROMPTS         ║
+## ╚══════════════════════════════════════════════════════════╝
+
+You are building **StudyOS** — an enterprise-grade, AI-powered study platform
+for Indian competitive exam students (NEET 2026, JEE). Think: Notion + NotebookLM
++ personalized AI tutor + progress tracker — built specifically for Indian students.
+
+STACK (non-negotiable — see docs/architecture/FINAL_ARCHITECTURE.md for authority):
+  Frontend:  Next.js 15 (App Router) + React 19 + TypeScript strict + Tailwind CSS + shadcn/ui
+  State:     TanStack Query v5 (server state) + Zustand (global UI) + Dexie.js (offline IndexedDB)
+  Backend:   Supabase (PostgreSQL + Auth + Storage + Edge Functions + Realtime)
+  AI:        LangGraph agents + multi-provider LLM router (user's own API key OR shared)
+  Vector:    pgvector (Supabase extension) for NCERT RAG
+  Cache:     Upstash Redis (rate limiting + session cache)
+  Analytics: PostHog (self-hosted or cloud) + Tinybird for ClickHouse
+  Payments:  Razorpay (India) + Stripe (international)
+  Notifs:    Supabase Realtime + FCM (push) + WhatsApp Business API
+  Deploy:    Vercel (frontend) + Supabase (backend)
+  Monitoring: Sentry + LangSmith (AI tracing) + Uptime Robot
+
+CORE PRINCIPLES:
+  1. Student data (API keys, notes, progress) stays on device when possible
+  2. Mobile-first (80% of Indian students use Android phones)
+  3. Works offline for core features (checklist, notes, roadmap view)
+  4. Multi-language: English + Tamil + Hindi + Telugu (at least English first)
+  5. Accessibility: WCAG 2.1 AA minimum
+  6. Performance: LCP < 2.5s, FID < 100ms, CLS < 0.1
+
+ALWAYS in generated code:
+  ✅ TypeScript strict mode
+  ✅ Loading + error + empty states for every async operation
+  ✅ Optimistic UI updates with rollback on failure
+  ✅ Mobile-responsive Tailwind classes (sm: md: lg: breakpoints)
+  ✅ JSDoc comments on all exported functions/components
+  ✅ Zod validation on all API inputs/outputs
+  ✅ Row Level Security on all Supabase tables
+  ✅ Error boundary wrappers on all major UI sections
+
+NEVER:
+  ❌ Hardcode API keys anywhere
+  ❌ Store LLM provider keys in database (localStorage/IndexedDB ONLY)
+  ❌ Render user-generated content without DOMPurify sanitization
+  ❌ Skip loading states ("it just flashes")
+  ❌ Use any → use proper TypeScript types
+
+---
+## ╔══════════════════════════════════════════════════════════╗
+## ║  PROMPT 1 — ENTERPRISE DATABASE SCHEMA (SUPABASE)       ║
+## ╚══════════════════════════════════════════════════════════╝
+
+Generate the complete enterprise Supabase PostgreSQL schema for StudyOS.
+
+REQUIREMENTS:
+
+Part A — SQL Migration Files (numbered: 001_, 002_, etc.)
+
+001_auth_and_users.sql:
+  - users table extending Supabase auth.users
+  - institutes table (multi-tenant: coaching centers can white-label the app)
+  - institute_members (users ↔ institutes with roles: student/teacher/admin)
+  - batches (teacher's class groups)
+  - user_devices (for push notification tokens per device)
+  - RLS: users see only own row; teachers see students in their batch; admins see institute
+
+002_syllabus.sql:
+  - exam_profiles (NEET2026, JEE_MAINS_2026, etc. — versioned)
+  - subjects (Physics/Chemistry/Biology per exam)
+  - chapters (with tier 1/2/3, weightage_pct, is_deleted, ncert_ref, class 11/12)
+  - topics (under chapters, is_high_yield flag)
+  - subtopics (with definition, is_high_yield, is_deleted, difficulty enum)
+  - RLS: public read (no auth required for syllabus browsing)
+
+003_progress.sql:
+  - user_chapter_progress (completion %, confidence 1-5, revision_count)
+  - subtopic_completions (idempotent: unique user_id+subtopic_id; timestamps)
+  - study_sessions (start/end, chapters studied, total_minutes)
+  - streaks (current, longest, last_study_date, freeze_used bool)
+  - RLS: own rows only + teachers read student rows in batch
+
+004_notes.sql:
+  - notes (content_md, source_type enum, file_url, extracted_topics jsonb)
+  - note_versions (full history)
+  - note_embeddings (chunk_text, embedding vector(1536), chunk_index)
+  - RLS: own notes only; institute notes visible to institute members
+
+005_roadmap.sql:
+  - roadmaps (ai_reasoning, readiness_score 0-100, urgency_level enum)
+  - week_plans (focus_theme, week_tip, daily_breakdown jsonb)
+  - week_plan_chapters (action enum: new_study/revision/practice/mock)
+  - RLS: own roadmaps only
+
+006_quiz_and_questions.sql:
+  - questions (source enum: PYQ/AI, year nullable, options jsonb, difficulty enum)
+  - quiz_sessions (score, total_questions, time_taken_seconds)
+  - quiz_responses (selected_option, is_correct, time_taken_seconds)
+  - user_question_flags (saved/skipped/flagged per question per user)
+  - RLS: own sessions; questions are public read
+
+007_chat.sql:
+  - chat_sessions (llm_provider, model_used, total_tokens, chapter_id FK nullable)
+  - messages (role enum: user/assistant/system, content, tokens_used)
+  - RLS: own sessions only
+
+008_analytics.sql:
+  - events (event_type, properties jsonb, session_id, device_type, app_version)
+  - daily_stats (materialized: study_minutes, subtopics_completed, quiz_score_avg)
+  - RLS: own events; admins read all institute events
+
+009_payments.sql:
+  - plans (name, price_monthly_inr, price_yearly_inr, features jsonb)
+  - subscriptions (user_id, plan_id, status enum, period_start, period_end, razorpay_sub_id)
+  - invoices (amount_inr, paid_at, receipt_url)
+  - RLS: own subscription data
+
+Part B — Supabase TypeScript Types
+  - Full Database interface for all tables
+  - Row, Insert, Update types for each table
+  - Enum types matching PostgreSQL enums
+
+Part C — Indexes (performance-critical)
+  - chapter progress queries (user_id + chapter_id)
+  - subtopic completion lookups (user_id + subtopic_id)
+  - Note search (user_id + created_at, full-text index on content_md)
+  - Vector similarity (ivfflat index on embeddings, lists=100)
+  - Analytics time-series (user_id + created_at on events)
+
+Part D — Database Functions
+  - get_chapter_completion_pct(user_id, chapter_id) → float
+  - get_subject_completion_pct(user_id, subject_id) → float
+  - get_overall_readiness(user_id) → float
+  - calculate_streak(user_id) → int
+  - get_weak_chapters(user_id, limit=5) → table
+
+Part E — Realtime subscriptions
+  - Which tables need Realtime enabled and why
+  - Subscription patterns for frontend (progress updates, notifications)
+
+---
+## ╔══════════════════════════════════════════════════════════╗
+## ║  PROMPT 2 — AUTH SYSTEM (ENTERPRISE GRADE)              ║
+## ╚══════════════════════════════════════════════════════════╝
+
+Build the complete authentication system for StudyOS.
+
+Requirements:
+
+1. Auth Providers (all via Supabase Auth):
+   - Email + Password (primary)
+   - Google OAuth (one-tap, especially for mobile)
+   - Phone OTP (Indian numbers: +91, via MSG91 or Twilio)
+   - Magic Link (passwordless email)
+
+2. Auth Flow Components:
+   <AuthPage /> — main auth page with tab switching
+   <SignUpForm /> — email, password, name, exam type, exam date
+   <SignInForm /> — email/password + social buttons + magic link option
+   <PhoneOTPForm /> — phone input → OTP input → verify
+   <ForgotPasswordForm /> — email → reset link
+   <ResetPasswordForm /> — new password (from reset link)
+   <OnboardingGate /> — wrapper that redirects to onboarding if profile incomplete
+
+3. Session Management:
+   - useAuth() hook: { user, session, signIn, signUp, signOut, isLoading }
+   - AuthProvider wrapping entire app
+   - Persistent sessions (remember me = 30 days)
+   - Multi-device: list active sessions, revoke individual devices
+   - Auto-refresh token (Supabase handles this, but handle edge cases)
+
+4. Role-Based Access:
+   - useRole() hook: { role, isStudent, isTeacher, isAdmin, isPlatformAdmin }
+   - <RequireRole roles={['teacher', 'admin']}> wrapper component
+   - Protected route patterns for each role
+
+5. Security:
+   - CSRF protection
+   - Rate limiting on auth attempts (5 fails → 15min lockout)
+   - Auth state change logging to events table
+   - Secure storage of refresh token (httpOnly cookie preferred, localStorage fallback)
+
+6. Multi-tenancy:
+   - After auth, check if user belongs to institute
+   - Institute subdomain detection (coaching.studyos.app → set institute context)
+   - useInstitute() hook: { institute, isInstituteStudent, isInstituteTeacher }
+
+Output:
+  - Full auth implementation (all components + hooks)
+  - AuthContext + AuthProvider
+  - Supabase client configuration (with auth options)
+  - Protected route HOC
+  - Auth-related Zustand slices
+  - Email templates (signup confirmation, magic link, password reset) — HTML
+
+---
+## ╔══════════════════════════════════════════════════════════╗
+## ║  PROMPT 3 — DESIGN SYSTEM + SKILL_DESIGN.md             ║
+## ╚══════════════════════════════════════════════════════════╝
+
+Create the complete StudyOS design system AND generate SKILL_DESIGN.md.
+
+Part A — Design Tokens (tailwind.config.ts):
+  Colors:
+    brand: indigo scale (50→950)
+    physics: blue scale
+    chemistry: violet scale
+    biology: emerald scale
+    tier1: red-500 (urgent/high priority)
+    tier2: amber-500 (medium)
+    tier3: gray-400 (low priority)
+    success, warning, danger, info semantic tokens
+    All tokens with dark mode variants
+
+  Typography:
+    fontFamily: Inter (latin), Noto Sans Tamil, Noto Sans Devanagari
+    fontSize scale: xs(12) sm(14) base(16) lg(18) xl(20) 2xl(24) 3xl(32) 4xl(40) 5xl(48)
+    fontWeight: normal(400) medium(500) semibold(600) bold(700)
+    lineHeight: tight(1.25) snug(1.375) normal(1.5) relaxed(1.625) loose(1.75)
+
+  Spacing: 4px grid: 1(4) 2(8) 3(12) 4(16) 5(20) 6(24) 8(32) 10(40) 12(48) 16(64)px
+  Radius: none(0) sm(4) md(8) lg(12) xl(16) 2xl(24) full(9999)
+  Shadow: elevation system (sm, md, lg, xl, 2xl) with dark mode variants
+  Animation: duration-150 (micro) duration-300 (standard) duration-500 (emphasis)
+
+Part B — Component Library (using shadcn/ui base + custom):
+  Atoms (generate all with TypeScript props):
+    Button: variant(primary/secondary/ghost/destructive/outline) + size(sm/md/lg/icon) + loading state + icon slot
+    Input: with label, error, helper text, left/right adornment
+    Checkbox: with label, indeterminate state, high-yield star variant
+    Badge: subject-colored, tier-colored, status variants
+    ProgressBar: animated fill, label, color by subject
+    ProgressRing: SVG animated circle, center label, subject color
+    Avatar: initials fallback, status dot, size variants
+    Skeleton: text, card, avatar, ring variants
+    Spinner: size variants, overlay variant
+
+  Molecules:
+    ChapterCard: progress ring, tier badge, weightage, chapter name, last studied
+    SubtopicItem: checkbox, name, definition (expandable), badges (high-yield, deleted, difficulty)
+    AIMessageBubble: user/assistant/system with markdown rendering, timestamp, copy button
+    NoteCard: title, excerpt, subject tag, date, source type icon
+    StatCard: metric + label + trend (up/down/neutral) + sparkline
+    WeekPlanCard: week number, theme, chapter pills, daily breakdown accordion
+    QuizCard: question, 4 options (A/B/C/D), reveal answer state, explanation
+
+  Organisms:
+    AppShell: responsive layout (bottom nav mobile, sidebar desktop)
+    ChapterChecklist: full accordion with virtual scrolling for 50+ subtopics
+    RoadmapCalendar: horizontal scrolling weeks with snap
+    LLMChatPanel: floating/drawer/fullscreen modes, keyboard-aware on mobile
+    AnalyticsDashboard: grid of StatCards + heatmap calendar + charts
+
+Part C — Motion Design:
+  Page transitions: slide-in-right (forward) / slide-in-left (back)
+  Component enter: fade-in-up (150ms, ease-out)
+  Component exit: fade-out (100ms, ease-in)
+  Progress fill: left-to-right ease-in-out (300ms)
+  Ring: clockwise ease-in-out (300ms)
+  Confetti: burst on chapter complete milestone
+  Streak pulse: fire emoji pulse animation
+
+Part D — SKILL_DESIGN.md content:
+  Generate a complete SKILL.md file that an AI coding assistant reads before
+  generating any UI code for StudyOS. Include:
+  - Design token reference table (color names → hex values)
+  - Component usage guidelines with DO/DON'T examples
+  - Responsive design rules (mobile-first breakpoints)
+  - Accessibility requirements per component type
+  - Dark mode implementation patterns
+  - Animation dos and don'ts (performance-safe animations only)
+  - Subject color usage rules (when to use Physics blue vs generic)
+  - Tier badge usage rules
+  - Empty state illustration guidelines
+  - Loading state hierarchy (skeleton > spinner > text)
+
+Output:
+  - tailwind.config.ts (complete with all tokens)
+  - globals.css (CSS custom properties for theming)
+  - All component files in src/components/ui/ and src/components/app/
+  - SKILL_DESIGN.md
+
+---
+## ╔══════════════════════════════════════════════════════════╗
+## ║  PROMPT 4 — AI AGENT SYSTEM (LANGGRAPH + 21ST.DEV)      ║
+## ╚══════════════════════════════════════════════════════════╝
+
+Build the complete AI agent system for StudyOS using LangGraph.
+Use 21st.dev agent templates as the base where applicable.
+
+SKILL_AGENTS.md (generate this file first):
+  - Agent architecture overview
+  - Tool naming conventions
+  - State type definitions
+  - Zod schema library for all agent outputs
+  - Prompt template library (one per agent)
+  - Guardrail patterns
+  - Testing patterns for agents
+
+Agent 1 — Tutor Agent (most critical):
+  Base: 21st.dev ReAct Agent template
+  Purpose: Answer NEET concept questions with NCERT-grounded responses
+  LangGraph nodes:
+    - classify_intent (is this a question, explanation request, or example request?)
+    - retrieve_ncert (pgvector similarity search on NCERT corpus)
+    - retrieve_student_notes (pgvector search on student's own notes for this chapter)
+    - generate_answer (LLM call with retrieved context)
+    - add_citations (inject NCERT chapter+page references)
+    - check_scope (is this within NEET syllabus? reject if not)
+  Tools:
+    - ncert_search(query: string, chapter_id?: string, top_k: number): NcertChunk[]
+    - student_notes_search(query: string, user_id: string, chapter_id: string): Note[]
+    - pyq_search(topic: string, year?: number): Question[]
+  System prompt template (include full prompt):
+    - NEET-scoped, NCERT-grounded, cite chapter+page, use student's name
+    - XML sandwich for student notes (prevent injection)
+    - "If you don't know, say so — never guess in NEET"
+  Output schema (Zod):
+    { answer: string, citations: Citation[], confidence: 0-1, related_subtopics: string[] }
+
+Agent 2 — Roadmap Agent:
+  Base: 21st.dev Planning Agent template
+  Purpose: Generate weekly study plan JSON
+  LangGraph nodes:
+    - load_student_context (profile + progress + exam date)
+    - calculate_weeks_remaining
+    - prioritize_chapters (tier 1 first if < 8 weeks; balanced if > 12 weeks)
+    - build_weekly_schedule (fit chapters into available study hours)
+    - generate_week_themes (creative theme names: "Genetics Marathon", "Electricity Week")
+    - validate_schedule (ensure no overloading, Biology gets 50% time)
+  Full system prompt + user prompt templates
+  Output schema (Zod): full WeeklyRoadmap type
+
+Agent 3 — Note Extraction Agent:
+  Purpose: Extract topics from OCR'd student notes → map to NEET syllabus
+  Input: raw OCR text (may be messy/noisy)
+  LangGraph nodes:
+    - clean_ocr_text (fix common OCR errors: rn→m, l→1, etc.)
+    - extract_topics (identify chapter names, formulas, diagrams mentioned)
+    - fuzzy_map_to_syllabus (match extracted topics to official chapter list, >75% similarity)
+    - detect_gaps (subtopics in official chapter NOT mentioned in notes)
+    - score_quality (how complete are these notes?)
+  Output schema (Zod): ExtractionResult with topics, gaps, quality_score, suggestions
+
+Agent 4 — Quiz Generator Agent:
+  Purpose: Generate NEET-style MCQs for any chapter
+  LangGraph nodes:
+    - fetch_chapter_content (NCERT RAG for chapter)
+    - fetch_pyq_examples (similar PYQs for style reference)
+    - generate_stem (question text — precise, unambiguous)
+    - generate_distractors (3 wrong options — plausible, not obviously wrong)
+    - generate_explanation (why correct answer is right + why distractors are wrong)
+    - validate_question (does it match NEET format? is it answerable in 90s?)
+  Output schema (Zod): Question[]
+
+Agent 5 — Weak Area Detector:
+  Purpose: Analyze student behavior to identify weak areas
+  Input: last 30 days of quiz_responses + study_sessions + subtopic_completions
+  Analysis dimensions:
+    - Quiz accuracy per chapter (< 60% = weak)
+    - Time to complete subtopics (slow = struggling)
+    - Revision frequency (not revised in 7+ days = forgetting)
+    - AI question patterns (student keeps asking about same topic = confused)
+  Output: WeakAreaReport { weak_chapters: Chapter[], recommendations: Action[], spaced_reps: SubtopicSchedule[] }
+
+Agent 6 — Daily Motivation Agent:
+  Purpose: Personalized morning message + today's study recommendation
+  Input: student name, streak, today's roadmap, weak areas, exam days remaining
+  Output: { greeting: string, tip: string, today_focus: Chapter[], motivational_score: 1-10 }
+  Tone: friendly, encouraging, never preachy, culturally aware (Indian student context)
+
+LLM Router (llm-router.ts):
+  Unified LLMClient interface:
+    call(params: {messages, model, temperature, max_tokens, stream?}): Promise<LLMResponse>
+  Provider implementations:
+    - OpenAI (gpt-4o, gpt-4o-mini, o3-mini)
+    - Anthropic (claude-sonnet-4-6, claude-haiku-4-5)
+    - Google (gemini-2.0-flash, gemini-2.5-pro)
+    - Groq (llama-3.3-70b — fastest for simple tasks)
+    - Ollama (localhost:11434 — offline/private option)
+  Routing logic:
+    - Simple Q&A → Groq llama (fastest, cheapest)
+    - Complex reasoning (roadmap, strategy) → Claude Sonnet or GPT-4o
+    - Vision/OCR assistance → GPT-4o or Gemini Flash
+    - Offline → Ollama fallback
+  Retry + fallback:
+    - Primary fails 2x → switch to fallback provider
+    - All cloud fails → Ollama if available → show helpful error
+  Cost tracking:
+    - Token counting (tiktoken for OpenAI, estimate for others)
+    - Cost per session (shown to students using own API key)
+
+Output:
+  - src/agents/ directory with all 6 agents
+  - src/lib/llm-router.ts
+  - src/lib/rag-client.ts (pgvector search)
+  - SKILL_AI_AGENTS.md
+  - All Zod schemas in src/types/agents.ts
+
+---
+## ╔══════════════════════════════════════════════════════════╗
+## ║  PROMPT 5 — ENTERPRISE ANALYTICS SYSTEM                 ║
+## ╚══════════════════════════════════════════════════════════╝
+
+Build the complete analytics system for StudyOS.
+
+SKILL_ANALYTICS.md (generate first):
+  - Event naming convention: snake_case, past tense verb (subtopic_completed)
+  - Required properties on every event: user_id, session_id, timestamp, app_version, device_type
+  - Event categories and their properties
+  - Privacy rules: no PII in event properties (use user_id, not email)
+  - How to add new events (checklist)
+
+Part A — Event Tracking Library (src/lib/analytics.ts):
+  track(event: EventName, properties?: EventProperties): void
+  identify(userId: string, traits: UserTraits): void
+  page(pageName: string, properties?: PageProperties): void
+  reset(): void // on logout
+  
+  Event catalog (generate TypeScript union type for all events):
+    // Onboarding
+    onboarding_started, exam_profile_selected, exam_date_set, chapters_assessed, onboarding_completed
+    // Study
+    chapter_opened, topic_expanded, subtopic_completed, subtopic_uncompleted, chapter_completed
+    study_session_started, study_session_ended, streak_achieved, streak_broken
+    // AI
+    chat_opened, message_sent, ai_response_received, chat_exported, suggestion_clicked
+    // Notes
+    note_upload_started, note_ocr_completed, note_extraction_completed, note_saved, note_deleted
+    // Quiz
+    quiz_started, question_answered, quiz_completed, quiz_score_achieved
+    // Roadmap
+    roadmap_generated, roadmap_viewed, roadmap_exported, week_plan_expanded
+    // Auth
+    user_signed_up, user_signed_in, user_signed_out, password_reset_requested
+    // Engagement
+    app_opened, app_backgrounded, feature_discovered, settings_changed
+    // Payments
+    upgrade_clicked, plan_selected, payment_completed, subscription_cancelled
+
+Part B — PostHog Integration:
+  - PostHog React provider setup
+  - Feature flags (for A/B testing new features)
+  - Session recording (with privacy masking on note content)
+  - Heatmaps (understand where students tap)
+  - Funnels: Signup → Onboarding → First study session → Streak day 7
+  - Cohort analysis: students who use AI chat vs those who don't
+
+Part C — Student Analytics Dashboard (UI):
+  <AnalyticsDashboard /> with these sections:
+  
+  Overview Cards:
+    - Total study time this week (hours + vs last week %)
+    - Subtopics completed this week
+    - Current streak (fire emoji + days)
+    - NEET readiness score (0-100, with trend arrow)
+    - Days until exam (countdown)
+    - Predicted score range (e.g., "580–620 based on current pace")
+  
+  Study Heatmap:
+    - GitHub-contribution-style calendar (last 52 weeks)
+    - Color intensity = study minutes
+    - Tooltip: "May 12 — 3h 20min studied, 14 subtopics completed"
+  
+  Chapter Completion Chart:
+    - Horizontal stacked bar per subject (completed / in-progress / not started)
+    - Click to jump to that chapter
+  
+  Velocity Chart:
+    - Line chart: chapters completed per week (last 8 weeks)
+    - Trend line showing if student is accelerating or slowing down
+  
+  Subject Balance Donut:
+    - Time allocation: Physics X% / Chemistry Y% / Biology Z%
+    - Recommendation if imbalanced (Biology should be ~50%)
+  
+  Weak Areas Table:
+    - Top 5 weak chapters (by quiz score + recency)
+    - Last quiz score, last reviewed date, action button ("Revise now")
+  
+  Weekly Report (auto-generated every Monday):
+    - PDF-exportable summary
+    - Shareable via WhatsApp (image format)
+
+Part D — Institute Analytics (Teacher/Admin):
+  - Class-wide chapter completion heatmap (chapters × students matrix)
+  - Per-student progress table (sortable, filterable)
+  - At-risk students alert (< 30% completion with exam < 12 weeks)
+  - Quiz performance comparison (anonymous rank in class)
+
+Part E — Business Analytics (Internal — Metabase dashboards):
+  SQL queries for:
+    - DAU/WAU/MAU by exam type and state
+    - Feature adoption (% of users who used AI/notes/roadmap this week)
+    - Conversion funnel (free → paid) with drop-off analysis
+    - Institute growth (new signups, seat activation rate)
+    - AI cost per DAU (token usage / active users)
+    - Retention cohorts (D1, D7, D30, D90)
+
+Output:
+  - src/lib/analytics.ts (full implementation)
+  - src/types/events.ts (all event types)
+  - src/components/analytics/ (all dashboard components)
+  - src/hooks/useAnalytics.ts
+  - SQL queries for Metabase (in /analytics/queries/)
+  - SKILL_ANALYTICS.md
+
+---
+## ╔══════════════════════════════════════════════════════════╗
+## ║  PROMPT 6 — MCP INTEGRATIONS                            ║
+## ╚══════════════════════════════════════════════════════════╝
+
+Build all MCP (Model Context Protocol) integrations for StudyOS.
+
+Integration 1 — Google Drive MCP:
+  Purpose: Two-way sync between StudyOS notes and Google Drive
+  OAuth setup: Google OAuth 2.0, scope: drive.file (not full drive access)
+  Functions:
+    - connectDrive(): OAuth flow → store token securely
+    - pushChapterToDrive(chapterId): generate markdown → upload as Google Doc
+    - pullFromDrive(fileId): download Google Doc → create note in StudyOS
+    - createStudyOSFolder(): create "StudyOS NEET 2026" root folder
+    - syncAll(): push all notes to Drive (bulk operation with progress)
+  UI:
+    <DriveIntegrationCard /> — connect/disconnect, sync status, last synced
+    <DrivePickerModal /> — browse Drive files to import
+
+Integration 2 — NotebookLM Export:
+  Purpose: Export notes in perfect NotebookLM source format
+  Functions:
+    - exportChapterAsMarkdown(chapterId): generate optimized .md file
+    - exportSubjectAsZip(subjectId): bundle all chapters as ZIP
+    - exportAllAsZip(): full syllabus export
+  Markdown format (generate the exact template):
+    - NEET-optimized headers
+    - Key concepts section
+    - Formulas/reactions table
+    - High-yield points
+    - Common mistakes
+    - Practice questions (3 per chapter)
+    - Student's own notes section
+  UI:
+    <NotebookLMExportModal /> — chapter/subject selector + format options + download
+
+Integration 3 — WhatsApp Business API (via Twilio):
+  Purpose: Study reminders + weekly reports + milestone alerts
+  Functions:
+    - sendDailyReminder(userId): scheduled 7 AM message
+    - sendWeeklyReport(userId): Sunday evening progress summary
+    - sendMilestoneAlert(userId, milestone): e.g., "Biology 50% complete 🎉"
+    - sendParentReport(userId, parentPhone): weekly report to parent
+    - sendExamCountdown(userId, daysRemaining): weekly countdown
+  Message templates (WhatsApp Business requires pre-approved templates):
+    - daily_reminder: "Good morning {{name}}! 🌅 Today's focus: {{chapter}}. You're on a {{streak}}-day streak! 🔥"
+    - weekly_report: text with study stats
+    - milestone: celebration message
+  Opt-in/out: student must explicitly opt in; one-tap opt-out in settings
+  Supabase Edge Function: whatsapp-scheduler (cron trigger)
+
+Integration 4 — YouTube Study Content:
+  Purpose: Link relevant YouTube lectures to each chapter
+  Functions:
+    - searchLectures(chapterName, subject): YouTube Data API search
+    - getChannelPlaylists(): curated NEET channels (Physics Wallah, Vedantu, etc.)
+    - saveVideoToChapter(chapterId, videoId): bookmark a lecture
+    - getChapterVideos(chapterId): list saved + recommended videos
+  Curated channels:
+    Physics Wallah, Vedantu NEET, Unacademy NEET, Doubtnut, ALLEN Career
+  UI:
+    <ChapterVideos /> — scrollable video card list within chapter view
+    Thumbnail + duration + channel name + "Watch" button (opens YouTube)
+
+Integration 5 — Razorpay Payments:
+  Purpose: Student Pro subscription + Institute plans
+  Plans:
+    Free: 3 subjects, basic checklist, 50 AI messages/month
+    Student Pro: ₹299/month or ₹1999/year — unlimited AI, all features, offline
+    Institute: custom pricing, per-seat, teacher dashboard
+  Functions:
+    - createSubscription(planId, userId): Razorpay subscription
+    - handleWebhook(payload): update subscription status in DB
+    - cancelSubscription(subscriptionId): cancel + maintain until period end
+    - getInvoices(userId): list payment history
+  UI:
+    <PricingPage /> — plan comparison table (Free vs Pro vs Institute)
+    <UpgradeModal /> — shown when hitting free tier limits
+    <BillingSettings /> — manage subscription, download invoices
+
+Output:
+  - src/integrations/ directory (one file per integration)
+  - Supabase Edge Functions for server-side operations (webhook handling, cron jobs)
+  - UI components for each integration
+  - Environment variable reference (.env.example)
+  - Integration setup guides in INTEGRATIONS.md
+
+---
+## ╔══════════════════════════════════════════════════════════╗
+## ║  PROMPT 7 — CORE STUDENT FEATURES (UI + LOGIC)          ║
+## ╚══════════════════════════════════════════════════════════╝
+
+Build the 5 core student-facing features. Each must be production-grade.
+
+Feature 1 — Chapter Checklist (most critical screen):
+  <ChapterChecklist chapter_id /> with:
+    - Virtual scrolling (react-virtual) for chapters with 50+ subtopics
+    - Optimistic checkbox updates (update UI instantly, sync DB async)
+    - Long-press on topic: "Mark all complete / incomplete"
+    - Swipe left on subtopic: undo last completion
+    - Chapter complete celebration (confetti + haptic on mobile)
+    - Progress ring (animated SVG, updates in real-time)
+    - "Ask AI" FAB (opens LLM chat with chapter context pre-loaded)
+    - Keyboard navigation (Tab + Space for accessibility)
+    Hooks: useChapterProgress(), useSubtopicCompletion(), useChapterChat()
+    Performance target: 50 subtopics render in < 200ms; checkbox response < 50ms
+
+Feature 2 — Note Upload + AI Extraction:
+  <NoteUploadFlow /> multi-step:
+    Step 1: File drop zone (drag-drop desktop; camera/gallery mobile)
+      - Accept: JPEG, PNG, WEBP, PDF, TXT (validate MIME by magic bytes)
+      - Preview before processing
+    Step 2: OCR Processing (Tesseract.js in Web Worker — non-blocking)
+      - Progress: "Reading page 1 of 3..."
+      - Quality warning if image too blurry (Laplacian variance check)
+    Step 3: AI Extraction (send OCR text to Note Extraction Agent)
+      - Streaming response (show topics appearing one by one)
+      - "75% confident this is about: Genetics, Chapter 23"
+    Step 4: Review + Confirm
+      - Extracted topics as cards (accept/reject/remap each)
+      - Syllabus gap warning: "Your notes don't mention: crossing over, chiasma"
+      - "Add to my notes" → saves with chapter tags
+    Hooks: useNoteUpload(), useOCR(), useNoteExtraction()
+
+Feature 3 — AI Chat Interface:
+  <LLMChatPanel mode="drawer|side|fullscreen" chapterId? />
+    - Markdown rendering (react-markdown + rehype-highlight for code/formulas)
+    - LaTeX math rendering (KaTeX for formulas: E = mc²)
+    - Streaming responses (token-by-token appearance)
+    - Smart suggestions based on current chapter
+    - Message history per chapter (persistent in Dexie, synced to Supabase)
+    - Provider + model indicator ("Answering with Claude Haiku")
+    - Token usage counter (for own-key users)
+    - Copy message button
+    - "Save as note" button on AI responses
+    - Error states: offline, rate limited, invalid key
+    Hooks: useLLMChat(), useChatHistory(), useStreamingResponse()
+
+Feature 4 — Study Roadmap:
+  <RoadmapView userId />
+    - Horizontal scrolling weeks (snap to current week on load)
+    - Week card with: theme banner, subject-colored chapter pills, day breakdown
+    - Current week highlighted
+    - Completion checkmarks on past week items
+    - "Regenerate" button (shows diff: what changed from previous plan)
+    - Urgency banner (< 6 weeks: red; 6-12: amber; > 12: green)
+    - Export to PDF / WhatsApp image
+    <RoadmapGenerator /> loading state (shows AI "thinking" steps):
+      "Analyzing your progress... 
+       Checking 14 incomplete Tier 1 chapters... 
+       Building optimal schedule for 47 days remaining...
+       Done! Here's your personalized plan 🎯"
+    Hooks: useRoadmap(), useRoadmapGeneration()
+
+Feature 5 — Mock Quiz + PYQ:
+  <ChapterQuiz chapterId mode="practice|exam" />
+    - Question cards with A/B/C/D options (clear tap targets ≥ 48px)
+    - Timer per question (90 seconds, animated progress bar)
+    - Immediate feedback in practice mode (reveal correct + explanation)
+    - No feedback in exam mode (review at end)
+    - End screen: score, time taken, question-by-question review
+    - "Add to error log" for wrong answers
+    - Progress saved to quiz_sessions table
+    - Spaced repetition: wrong answers scheduled for 3-day review
+    <PYQBrowser /> — filter by year, subject, chapter; question cards
+    Hooks: useQuizSession(), useQuestionBank(), useSpacedRepetition()
+
+---
+## ╔══════════════════════════════════════════════════════════╗
+## ║  PROMPT 8 — OFFLINE-FIRST + PWA                         ║
+## ╚══════════════════════════════════════════════════════════╝
+
+Build the offline-first architecture and PWA configuration for StudyOS.
+
+Offline Strategy (for Indian students with poor connectivity):
+
+What works offline:
+  - View and complete chapter checklists (Dexie.js)
+  - Read and edit notes (Dexie.js)
+  - View roadmap (cached in Dexie)
+  - View downloaded quiz questions (cached)
+  - Read previous AI chat history (Dexie)
+
+What requires internet:
+  - New AI chat messages
+  - Roadmap regeneration
+  - Note file upload + OCR (or use device camera → process later)
+  - Sync progress to cloud
+
+Dexie.js Schema (dexie-schema.ts):
+  Build complete Dexie database with:
+    - chapters table (full chapter + topic + subtopic data, synced from Supabase)
+    - progress table (local copy of completions, to be synced)
+    - notes table (full note content offline)
+    - roadmap table (current active roadmap)
+    - chat_sessions + messages (history)
+    - sync_queue (pending operations to push when back online)
+    - metadata (last_sync_at per table)
+
+Sync Engine (sync-engine.ts):
+  - Background sync: when app comes online, push sync_queue items
+  - Conflict resolution: last-write-wins with server as authority
+  - Incremental sync: only fetch changes since last_sync_at
+  - Sync status indicator in UI: "Synced 2 min ago" / "Offline — changes saved locally"
+
+Service Worker (Serwist / Workbox for Next.js):
+  - Cache strategy per resource type:
+    - App shell (layout, navigation): Cache First
+    - NCERT images/diagrams: Cache First with 7-day expiry
+    - API responses: Network First with Stale-While-Revalidate
+    - Static assets: Cache First with version hash
+  - Background sync for offline form submissions
+  - Push notification handler (for WhatsApp-style reminders via FCM)
+
+PWA Manifest (manifest.json):
+  - name: "StudyOS"
+  - short_name: "StudyOS"
+  - theme_color: #4F46E5 (brand indigo)
+  - background_color: #0F172A (dark)
+  - display: standalone
+  - orientation: portrait-primary
+  - icons: all sizes (72, 96, 128, 144, 152, 192, 384, 512)
+  - shortcuts: [Open Notes, Open Today's Roadmap, Ask AI]
+  - screenshots: 4 mobile screenshots for Play Store listing
+
+Install Prompt:
+  <PWAInstallPrompt /> — smart timing (show after 2 study sessions, not immediately)
+  Store in Dexie whether user dismissed it (don't show again for 7 days)
+
+Offline UI Indicators:
+  <OfflineBanner /> — subtle top banner when offline
+  <SyncStatus /> — in settings, shows last sync time per data type
+  All async operations: handle offline error gracefully (queue + inform user)
+
+Output:
+  - Complete Dexie schema and initialization
+  - sync-engine.ts
+  - Service worker configuration (Serwist integration in next.config.ts)
+  - manifest.json
+  - <PWAInstallPrompt />, <OfflineBanner />, <SyncStatus />
+  - useOfflineStatus() hook
+  - useSyncEngine() hook
+
+---
+## ╔══════════════════════════════════════════════════════════╗
+## ║  PROMPT 9 — SECURITY HARDENING + SKILL_SECURITY.md      ║
+## ╚══════════════════════════════════════════════════════════╝
+
+Perform complete security hardening for StudyOS and generate SKILL_SECURITY.md.
+
+SKILL_SECURITY.md content:
+  - API key storage policy (localStorage only, never DB)
+  - XSS prevention checklist
+  - Prompt injection prevention patterns
+  - File upload security checklist
+  - RLS policy review checklist
+  - Security testing procedures
+
+Implementation:
+
+1. API Key Security:
+   - Store in Dexie encrypted store (Dexie Encryption plugin with AES-GCM)
+   - Key derivation: PBKDF2 from user's password (client-side)
+   - Never log keys; mask in UI (show last 4 chars only)
+   - Clear from memory on logout
+
+2. XSS Prevention:
+   - DOMPurify sanitization on ALL user-generated content before render
+   - Content Security Policy headers (via Vercel headers config)
+   - No dangerouslySetInnerHTML without sanitization
+   - Sanitize markdown before rendering with react-markdown
+
+3. LLM Prompt Injection Prevention:
+   - XML sandwich: wrap ALL user content in <student_input> tags
+   - System prompt explicitly ignores instructions inside <student_input>
+   - Max input length enforcement (1000 chars for questions, 5000 for notes)
+   - Input validation: strip null bytes, control characters
+   - Rate limiting per user (20 messages/hour free, 100 paid)
+
+4. File Upload Security:
+   - MIME type validation by magic bytes (not just extension)
+   - File size limits enforced client AND server side
+   - Filename sanitization (path traversal prevention)
+   - Virus/malware scan via Supabase Storage scan (ClamAV)
+   - Process files in Web Workers (sandbox from main thread)
+   - Never execute uploaded files (PDFs are parsed only, not rendered as HTML)
+
+5. Supabase RLS Audit:
+   - Generate RLS policy review for every table
+   - Test each policy with: student A cannot read student B's data
+   - Teacher can only read students in their batch
+   - anon role cannot access any user data
+   - Service role used only in Edge Functions (never in client code)
+
+6. Auth Security:
+   - HTTPS only (HSTS header)
+   - Secure + SameSite=Strict cookies
+   - JWT expiry: 15min access + 30day refresh
+   - Refresh token rotation (invalidate old on use)
+   - Rate limiting: 5 failed logins → 15min lockout (Upstash Redis)
+
+7. Privacy (DPDP Act India compliance):
+   - Privacy policy in simple language
+   - Explicit consent for: analytics, WhatsApp notifications, parent reports
+   - Right to erasure: delete_account() removes all user data from all tables
+   - Data export: export_my_data() generates JSON of all user data
+   - No PII in analytics events (user_id only, not email/phone)
+   - Parental consent for users under 18 (India — age of majority for data)
+
+Output:
+  - Security-hardened versions of: auth flow, API key storage, file upload, chat
+  - Content-Security-Policy configuration (vercel.json headers)
+  - SKILL_SECURITY.md
+  - Security test suite (Playwright E2E tests for security scenarios)
+
+---
+## ╔══════════════════════════════════════════════════════════╗
+## ║  PROMPT 10 — TEACHER + INSTITUTE DASHBOARD              ║
+## ╚══════════════════════════════════════════════════════════╝
+
+Build the Teacher and Institute Admin dashboards.
+
+Teacher Dashboard (role: teacher):
+
+  Class Overview Page:
+    <ClassOverview batchId />
+    - Student progress heatmap: rows = students, columns = chapters, color = completion %
+    - "At risk" students banner (< 40% at < 8 weeks to exam)
+    - Quick filters: sort by completion, filter by subject
+    - Bulk actions: send reminder to all at-risk students
+
+  Student Detail Page:
+    <StudentDetail userId teacherId />
+    - All progress rings (Physics, Chemistry, Biology, Overall)
+    - Study time chart (last 30 days)
+    - Weak areas (AI-detected)
+    - Recent quiz scores
+    - Note activity
+    - Message student button
+    - Teacher can add private notes about the student
+
+  Assignment System:
+    <AssignmentManager batchId />
+    - Create assignment: "Complete Chapter 24 by May 20"
+    - Select chapters + deadline + optional quiz
+    - View submission status (who completed, who didn't)
+    - Send reminder to incomplete students (WhatsApp/in-app)
+
+  Note Distribution:
+    <BatchNoteDistribution batchId />
+    - Upload PDF/notes → appears in all students' chapter view
+    - Tag to specific chapter
+    - Students notified via push
+
+  Communication:
+    <BatchMessageComposer batchId />
+    - Broadcast: all students in batch
+    - Targeted: select specific students
+    - Channel: in-app + WhatsApp + push
+    - Scheduled sending (e.g., send at 7 AM tomorrow)
+
+Institute Admin Dashboard (role: institute_admin):
+
+  Multi-Batch Overview:
+    - All batches in table: batch name, teacher, student count, avg completion
+    - Create new batch, assign teacher
+    - Bulk import students (CSV with: name, email, phone, batch)
+
+  Institute Analytics:
+    - Funnel: enrollment → first login → first study session → 50% completion
+    - Chapter coverage gaps: which chapters are most students skipping?
+    - Teacher activity: lessons distributed, assignments given, messages sent
+    - Top and bottom performing students (anonymous option)
+
+  White Label Settings:
+    - Logo upload
+    - Primary brand color
+    - Custom domain setup guide
+    - Welcome message customization
+    - Institute-specific resources section
+
+  Billing:
+    - Current plan + seats used/available
+    - Upgrade/downgrade plan
+    - Invoice history + download
+
+Output:
+  - All teacher + admin components
+  - Teacher-specific hooks: useBatch(), useBatchProgress(), useAssignments()
+  - Admin-specific hooks: useInstitute(), useInstituteAnalytics()
+  - Role-gated routing
+
+---
+## ╔══════════════════════════════════════════════════════════╗
+## ║  PROMPT 11 — SKILL FILES (FOR AI CODING ASSISTANTS)     ║
+## ╚══════════════════════════════════════════════════════════╝
+
+Generate all SKILL.md files that AI coding assistants should read
+before generating code for StudyOS.
+
+SKILL_FRONTEND.md:
+  Section 1: Project Structure (Next.js App Router canonical)
+    src/
+      app/           — Next.js App Router (route groups: (marketing), (auth), (app))
+      components/
+        ui/          — shadcn/ui primitives (never modify directly)
+        app/         — StudyOS-specific components
+      features/      — vertical slices (auth, dashboard, syllabus, notes, chat, quiz)
+      shared/        — cross-cutting: hooks, lib, config, types, constants
+      server/        — server-only: Supabase clients, auth utils
+      db/            — Dexie schema (offline IndexedDB)
+
+  Section 2: Component patterns
+    - Always use compound component pattern for complex components
+    - Always export both named and default exports
+    - Always put prop types as interface above component
+    - Prefer React Query for server state over useState + useEffect
+    - Always use Zustand for global state (not Context for performance)
+    - Virtualize lists with > 20 items (react-virtual)
+
+  Section 3: Styling rules
+    - Mobile-first: default styles = mobile; use sm: md: lg: for larger
+    - Never use arbitrary Tailwind values ([500px]) — use design tokens
+    - Dark mode: use dark: prefix, not separate stylesheets
+    - Subject-specific colors: always use physics-*, chemistry-*, biology-* tokens
+    - Loading: always skeleton > spinner hierarchy
+
+  Section 4: Performance rules
+    - Lazy load routes (React.lazy + Suspense)
+    - Memoize expensive computations (useMemo), stable callbacks (useCallback)
+    - Images: always use next/image or lazy loading attribute
+    - Bundle size: check with vite-bundle-visualizer before PR
+
+SKILL_BACKEND.md:
+  Section 1: Supabase Edge Function patterns
+    - Always validate JWT at start of every function
+    - Always use Zod to validate request body
+    - Standard response format: { data, error, meta }
+    - Standard error codes with HTTP status mapping
+    - Always use transactions for multi-table writes
+
+  Section 2: Database patterns
+    - Use views for commonly joined queries
+    - Use materialized views for expensive aggregations (daily_stats)
+    - Always add updated_at trigger (moddatetime extension)
+    - RLS: default deny, explicit allow — test every policy
+    - Use pg_cron for scheduled tasks (streak calculation, daily stats rollup)
+
+  Section 3: Realtime patterns
+    - Only subscribe to tables that genuinely need real-time (progress, notifications)
+    - Always unsubscribe on component unmount
+    - Filter subscriptions by user_id to minimize payload
+
+SKILL_AGENTS.md: (see Prompt 4)
+SKILL_ANALYTICS.md: (see Prompt 5)
+SKILL_SECURITY.md: (see Prompt 9)
+SKILL_DESIGN.md: (see Prompt 3)
+
+SKILL_NEET_DOMAIN.md (NEW — critical for AI assistants):
+  Purpose: Domain knowledge about NEET that AI must know before generating
+  any study-related content or features.
+  
+  Sections:
+    - NEET exam structure (subjects, question counts, marks, negative marking)
+    - Chapter tier definitions (Tier 1 = 5+ questions historically)
+    - Deleted topics list (never include in study materials or quizzes)
+    - Subject weightage (Biology 50%, Physics 25%, Chemistry 25%)
+    - Study strategy principles (NCERT-first, diagrams, previous year papers)
+    - Common student misconceptions per chapter (so AI avoids reinforcing them)
+    - Indian student context (coaching institutes, state boards, dropper year)
+    - Sensitive topics (exam stress, pressure — handle with care, never dismissive)
+
+Output: All 8 SKILL.md files in docs/product/skills-app/
+  ✅ SKILL_AGENTS.md
+  ✅ SKILL_ANALYTICS.md
+  ✅ SKILL_BACKEND.md
+  ✅ SKILL_DATABASE.md (NEW — migrations + RLS patterns)
+  ✅ SKILL_DESIGN.md
+  ✅ SKILL_FRONTEND.md
+  ✅ SKILL_NEET_DOMAIN.md
+  ✅ SKILL_SECURITY.md
+
+---
+## ╔══════════════════════════════════════════════════════════╗
+## ║  PROMPT 12 — ADDITIONAL NEET-SPECIFIC FEATURES          ║
+## ╚══════════════════════════════════════════════════════════╝
+
+Build these additional NEET-specific features that make StudyOS unique.
+
+Feature A — Formula & Reaction Cheatsheet Generator:
+  <FormulaSheetGenerator userId />
+  - AI scans all completed chapters → extracts formulas, reactions, diagrams
+  - Generates one-page formula sheet per subject (Physics / Chemistry)
+  - Biology: key diagrams list (Z-scheme, nephron, cardiac cycle)
+  - PDF export (A4 landscape, printable)
+  - Updates as student completes more chapters
+  - Include: formula name, formula itself, units, when to apply
+
+Feature B — Mistake Tracker (Error Log):
+  <MistakeTracker userId />
+  - When quiz answer is wrong → auto-added to mistake log
+  - Student can add manual mistakes ("Always forget lac operon details")
+  - AI analyzes patterns: "You make mistakes about: Markovnikov's rule (4x), Bohr model energy levels (3x)"
+  - Pre-exam review mode: show all logged mistakes one-by-one
+  - Resolve mistakes: "I've understood this now" → moves to resolved
+
+Feature C — NEET Rank Predictor:
+  <RankPredictor userId />
+  Based on:
+    - Chapter completion % (each chapter weighted by NEET weightage)
+    - Quiz accuracy per chapter
+    - Time to exam
+    - Historical NEET score distributions
+  Shows:
+    - Predicted score range (e.g., "580–620")
+    - Estimated All India Rank range
+    - Category-wise rank (General/OBC/SC/ST — student selects category)
+    - College prediction: "Based on this rank, you may qualify for:"
+      - Government Medical Colleges list (state-wise + All India)
+    - Disclaimer: "This is an estimate — actual results depend on exam difficulty"
+  Data needed: last 5 years NEET score vs rank data (include this as static JSON)
+
+Feature D — Cut-off Tracker:
+  <NEETCutoffTracker />
+  - Historical NEET cut-offs (2019–2025): All India, State-wise, Category-wise
+  - AIIMS, JIPMER, AFMC special cut-offs
+  - State-specific counseling quirks (Tamil Nadu NEET merit vs state board)
+  - "What score do I need for [college]?" reverse lookup
+
+Feature E — 30-Day Revision Sprint:
+  <RevisionSprintPlanner userId />
+  - If exam is 30 days away: switch to "Sprint Mode"
+  - AI generates compressed revision plan (all 79 chapters in 30 days)
+  - 3 chapters per day minimum; high-yield topics first
+  - Daily "Rapid Fire" quiz: 20 Qs, 10 mins, all from that day's chapters
+  - "Revision not fresh study" — mode focuses on recall not new learning
+
+Feature F — Peer Study Groups (Anonymous):
+  <StudyGroupBrowser />
+  - Auto-match students studying the same chapter today (anonymous)
+  - Shared "chapter challenge": first 5 to complete all subtopics wins
+  - Anonymous leaderboard: "325 students completed Current Electricity today"
+  - No personal info shown — only study stats
+
+Feature G — Voice Notes (v2):
+  <VoiceNoteRecorder />
+  - Record audio → Whisper API transcription → OCR-equivalent text pipeline
+  - "Explain the Z-scheme to yourself out loud" → AI evaluates answer
+  - Helps students who learn by speaking (common Indian learning style)
+
+Output:
+  - All feature components
+  - Supporting hooks and services
+  - NEET static data files (cut-offs, score distributions, college lists)
+  - NEET domain validation utilities
+
+---
+## ╔══════════════════════════════════════════════════════════╗
+## ║  PROMPT 13 — FULL PROJECT SCAFFOLDING COMMAND           ║
+## ╚══════════════════════════════════════════════════════════╝
+
+Generate the complete project scaffolding in one shot.
+This creates the entire file structure, base configurations, and starter code.
+
+CANONICAL REFERENCE: See docs/ARCHITECTURE.md and docs/STUDYOS_COMPLETE_SUMMARY.md
+
+Run these commands (from workspace root with pnpm):
+
+```bash
+# 1. Monorepo setup (already in place)
+cd STUDYOS
+pnpm install
+
+# 2. Frontend (Next.js 15 with App Router)
+cd apps/web
+pnpm install \
+  @supabase/ssr @supabase/supabase-js \
+  @tanstack/react-query @tanstack/react-virtual \
+  zustand dexie dexie-react-hooks \
+  @langchain/core @langchain/langgraph \
+  next-intl nuqs \
+  tailwindcss @tailwindcss/typography postcss autoprefixer \
+  lucide-react \
+  react-markdown rehype-highlight remark-gfm \
+  katex react-katex \
+  dompurify @types/dompurify \
+  jszip \
+  tesseract.js \
+  pdfjs-dist \
+  posthog-js \
+  razorpay \
+  date-fns \
+  zod sonner \
+  clsx tailwind-merge \
+  framer-motion \
+  react-confetti \
+  serwist
+
+pnpm add -D \
+  @types/node @types/dompurify \
+  typescript @types/react @types/react-dom \
+  prettier @tailwindcss/plugins
+
+# 3. Install shadcn/ui
+npx shadcn-ui@latest init
+# Select: TypeScript, Tailwind CSS, App dir, Indigo color
+
+# Add UI components
+npx shadcn-ui@latest add button input checkbox badge progress avatar card
+
+# 4. Backend (FastAPI — separate)
+cd ../../apps/api
+uv sync --all-groups
+```
+npx shadcn-ui@latest add dialog drawer sheet tabs accordion
+npx shadcn-ui@latest add toast sonner skeleton card separator
+npx shadcn-ui@latest add select dropdown-menu popover tooltip
+npx shadcn-ui@latest add chart
+```
+
+Generate complete monorepo file tree (Next.js 15 + FastAPI):
+```
+STUDYOS/ (workspace root)
+├── README.md
+├── ARCHITECTURE.md
+├── pnpm-workspace.yaml
+├── turbo.json
+│
+├── apps/
+│   ├── web/ (Next.js 15 App Router)
+│   │   ├── app/
+│   │   │   ├── (marketing)/
+│   │   │   │   ├── layout.tsx
+│   │   │   │   ├── page.tsx (landing)
+│   │   │   │   └── about.tsx
+│   │   │   ├── (auth)/
+│   │   │   │   ├── layout.tsx
+│   │   │   │   ├── login/page.tsx
+│   │   │   │   ├── signup/page.tsx
+│   │   │   │   ├── forgot-password/page.tsx
+│   │   │   │   └── callback/route.ts
+│   │   │   ├── (app)/
+│   │   │   │   ├── layout.tsx (AppShell)
+│   │   │   │   ├── dashboard/page.tsx
+│   │   │   │   ├── syllabus/page.tsx
+│   │   │   │   ├── chapter/[id]/page.tsx
+│   │   │   │   ├── notes/page.tsx
+│   │   │   │   ├── roadmap/page.tsx
+│   │   │   │   ├── quiz/page.tsx
+│   │   │   │   ├── analytics/page.tsx
+│   │   │   │   ├── settings/page.tsx
+│   │   │   │   └── teacher/ (future)
+│   │   │   └── api/ (Route Handlers / BFF)
+│   │   │       ├── auth/[...auth]/route.ts
+│   │   │       ├── ai/chat/route.ts
+│   │   │       └── sync/route.ts
+│   │   ├── src/
+│   │   │   ├── features/ (vertical slices)
+│   │   │   │   ├── auth/
+│   │   │   │   ├── dashboard/
+│   │   │   │   ├── syllabus/
+│   │   │   │   ├── notes/
+│   │   │   │   ├── chat/
+│   │   │   │   └── quiz/
+│   │   │   ├── shared/
+│   │   │   │   ├── components/ (reusable UI)
+│   │   │   │   ├── hooks/ (custom React hooks)
+│   │   │   │   ├── lib/ (utilities)
+│   │   │   │   ├── api/ (API client)
+│   │   │   │   ├── config/ (env, constants)
+│   │   │   │   └── types/
+│   │   │   ├── server/ (server-only)
+│   │   │   │   ├── supabase/
+│   │   │   │   └── auth/
+│   │   │   └── db/ (Dexie offline schema)
+│   │   ├── public/
+│   │   │   ├── manifest.json
+│   │   │   └── icons/
+│   │   ├── middleware.ts
+│   │   ├── next.config.ts
+│   │   ├── tailwind.config.ts
+│   │   ├── tsconfig.json
+│   │   └── package.json
+│   │
+│   └── api/ (FastAPI — Python)
+│       ├── studyos_api/
+│       │   ├── __init__.py
+│       │   ├── main.py (FastAPI app)
+│       │   ├── core/
+│       │   │   ├── config.py
+│       │   │   ├── logger.py
+│       │   │   └── limiter.py
+│       │   ├── api/
+│       │   │   └── v1/
+│       │   │       ├── __init__.py
+│       │   │       └── routes/
+│       │   │           ├── auth.py
+│       │   │           ├── ai.py
+│       │   │           └── sync.py
+│       │   ├── deps/
+│       │   │   ├── auth.py
+│       │   │   └── rbac.py
+│       │   ├── models/
+│       │   └── schemas/
+│       ├── tests/
+│       │   ├── unit/
+│       │   ├── integration/
+│       │   └── api/
+│       ├── pyproject.toml
+│       └── Makefile
+│
+├── packages/
+│   ├── config/ (@studyos/config — Zod env)
+│   ├── shared/ (@studyos/shared — TS utilities)
+│   ├── eslint-config/
+│   └── typescript-config/
+│
+├── docs/
+│   ├── STUDYOS_COMPLETE_SUMMARY.md (READ FIRST!)
+│   ├── architecture/ (18 files)
+│   ├── product/ (specs + skills)
+│   │   ├── MASTER_README.md
+│   │   ├── PRODUCT_FOLDER_INVENTORY.md
+│   │   ├── plan/
+│   │   ├── skills-app/
+│   │   │   ├── SKILL_AGENTS.md ✅
+│   │   │   ├── SKILL_ANALYTICS.md ✅
+│   │   │   ├── SKILL_BACKEND.md ✅
+│   │   │   ├── SKILL_DATABASE.md ✅ (NEW)
+│   │   │   ├── SKILL_DESIGN.md ✅
+│   │   │   ├── SKILL_FRONTEND.md ✅
+│   │   │   ├── SKILL_NEET_DOMAIN.md ✅
+│   │   │   └── SKILL_SECURITY.md ✅
+│   │   └── skills-claude/ (5 binary .skill packages)
+│   ├── database/
+│   ├── engineering/
+│   └── security/
+│
+├── supabase/
+│   ├── config.toml
+│   ├── migrations/ (001_extensions.sql → 009_billing.sql)
+│   ├── seed.sql (NEET 2026 syllabus)
+│   └── functions/ (Edge Functions)
+│
+├── docker/
+│   ├── docker-compose.yml
+│   ├── Dockerfile.web
+│   └── Dockerfile.api
+│
+├── .github/
+│   └── workflows/
+│       └── ci.yml
+│
+└── .env.example
+```
+
+For each file in the tree, generate:
+  - Actual starter code (not just comments)
+  - Proper TypeScript types
+  - Import structure following the project conventions
+  - Reference docs/STUDYOS_COMPLETE_SUMMARY.md for architecture authority
+
+---
+## ╔══════════════════════════════════════════════════════════╗
+## ║  HOW TO USE THIS FILE                                    ║
+## ╚══════════════════════════════════════════════════════════╝
+
+WORKFLOW (with Cursor, Claude, Windsurf):
+  1. **Read first:** docs/STUDYOS_COMPLETE_SUMMARY.md (master reference)
+  2. **Read skills:** docs/product/skills-app/SKILL_*.md before coding
+  3. **Use this prompt** as context for all code generation
+  4. **Reference authority:** docs/architecture/FINAL_ARCHITECTURE.md (tech decisions)
+  5. **Follow phases:** docs/architecture/IMPLEMENTATION_PHASES.md
+
+QUICK START:
+  Phase 0: pnpm install && turbo run lint typecheck build
+  Phase 1: Auth + Syllabus (SKILL_BACKEND.md + SKILL_DATABASE.md)
+  2. Upload NEET_2026_Complete_Syllabus_Guide.md as domain knowledge
+  3. Use prompts 1–13 as individual conversations
+  4. Reference "as defined in APP_MAP.md" to maintain consistency
+
+WITH CURSOR / WINDSURF:
+  1. Open project → .cursor/rules → paste MASTER CONTEXT
+  2. Add /skills/ directory → AI reads automatically
+  3. Use prompts as inline chat commands: "Implement PROMPT 7 Feature 1"
+
+ENVIRONMENT VARIABLES NEEDED:
+  VITE_SUPABASE_URL=
+  VITE_SUPABASE_ANON_KEY=
+  VITE_POSTHOG_KEY=
+  VITE_RAZORPAY_KEY_ID=
+  VITE_APP_URL=https://studyos.app
+  # Server-only (Supabase Edge Functions):
+  TWILIO_ACCOUNT_SID=
+  TWILIO_AUTH_TOKEN=
+  WHATSAPP_BUSINESS_NUMBER=
+  YOUTUBE_DATA_API_KEY=
+  RAZORPAY_KEY_SECRET=
+  RAZORPAY_WEBHOOK_SECRET=
+  OPENAI_API_KEY= (for RAG indexing only — not for student queries)
+  LANGSMITH_API_KEY= (AI observability)
+
+---
+*APP_PROMPT.prompt — StudyOS Enterprise v1.0 | May 2026*
+*13 prompts covering: Database, Auth, Design, AI Agents, Analytics, MCP, Core UI, Offline/PWA, Security, Teacher/Admin, Skills, NEET Features, Scaffolding*
