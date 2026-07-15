@@ -1,0 +1,1 @@
+"""Identity routes (auth stubs)."""
