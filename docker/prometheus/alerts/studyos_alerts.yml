@@ -1,0 +1,73 @@
+# Prometheus alert rules for StudyOS
+groups:
+  - name: studyos_api_alerts
+    rules:
+      # High error rate (> 5% of requests are 5xx)
+      - alert: HighErrorRate
+        expr: rate(http_requests_total{status=~"5.."}[5m]) / rate(http_requests_total[5m]) > 0.05
+        for: 2m
+        labels:
+          severity: critical
+        annotations:
+          summary: "High error rate on {{ $labels.service }}"
+          description: "Error rate is {{ $value | humanizePercentage }} (threshold: 5%)"
+
+      # Slow responses (p95 > 500ms)
+      - alert: HighLatency
+        expr: histogram_quantile(0.95, rate(http_request_duration_seconds_bucket[5m])) > 0.5
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High latency on {{ $labels.service }}"
+          description: "p95 latency is {{ $value }}s (threshold: 500ms)"
+
+      # Service down
+      - alert: ServiceDown
+        expr: up == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Service {{ $labels.job }} is down"
+          description: "{{ $labels.instance }} has been unreachable for 1 minute"
+
+      # High memory usage (> 80%)
+      - alert: HighMemoryUsage
+        expr: process_resident_memory_bytes / 1024 / 1024 > 512
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High memory usage on {{ $labels.instance }}"
+          description: "Memory usage is {{ $value | humanize1024 }}MiB (threshold: 512MiB)"
+
+      # Too many open WebSocket connections
+      - alert: HighWebSocketConnections
+        expr: ws_active_connections > 1000
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High WebSocket connection count"
+          description: "{{ $value }} active WebSocket connections (threshold: 1000)"
+
+      # Celery task queue backlog
+      - alert: CeleryQueueBacklog
+        expr: celery_queue_length > 100
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Celery queue backlog on {{ $labels.queue }}"
+          description: "{{ $value }} tasks pending in queue (threshold: 100)"
+
+      # DLQ messages accumulating
+      - alert: DeadLetterQueueGrowing
+        expr: increase(dlq_message_count[1h]) > 10
+        for: 10m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Dead letter queue growing"
+          description: "{{ $value }} new DLQ messages in the last hour"

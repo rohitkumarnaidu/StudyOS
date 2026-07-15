@@ -1,0 +1,22 @@
+# syntax=docker/dockerfile:1.7
+# Monorepo Next.js production image (simplified; optimize with `turbo prune` later).
+
+FROM node:20-bookworm-slim AS builder
+ENV NEXT_TELEMETRY_DISABLED=1
+RUN corepack enable && corepack prepare pnpm@9.15.4 --activate
+WORKDIR /repo
+COPY . .
+RUN pnpm install --no-frozen-lockfile
+RUN pnpm turbo run build --filter=@studyos/web
+
+FROM node:20-bookworm-slim AS runner
+ENV NODE_ENV=production \
+    NEXT_TELEMETRY_DISABLED=1 \
+    PORT=3000 \
+    HOSTNAME=0.0.0.0
+WORKDIR /app
+COPY --from=builder /repo/apps/web/.next/standalone ./
+COPY --from=builder /repo/apps/web/.next/static ./apps/web/.next/static
+COPY --from=builder /repo/apps/web/public ./apps/web/public
+EXPOSE 3000
+CMD ["node", "apps/web/server.js"]

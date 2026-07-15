@@ -1,0 +1,141 @@
+services:
+  api:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.api
+    ports:
+      - "8000:8000"
+    environment:
+      STUDYOS_APP_ENV: development
+      STUDYOS_LOG_LEVEL: INFO
+      STUDYOS_CORS_ORIGINS: "http://localhost:3000"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://127.0.0.1:8000/v1/healthz"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+
+  web:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.web
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: production
+      NEXT_PUBLIC_APP_ENV: production
+    depends_on:
+      api:
+        condition: service_healthy
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    profiles: ["local-deps"]
+
+  # For pgvector locally, switch image to `pgvector/pgvector:pg16` and add matching migrations.
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: studyos
+      POSTGRES_PASSWORD: studyos
+      POSTGRES_DB: studyos
+    ports:
+      - "5432:5432"
+    profiles: ["local-deps"]
+
+  celery-worker:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.api
+    command: >
+      celery -A studyos_api.tasks.celery_app worker
+      --loglevel=info
+      --concurrency=4
+      --queues=ai,reports,notifications
+    environment:
+      STUDYOS_APP_ENV: development
+      STUDYOS_CELERY_BROKER_URL: "redis://redis:6379/1"
+      STUDYOS_CELERY_RESULT_BACKEND: "redis://redis:6379/2"
+    depends_on:
+      redis:
+        condition: service_started
+    profiles: ["local-deps"]
+
+  celery-beat:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.api
+    command: >
+      celery -A studyos_api.tasks.celery_app beat
+      --loglevel=info
+      --scheduler=celery.beat:PersistentScheduler
+    environment:
+      STUDYOS_APP_ENV: development
+      STUDYOS_CELERY_BROKER_URL: "redis://redis:6379/1"
+      STUDYOS_CELERY_RESULT_BACKEND: "redis://redis:6379/2"
+    depends_on:
+      redis:
+        condition: service_started
+    profiles: ["local-deps"]
+
+  # --- Observability Stack (Phase 0.5) ---
+  otel-collector:
+    image: otel/opentelemetry-collector-contrib:0.122.0
+    command: ["--config=/etc/otel-collector-config.yaml"]
+    volumes:
+      - ./otel-collector-config.yaml:/etc/otel-collector-config.yaml:ro
+    ports:
+      - "4317:4317"   # OTLP gRPC
+      - "4318:4318"   # OTLP HTTP
+      - "8889:8889"   # Prometheus metrics
+    depends_on:
+      - jaeger
+      - prometheus
+    profiles: ["observability"]
+
+  jaeger:
+    image: jaegertracing/all-in-one:1.64.0
+    ports:
+      - "16686:16686"  # Jaeger UI
+      - "14268:14268"  # Jaeger collector HTTP
+      - "4317"         # OTLP gRPC (internal)
+    environment:
+      COLLECTOR_OTLP_ENABLED: "true"
+    profiles: ["observability"]
+
+  prometheus:
+    image: prom/prometheus:v2.55.0
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
+      - "--storage.tsdb.path=/prometheus"
+      - "--storage.tsdb.retention.time=7d"
+      - "--web.enable-lifecycle"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - ./prometheus/alerts:/etc/prometheus/alerts:ro
+      - prometheus_data:/prometheus
+    ports:
+      - "9090:9090"
+    profiles: ["observability"]
+
+  grafana:
+    image: grafana/grafana:11.4.0
+    environment:
+      GF_SECURITY_ADMIN_USER: admin
+      GF_SECURITY_ADMIN_PASSWORD: studyos
+      GF_USERS_ALLOW_SIGN_UP: "false"
+    volumes:
+      - ./grafana/datasources:/etc/grafana/provisioning/datasources:ro
+      - ./grafana/dashboards:/var/lib/grafana/dashboards:ro
+      - grafana_data:/var/lib/grafana
+    ports:
+      - "3001:3000"
+    depends_on:
+      - prometheus
+    profiles: ["observability"]
+
+volumes:
+  prometheus_data:
+  grafana_data:
