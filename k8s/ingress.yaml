@@ -1,0 +1,39 @@
+# StudyOS — Ingress (nginx-compatible)
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: studyos-ingress
+  namespace: studyos
+  annotations:
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/proxy-body-size: "50m"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "120"
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - studyos.app
+        - api.studyos.app
+      secretName: studyos-tls
+  rules:
+    - host: api.studyos.app
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: studyos-api
+                port:
+                  number: 8000
+    - host: studyos.app
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: studyos-web
+                port:
+                  number: 3000
