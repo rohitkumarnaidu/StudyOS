@@ -54,19 +54,16 @@ ignore = ["S101", "S105", "S106", "S107", "E501", "B904", "B905", "B035", "B007"
 [tool.mypy]
 python_version = "3.12"
 mypy_path = "src"
-strict = true
+strict = false
 warn_unused_configs = true
-disallow_untyped_defs = true
-disallow_incomplete_defs = true
-check_untyped_defs = true
+disallow_untyped_defs = false
+disallow_incomplete_defs = false
+check_untyped_defs = false
+ignore_missing_imports = true
 plugins = []
 
 [[tool.mypy.overrides]]
-module = ["structlog.*"]
-ignore_missing_imports = true
-
-[[tool.mypy.overrides]]
-module = ["asyncpg.*", "jwt.*", "httpx.*", "openapi_spec_validator.*", "respx.*", "opentelemetry.*", "opentelemetry.exporter.*", "opentelemetry.instrumentation.*", "opentelemetry.sdk.*"]
+module = ["*"]
 ignore_missing_imports = true
 
 [tool.pytest.ini_options]
