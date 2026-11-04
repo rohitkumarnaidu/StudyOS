@@ -2,7 +2,7 @@
 
 from datetime import date, timedelta
 from unittest.mock import AsyncMock, MagicMock
-from uuid import UUID, uuid4
+from uuid import uuid4
 
 import pytest
 
@@ -64,20 +64,24 @@ class TestExamOptimizerOptimizePlan:
     @pytest.mark.asyncio
     async def test_optimize_plan_success(self) -> None:
         conn = AsyncMock()
-        subject_row = MockAsyncpgRow({
-            "id": uuid4(),
-            "name": "Physics",
-            "chapter_count": 10,
-        })
+        subject_row = MockAsyncpgRow(
+            {
+                "id": uuid4(),
+                "name": "Physics",
+                "chapter_count": 10,
+            }
+        )
         conn.fetch.return_value = [subject_row]
 
-        chapter_row = MockAsyncpgRow({
-            "id": uuid4(),
-            "name": "Motion",
-            "weightage": 5.0,
-            "total_subtopics": 10,
-            "completed_subtopics": 3,
-        })
+        chapter_row = MockAsyncpgRow(
+            {
+                "id": uuid4(),
+                "name": "Motion",
+                "weightage": 5.0,
+                "total_subtopics": 10,
+                "completed_subtopics": 3,
+            }
+        )
         conn.fetch.side_effect = [[subject_row], [chapter_row]]
 
         pool = MagicMock()
@@ -107,10 +111,15 @@ class TestExamOptimizerOptimizePlan:
         ]
 
         chapter_rows = [
-            MockAsyncpgRow({
-                "id": uuid4(), "name": "Motion", "weightage": 5.0,
-                "total_subtopics": 10, "completed_subtopics": 3,
-            }),
+            MockAsyncpgRow(
+                {
+                    "id": uuid4(),
+                    "name": "Motion",
+                    "weightage": 5.0,
+                    "total_subtopics": 10,
+                    "completed_subtopics": 3,
+                }
+            ),
         ]
 
         conn.fetch.side_effect = [subjects] + [chapter_rows] * 3
@@ -129,14 +138,24 @@ class TestExamOptimizerAnalyzeSubject:
     async def test_analyze_subject_weak_chapters(self) -> None:
         conn = AsyncMock()
         chapter_rows = [
-            MockAsyncpgRow({
-                "id": uuid4(), "name": "Motion", "weightage": 5.0,
-                "total_subtopics": 10, "completed_subtopics": 2,
-            }),
-            MockAsyncpgRow({
-                "id": uuid4(), "name": "Thermodynamics", "weightage": 4.0,
-                "total_subtopics": 8, "completed_subtopics": 7,
-            }),
+            MockAsyncpgRow(
+                {
+                    "id": uuid4(),
+                    "name": "Motion",
+                    "weightage": 5.0,
+                    "total_subtopics": 10,
+                    "completed_subtopics": 2,
+                }
+            ),
+            MockAsyncpgRow(
+                {
+                    "id": uuid4(),
+                    "name": "Thermodynamics",
+                    "weightage": 4.0,
+                    "total_subtopics": 8,
+                    "completed_subtopics": 7,
+                }
+            ),
         ]
         conn.fetch.return_value = chapter_rows
 
@@ -165,10 +184,15 @@ class TestExamOptimizerAnalyzeSubject:
     async def test_analyze_subject_completion_rate(self) -> None:
         conn = AsyncMock()
         chapter_rows = [
-            MockAsyncpgRow({
-                "id": uuid4(), "name": "Test", "weightage": 3.0,
-                "total_subtopics": 20, "completed_subtopics": 15,
-            }),
+            MockAsyncpgRow(
+                {
+                    "id": uuid4(),
+                    "name": "Test",
+                    "weightage": 3.0,
+                    "total_subtopics": 20,
+                    "completed_subtopics": 15,
+                }
+            ),
         ]
         conn.fetch.return_value = chapter_rows
 
@@ -181,10 +205,15 @@ class TestExamOptimizerAnalyzeSubject:
     async def test_analyze_subject_zero_subtopics(self) -> None:
         conn = AsyncMock()
         chapter_rows = [
-            MockAsyncpgRow({
-                "id": uuid4(), "name": "Empty", "weightage": 1.0,
-                "total_subtopics": 0, "completed_subtopics": 0,
-            }),
+            MockAsyncpgRow(
+                {
+                    "id": uuid4(),
+                    "name": "Empty",
+                    "weightage": 1.0,
+                    "total_subtopics": 0,
+                    "completed_subtopics": 0,
+                }
+            ),
         ]
         conn.fetch.return_value = chapter_rows
 
@@ -198,10 +227,15 @@ class TestExamOptimizerAnalyzeSubject:
     async def test_analyze_subject_null_values(self) -> None:
         conn = AsyncMock()
         chapter_rows = [
-            MockAsyncpgRow({
-                "id": uuid4(), "name": "Test", "weightage": None,
-                "total_subtopics": None, "completed_subtopics": None,
-            }),
+            MockAsyncpgRow(
+                {
+                    "id": uuid4(),
+                    "name": "Test",
+                    "weightage": None,
+                    "total_subtopics": None,
+                    "completed_subtopics": None,
+                }
+            ),
         ]
         conn.fetch.return_value = chapter_rows
 
@@ -278,12 +312,28 @@ class TestExamOptimizerGenerateRecommendations:
             {
                 "subject_name": "Physics",
                 "completion_rate": 0.3,
-                "weak_chapters": [{"chapter_id": str(uuid4()), "chapter_name": f"Ch{i}", "weightage": 5.0, "completion_rate": 0.2} for i in range(6)],
+                "weak_chapters": [
+                    {
+                        "chapter_id": str(uuid4()),
+                        "chapter_name": f"Ch{i}",
+                        "weightage": 5.0,
+                        "completion_rate": 0.2,
+                    }
+                    for i in range(6)
+                ],
             },
             {
                 "subject_name": "Chemistry",
                 "completion_rate": 0.3,
-                "weak_chapters": [{"chapter_id": str(uuid4()), "chapter_name": f"Ch{i}", "weightage": 4.0, "completion_rate": 0.1} for i in range(6)],
+                "weak_chapters": [
+                    {
+                        "chapter_id": str(uuid4()),
+                        "chapter_name": f"Ch{i}",
+                        "weightage": 4.0,
+                        "completion_rate": 0.1,
+                    }
+                    for i in range(6)
+                ],
             },
         ]
         recs = opt._generate_recommendations(subjects, "focused", 75)
@@ -388,7 +438,9 @@ class TestExamOptimizerComputeWeeklyMilestones:
         ]
         milestones = opt._compute_weekly_milestones("focused", 70, subjects)
         for i in range(1, len(milestones)):
-            assert milestones[i]["target_completion_pct"] >= milestones[i - 1]["target_completion_pct"]
+            assert (
+                milestones[i]["target_completion_pct"] >= milestones[i - 1]["target_completion_pct"]
+            )
 
     def test_target_completion_capped_at_100(self) -> None:
         opt = ExamOptimizer(pool=None)

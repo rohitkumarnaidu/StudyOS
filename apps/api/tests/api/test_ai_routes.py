@@ -1,6 +1,7 @@
 """Tests for AI routes."""
 
 import os
+
 import pytest
 from fastapi.testclient import TestClient
 
@@ -13,6 +14,7 @@ def configure_test_env() -> None:
     os.environ["STUDYOS_TRUSTED_HOSTS"] = ""
     os.environ["STUDYOS_DATABASE_URL"] = ""
     from studyos_api.core.config import get_settings
+
     get_settings.cache_clear()
 
 
@@ -29,7 +31,9 @@ class TestAIRoutes:
         assert resp.status_code in (401, 403, 422)
 
     def test_chat_stream_requires_auth(self, client) -> None:
-        resp = client.post("/v1/ai/chat/stream", json={"messages": [{"role": "user", "content": "hi"}]})
+        resp = client.post(
+            "/v1/ai/chat/stream", json={"messages": [{"role": "user", "content": "hi"}]}
+        )
         assert resp.status_code in (401, 403, 422)
 
     def test_mcp_servers_requires_auth(self, client) -> None:
@@ -41,5 +45,7 @@ class TestAIRoutes:
         assert resp.status_code in (401, 403, 422)
 
     def test_mcp_call_requires_auth(self, client) -> None:
-        resp = client.post("/v1/ai/mcp/call", json={"server": "test", "tool": "test", "arguments": {}})
+        resp = client.post(
+            "/v1/ai/mcp/call", json={"server": "test", "tool": "test", "arguments": {}}
+        )
         assert resp.status_code in (401, 403, 422)

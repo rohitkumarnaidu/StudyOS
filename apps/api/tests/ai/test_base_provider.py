@@ -1,13 +1,14 @@
 """Tests for AI base provider."""
 
 import asyncio
-from collections.abc import AsyncIterator
-from unittest.mock import MagicMock
-
-import pytest
 
 from studyos_api.ai.providers.base import AbstractLLMProvider
-from studyos_api.ai.types import ChatMessage, CompletionRequest, CompletionResult, StreamChunk, TokenUsage
+from studyos_api.ai.types import (
+    ChatMessage,
+    CompletionRequest,
+    CompletionResult,
+    TokenUsage,
+)
 
 
 class ConcreteProvider(AbstractLLMProvider):
@@ -41,11 +42,13 @@ class TestAbstractLLMProvider:
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
         try:
+
             async def collect_stream():
                 chunks = []
                 async for chunk in provider.complete_stream(req):
                     chunks.append(chunk)
                 return chunks
+
             chunks = loop.run_until_complete(collect_stream())
         finally:
             loop.close()

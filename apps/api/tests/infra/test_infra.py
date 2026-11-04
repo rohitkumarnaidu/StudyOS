@@ -20,12 +20,14 @@ def configure_test_env() -> None:
     os.environ["STUDYOS_DATABASE_URL"] = ""
     os.environ["STUDYOS_CORS_ORIGINS"] = "http://localhost:3000"
     from studyos_api.core.config import get_settings
+
     get_settings.cache_clear()
 
 
 @pytest.fixture
 def client():
     from studyos_api.main import create_app
+
     app = create_app()
     with TestClient(app, base_url="http://testserver", raise_server_exceptions=False) as c:
         yield c
@@ -102,6 +104,7 @@ class TestAPIStructure:
     def test_all_routes_have_tags(self, client):
         """Verify routes are organized by tags."""
         from studyos_api.main import create_app
+
         app = create_app()
         schema = app.openapi()
         paths = schema.get("paths", {})
@@ -110,6 +113,7 @@ class TestAPIStructure:
     def test_components_schemas_defined(self, client):
         """Verify Pydantic models are documented."""
         from studyos_api.main import create_app
+
         app = create_app()
         schema = app.openapi()
         components = schema.get("components", {})
@@ -119,6 +123,7 @@ class TestAPIStructure:
     def test_error_responses_documented(self, client):
         """Verify 422 validation errors are documented."""
         from studyos_api.main import create_app
+
         app = create_app()
         schema = app.openapi()
         paths = schema.get("paths", {})

@@ -1,20 +1,23 @@
 """Tests for all middleware modules."""
 
 import time
-from unittest.mock import AsyncMock, patch, MagicMock
+from unittest.mock import MagicMock, patch
 
 import pytest
-from httpx import ASGITransport, AsyncClient
-from starlette.requests import Request
 from starlette.responses import Response
 
-from studyos_api.middleware.csrf import CsrfMiddleware, CSRF_COOKIE_NAME, CSRF_HEADER_NAME, SAFE_METHODS
-from studyos_api.middleware.request_id import RequestIdMiddleware
-from studyos_api.middleware.request_logging import RequestLoggingMiddleware, SKIPPED_PATHS
-from studyos_api.middleware.security_headers import SecurityHeadersMiddleware
-from studyos_api.middleware.cache_headers import CacheHeadersMiddleware, CACHEABLE_PATHS, CACHE_TTL
+from studyos_api.middleware.audit import AUDIT_PATHS, AuditLoggingMiddleware
+from studyos_api.middleware.cache_headers import CACHE_TTL, CACHEABLE_PATHS, CacheHeadersMiddleware
+from studyos_api.middleware.csrf import (
+    CSRF_COOKIE_NAME,
+    CSRF_HEADER_NAME,
+    SAFE_METHODS,
+    CsrfMiddleware,
+)
 from studyos_api.middleware.rate_limit_headers import RateLimitHeadersMiddleware
-from studyos_api.middleware.audit import AuditLoggingMiddleware, AUDIT_PATHS
+from studyos_api.middleware.request_id import RequestIdMiddleware
+from studyos_api.middleware.request_logging import SKIPPED_PATHS, RequestLoggingMiddleware
+from studyos_api.middleware.security_headers import SecurityHeadersMiddleware
 
 
 @pytest.mark.unit
@@ -44,6 +47,7 @@ class TestCsrfMiddleware:
 
             async def call_next(request):
                 from starlette.responses import PlainTextResponse
+
                 resp = PlainTextResponse("ok", status_code=200)
                 return resp
 
@@ -181,6 +185,7 @@ class TestRequestIdMiddleware:
     @pytest.mark.anyio
     async def test_generates_request_id_when_missing(self):
         """Generates UUID when X-Request-Id header is absent."""
+
         async def call_next(request):
             return Response(status_code=200)
 
@@ -198,6 +203,7 @@ class TestRequestIdMiddleware:
     @pytest.mark.anyio
     async def test_propagates_existing_request_id(self):
         """Preserves X-Request-Id when provided by client."""
+
         async def call_next(request):
             return Response(status_code=200)
 
@@ -214,6 +220,7 @@ class TestRequestIdMiddleware:
     @pytest.mark.anyio
     async def test_sets_request_state(self):
         """Sets request.state.request_id for downstream access."""
+
         async def call_next(request):
             assert hasattr(request.state, "request_id")
             return Response(status_code=200)
@@ -299,6 +306,7 @@ class TestSecurityHeadersMiddleware:
     @pytest.mark.anyio
     async def test_sets_baseline_headers(self):
         """Sets X-Content-Type-Options, X-Frame-Options, Referrer-Policy."""
+
         async def call_next(request):
             return Response(status_code=200)
 
@@ -313,6 +321,7 @@ class TestSecurityHeadersMiddleware:
     @pytest.mark.anyio
     async def test_sets_permissions_policy(self):
         """Restricts camera, microphone, geolocation."""
+
         async def call_next(request):
             return Response(status_code=200)
 
@@ -360,6 +369,7 @@ class TestSecurityHeadersMiddleware:
     @pytest.mark.anyio
     async def test_does_not_override_existing_headers(self):
         """Uses setdefault to not override existing headers."""
+
         async def call_next(request):
             return Response(
                 status_code=200,
@@ -457,6 +467,7 @@ class TestRateLimitHeadersMiddleware:
     @pytest.mark.anyio
     async def test_sets_default_rate_limit_headers(self):
         """Sets default rate limit headers when no rate info present."""
+
         async def call_next(request):
             return Response(status_code=200)
 
@@ -475,6 +486,7 @@ class TestRateLimitHeadersMiddleware:
     @pytest.mark.anyio
     async def test_sets_rate_limit_from_state(self):
         """Uses rate_limit from request.state when available."""
+
         async def call_next(request):
             return Response(status_code=200)
 

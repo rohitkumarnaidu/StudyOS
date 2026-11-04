@@ -125,8 +125,7 @@ class AIUsageTracker:
             "avg_duration_ms": round(avg_duration, 2),
             "unique_users": len(self._user_totals),
             "success_rate": (
-                sum(1 for r in self._records if r.status == "success")
-                / max(total_requests, 1)
+                sum(1 for r in self._records if r.status == "success") / max(total_requests, 1)
             ),
         }
 
@@ -170,9 +169,7 @@ class AIUsageTracker:
         }
 
 
-def _estimate_cost(
-    provider: str, model: str, prompt_tokens: int, completion_tokens: int
-) -> float:
+def _estimate_cost(provider: str, model: str, prompt_tokens: int, completion_tokens: int) -> float:
     """Estimate cost in USD. Free-tier: always returns 0."""
     return 0.0
 

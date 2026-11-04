@@ -39,7 +39,7 @@ def send_email(
         return result
     except Exception as exc:
         logger.exception("notifications.send_email.failed", to_email=to_email)
-        raise self.retry(exc=exc, countdown=60 * (2 ** self.request.retries))
+        raise self.retry(exc=exc, countdown=60 * (2**self.request.retries))
 
 
 @shared_task(
@@ -73,7 +73,7 @@ def send_push_notification(
         return result
     except Exception as exc:
         logger.exception("notifications.send_push_notification.failed", profile_id=profile_id)
-        raise self.retry(exc=exc, countdown=30 * (2 ** self.request.retries))
+        raise self.retry(exc=exc, countdown=30 * (2**self.request.retries))
 
 
 @shared_task(
@@ -106,7 +106,7 @@ def send_revision_reminder(
         return result
     except Exception as exc:
         logger.exception("notifications.send_revision_reminder.failed", profile_id=profile_id)
-        raise self.retry(exc=exc, countdown=120 * (2 ** self.request.retries))
+        raise self.retry(exc=exc, countdown=120 * (2**self.request.retries))
 
 
 @shared_task(
@@ -158,8 +158,10 @@ def send_achievement_notification(
         logger.info("notifications.send_achievement_notification.completed", profile_id=profile_id)
         return result
     except Exception as exc:
-        logger.exception("notifications.send_achievement_notification.failed", profile_id=profile_id)
-        raise self.retry(exc=exc, countdown=60 * (2 ** self.request.retries))
+        logger.exception(
+            "notifications.send_achievement_notification.failed", profile_id=profile_id
+        )
+        raise self.retry(exc=exc, countdown=60 * (2**self.request.retries))
 
 
 @shared_task(
@@ -192,4 +194,4 @@ def send_burnout_alert(
         return result
     except Exception as exc:
         logger.exception("notifications.send_burnout_alert.failed", profile_id=profile_id)
-        raise self.retry(exc=exc, countdown=90 * (2 ** self.request.retries))
+        raise self.retry(exc=exc, countdown=90 * (2**self.request.retries))

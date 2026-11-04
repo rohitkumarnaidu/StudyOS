@@ -2,7 +2,6 @@
 
 import pytest
 
-from studyos_api.services.embedding_pipeline import EmbeddingPipeline
 from studyos_api.services.semantic_search import RAGPipeline, SemanticSearchService
 
 
@@ -12,14 +11,28 @@ class MockPipeline:
     def __init__(self) -> None:
         self._dim = 10
 
-    async def process_document(self, text: str, source_id: str, metadata: dict | None = None) -> list[dict]:
-        chunks = [{"content": text[i:i+50], "source_id": source_id, "chunk_index": j, "embedding": [0.1] * self._dim, "token_estimate": 12, "metadata": metadata or {}} for j, i in enumerate(range(0, len(text), 50))]
+    async def process_document(
+        self, text: str, source_id: str, metadata: dict | None = None
+    ) -> list[dict]:
+        chunks = [
+            {
+                "content": text[i : i + 50],
+                "source_id": source_id,
+                "chunk_index": j,
+                "embedding": [0.1] * self._dim,
+                "token_estimate": 12,
+                "metadata": metadata or {},
+            }
+            for j, i in enumerate(range(0, len(text), 50))
+        ]
         return chunks
 
     async def embed(self, text: str) -> list[float]:
         return [0.1] * self._dim
 
-    async def search_by_similarity(self, query: str, stored: list[dict], top_k: int = 5) -> list[dict]:
+    async def search_by_similarity(
+        self, query: str, stored: list[dict], top_k: int = 5
+    ) -> list[dict]:
         scored = []
         for item in stored:
             scored.append({**item, "similarity_score": 0.85 - len(scored) * 0.1})
@@ -48,7 +61,9 @@ class TestSemanticSearchService:
 
     @pytest.mark.asyncio
     async def test_search(self, service: SemanticSearchService) -> None:
-        await service.index_document("Photosynthesis is the process by which plants convert sunlight.", "doc-1")
+        await service.index_document(
+            "Photosynthesis is the process by which plants convert sunlight.", "doc-1"
+        )
         await service.index_document("Mitochondria are the powerhouse of the cell.", "doc-2")
 
         results = await service.search("plants energy", top_k=2)

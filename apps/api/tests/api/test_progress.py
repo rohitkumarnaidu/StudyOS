@@ -9,7 +9,9 @@ from support.auth_tokens import bearer_token
 @pytest.mark.api
 @pytest.mark.asyncio
 async def test_toggle_subtopic_requires_auth(api_client: AsyncClient) -> None:
-    res = await api_client.post("/v1/progress/subtopics/00000000-0000-0000-0000-000000000001/toggle")
+    res = await api_client.post(
+        "/v1/progress/subtopics/00000000-0000-0000-0000-000000000001/toggle"
+    )
     assert res.status_code in (401, 403)
 
 

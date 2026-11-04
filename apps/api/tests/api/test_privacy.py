@@ -10,10 +10,12 @@ from studyos_api.main import create_app
 def client():
     """Create test client with trusted hosts disabled."""
     import os
+
     os.environ["STUDYOS_APP_ENV"] = "test"
     os.environ["STUDYOS_TRUSTED_HOSTS"] = ""
     os.environ["STUDYOS_DATABASE_URL"] = ""
     from studyos_api.core.config import get_settings
+
     get_settings.cache_clear()
     app = create_app()
     with TestClient(app, base_url="http://testserver") as c:

@@ -1,6 +1,6 @@
 """Tests for note_export service."""
 
-from studyos_api.services.note_export import NoteExport, ExportResult
+from studyos_api.services.note_export import ExportResult, NoteExport
 
 
 class TestExportResult:
@@ -72,7 +72,13 @@ class TestNoteExport:
     def test_export_csv(self):
         exporter = NoteExport()
         notes = [
-            {"id": "1", "title": "Test Note", "summary": "Hello", "tags": ["physics"], "created_at": "2024-01-01"},
+            {
+                "id": "1",
+                "title": "Test Note",
+                "summary": "Hello",
+                "tags": ["physics"],
+                "created_at": "2024-01-01",
+            },
         ]
         result = exporter.export_csv(notes)
         assert result.format == "csv"

@@ -1,6 +1,6 @@
 """Tests for pdf_vision_ocr service."""
 
-from studyos_api.services.pdf_vision_ocr import PdfVisionOcr, OcrResult
+from studyos_api.services.pdf_vision_ocr import OcrResult, PdfVisionOcr
 
 
 class TestOcrResult:

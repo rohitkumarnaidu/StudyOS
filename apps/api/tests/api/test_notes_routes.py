@@ -2,9 +2,9 @@
 
 import os
 import uuid
+
 import pytest
 from fastapi.testclient import TestClient
-from unittest.mock import patch, MagicMock
 
 from studyos_api.main import create_app
 
@@ -17,6 +17,7 @@ def configure_test_env() -> None:
     os.environ["STUDYOS_EXPOSE_ERROR_DETAIL"] = "true"
     os.environ["STUDYOS_ALLOW_LEGACY_DEMO_BEARER"] = "true"
     from studyos_api.core.config import get_settings
+
     get_settings.cache_clear()
 
 

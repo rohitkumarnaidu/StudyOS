@@ -38,6 +38,7 @@ async def upload_note(
 
     content = await file.read()
     import uuid
+
     note_id = str(uuid.uuid4())
 
     result = processor.process(content, note_id, file.filename)
@@ -72,7 +73,8 @@ async def list_notes(
 ) -> dict[str, Any]:
     """List user's notes."""
     notes = [
-        n for n in _notes_db.values()
+        n
+        for n in _notes_db.values()
         if n["profile_id"] == current_user["sub"]
         and (not chapter_id or n.get("chapter_id") == chapter_id)
     ]
@@ -142,6 +144,7 @@ async def create_highlight(
 ) -> dict[str, Any]:
     """Create a highlight."""
     import uuid
+
     highlight = {
         "id": str(uuid.uuid4()),
         "note_id": note_id,
@@ -199,6 +202,7 @@ async def create_bookmark(
 ) -> dict[str, Any]:
     """Create a bookmark."""
     import uuid
+
     bookmark = {
         "id": str(uuid.uuid4()),
         "note_id": note_id,
@@ -255,6 +259,7 @@ async def create_personal_note(
 ) -> dict[str, Any]:
     """Create a personal note."""
     import uuid
+
     personal_note = {
         "id": str(uuid.uuid4()),
         "note_id": note_id,

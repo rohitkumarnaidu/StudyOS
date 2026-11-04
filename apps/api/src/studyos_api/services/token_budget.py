@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from collections import defaultdict
-from datetime import datetime, UTC
+from datetime import UTC, datetime
 from typing import Any
 
 import structlog
@@ -21,8 +21,12 @@ class TokenBudgetEnforcer:
     ) -> None:
         self._daily_limit = daily_token_limit
         self._monthly_limit = monthly_token_limit
-        self._daily_usage: dict[str, dict[str, int]] = defaultdict(lambda: {"tokens": 0, "date": ""})
-        self._monthly_usage: dict[str, dict[str, int]] = defaultdict(lambda: {"tokens": 0, "month": ""})
+        self._daily_usage: dict[str, dict[str, int]] = defaultdict(
+            lambda: {"tokens": 0, "date": ""}
+        )
+        self._monthly_usage: dict[str, dict[str, int]] = defaultdict(
+            lambda: {"tokens": 0, "month": ""}
+        )
 
     def check_budget(self, user_sub: str) -> dict[str, Any]:
         """Check if user is within budget. Returns status dict."""
@@ -36,8 +40,12 @@ class TokenBudgetEnforcer:
         daily_ok = daily["date"] != today or daily["tokens"] < self._daily_limit
         monthly_ok = monthly["month"] != this_month or monthly["tokens"] < self._monthly_limit
 
-        daily_remaining = max(0, self._daily_limit - (daily["tokens"] if daily["date"] == today else 0))
-        monthly_remaining = max(0, self._monthly_limit - (monthly["tokens"] if monthly["month"] == this_month else 0))
+        daily_remaining = max(
+            0, self._daily_limit - (daily["tokens"] if daily["date"] == today else 0)
+        )
+        monthly_remaining = max(
+            0, self._monthly_limit - (monthly["tokens"] if monthly["month"] == this_month else 0)
+        )
 
         return {
             "allowed": daily_ok and monthly_ok,

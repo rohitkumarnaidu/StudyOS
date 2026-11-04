@@ -1,7 +1,6 @@
 """Tests for AI service — covering complete_chat and stream_chat paths."""
 
-from unittest.mock import AsyncMock, MagicMock, patch
-from uuid import uuid4
+from unittest.mock import AsyncMock, MagicMock
 
 import pytest
 
@@ -12,6 +11,7 @@ class TestAIServiceComplete:
     @pytest.fixture
     def mock_settings(self):
         from studyos_api.core.config import Settings
+
         return Settings(
             ai_ollama_base_url="http://localhost:11434",
             ai_openai_api_key="test-key",
@@ -27,6 +27,7 @@ class TestAIServiceComplete:
     @pytest.mark.asyncio
     async def test_complete_chat_with_conversation(self, mock_settings, mock_usage_sink) -> None:
         from studyos_api.ai.service import AIService
+
         mock_provider = MagicMock()
         mock_provider.provider_id = "openai"
         mock_result = CompletionResult(

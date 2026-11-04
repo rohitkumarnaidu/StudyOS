@@ -42,6 +42,7 @@ class PdfVisionOcr:
         b64 = base64.b64encode(image_bytes).decode()
 
         import httpx
+
         response = httpx.post(
             "https://api.openai.com/v1/chat/completions",
             headers={
@@ -54,8 +55,14 @@ class PdfVisionOcr:
                     {
                         "role": "user",
                         "content": [
-                            {"type": "text", "text": "Extract all text from this image. Preserve formatting where possible."},
-                            {"type": "image_url", "image_url": {"url": f"data:image/png;base64,{b64}"}},
+                            {
+                                "type": "text",
+                                "text": "Extract all text from this image. Preserve formatting where possible.",
+                            },
+                            {
+                                "type": "image_url",
+                                "image_url": {"url": f"data:image/png;base64,{b64}"},
+                            },
                         ],
                     }
                 ],

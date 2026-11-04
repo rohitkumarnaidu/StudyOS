@@ -1,6 +1,6 @@
 """Tests for Redis Streams event bus."""
 
-from unittest.mock import AsyncMock, MagicMock, patch
+from unittest.mock import AsyncMock
 from uuid import uuid4
 
 import pytest
@@ -160,9 +160,7 @@ class TestEventBusAcknowledge:
     @pytest.mark.asyncio
     async def test_acknowledge(self, event_bus, mock_redis):
         await event_bus.acknowledge("group", "1234567890-0")
-        mock_redis.xack.assert_called_once_with(
-            "studyos:events", "group", "1234567890-0"
-        )
+        mock_redis.xack.assert_called_once_with("studyos:events", "group", "1234567890-0")
 
     @pytest.mark.asyncio
     async def test_acknowledge_no_redis(self):
@@ -286,17 +284,13 @@ class TestEventBusDispatch:
 class TestEventBusStats:
     @pytest.mark.asyncio
     async def test_get_pending_count(self, event_bus, mock_redis):
-        mock_redis.xinfo_groups = AsyncMock(
-            return_value=[{"name": "test-group", "pending": 15}]
-        )
+        mock_redis.xinfo_groups = AsyncMock(return_value=[{"name": "test-group", "pending": 15}])
         count = await event_bus.get_pending_count("test-group")
         assert count == 15
 
     @pytest.mark.asyncio
     async def test_get_pending_count_no_group(self, event_bus, mock_redis):
-        mock_redis.xinfo_groups = AsyncMock(
-            return_value=[{"name": "other-group", "pending": 5}]
-        )
+        mock_redis.xinfo_groups = AsyncMock(return_value=[{"name": "other-group", "pending": 5}])
         count = await event_bus.get_pending_count("test-group")
         assert count == 0
 

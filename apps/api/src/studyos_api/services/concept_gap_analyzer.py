@@ -123,13 +123,19 @@ class ConceptGapAnalyzer:
         gaps = self.analyze_gaps(min_attempts=1)[:max_concepts]
         plan = []
         for gap in gaps:
-            plan.append({
-                "concept": gap.concept,
-                "priority": "high" if gap.gap_score >= 0.8 else "medium" if gap.gap_score >= 0.6 else "low",
-                "gap_score": gap.gap_score,
-                "action": gap.recommended_action,
-                "related_concepts": gap.related_concepts,
-            })
+            plan.append(
+                {
+                    "concept": gap.concept,
+                    "priority": "high"
+                    if gap.gap_score >= 0.8
+                    else "medium"
+                    if gap.gap_score >= 0.6
+                    else "low",
+                    "gap_score": gap.gap_score,
+                    "action": gap.recommended_action,
+                    "related_concepts": gap.related_concepts,
+                }
+            )
         return plan
 
     def reset(self) -> None:

@@ -52,6 +52,7 @@ class MistakeIntelligenceController:
             )
 
         import uuid as _uuid
+
         mistake_id = str(_uuid.uuid4())
 
         record = self._tracker.log_mistake(

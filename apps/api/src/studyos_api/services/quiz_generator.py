@@ -17,6 +17,7 @@ logger = structlog.get_logger(__name__)
 # Enums
 # ---------------------------------------------------------------------------
 
+
 class QuestionType(str, Enum):
     MCQ = "mcq"
     NUMERIC = "numeric"
@@ -205,7 +206,12 @@ PHYSICS_TEMPLATES: list[dict[str, Any]] = [
     {
         "topic": "Motion in a Straight Line",
         "question_text": "The displacement-time graph of a body moving with uniform velocity is:",
-        "options": ["A straight line with positive slope", "A parabola", "A horizontal line", "A straight line with negative slope"],
+        "options": [
+            "A straight line with positive slope",
+            "A parabola",
+            "A horizontal line",
+            "A straight line with negative slope",
+        ],
         "correct": "A",
         "explanation": "For uniform velocity, displacement x = vt, which is a straight line through the origin with slope equal to velocity.",
         "difficulty": 1,
@@ -252,7 +258,12 @@ PHYSICS_TEMPLATES: list[dict[str, Any]] = [
     {
         "topic": "Laws of Motion",
         "question_text": "Newton's third law implies that action and reaction forces:",
-        "options": ["Act on the same body", "Act on different bodies", "Are always equal to weight", "Need not be equal"],
+        "options": [
+            "Act on the same body",
+            "Act on different bodies",
+            "Are always equal to weight",
+            "Need not be equal",
+        ],
         "correct": "B",
         "explanation": "Action and reaction forces always act on two different bodies — they never cancel each other on a single body.",
         "difficulty": 1,
@@ -270,7 +281,12 @@ PHYSICS_TEMPLATES: list[dict[str, Any]] = [
     {
         "topic": "Laws of Motion",
         "question_text": "The impulse-momentum theorem states that impulse is equal to:",
-        "options": ["Change in momentum", "Force × time", "Both A and B", "Rate of change of momentum"],
+        "options": [
+            "Change in momentum",
+            "Force × time",
+            "Both A and B",
+            "Rate of change of momentum",
+        ],
         "correct": "C",
         "explanation": "Impulse = F × Δt = Δp (change in momentum). Both expressions are equivalent.",
         "difficulty": 2,
@@ -317,7 +333,12 @@ PHYSICS_TEMPLATES: list[dict[str, Any]] = [
     {
         "topic": "System of Particles and Rotational Motion",
         "question_text": "Angular momentum is conserved when:",
-        "options": ["Net external torque is zero", "Net external force is zero", "Kinetic energy is constant", "Moment of inertia is constant"],
+        "options": [
+            "Net external torque is zero",
+            "Net external force is zero",
+            "Kinetic energy is constant",
+            "Moment of inertia is constant",
+        ],
         "correct": "A",
         "explanation": "dL/dt = τ_ext. When net external torque is zero, angular momentum L is conserved.",
         "difficulty": 2,
@@ -364,7 +385,12 @@ PHYSICS_TEMPLATES: list[dict[str, Any]] = [
     {
         "topic": "Mechanical Properties of Solids",
         "question_text": "Young's modulus of a wire is defined as the ratio of:",
-        "options": ["Stress to strain", "Strain to stress", "Force to area", "Extension to original length"],
+        "options": [
+            "Stress to strain",
+            "Strain to stress",
+            "Force to area",
+            "Extension to original length",
+        ],
         "correct": "A",
         "explanation": "Young's modulus Y = Stress/Strain = (F/A)/(ΔL/L), a measure of stiffness.",
         "difficulty": 1,
@@ -448,7 +474,12 @@ PHYSICS_TEMPLATES: list[dict[str, Any]] = [
     {
         "topic": "Oscillations",
         "question_text": "In simple harmonic motion, the acceleration is maximum at:",
-        "options": ["Extreme position", "Mean position", "Midway between mean and extreme", "Everywhere equally"],
+        "options": [
+            "Extreme position",
+            "Mean position",
+            "Midway between mean and extreme",
+            "Everywhere equally",
+        ],
         "correct": "A",
         "explanation": "a = -ω²x. Acceleration is maximum when displacement x is maximum, i.e., at extreme positions.",
         "difficulty": 1,
@@ -486,7 +517,12 @@ PHYSICS_TEMPLATES: list[dict[str, Any]] = [
     {
         "topic": "Electric Charges and Fields",
         "question_text": "Gauss's law is valid for:",
-        "options": ["Any closed surface", "Only spherical surfaces", "Only planar surfaces", "Only cylindrical surfaces"],
+        "options": [
+            "Any closed surface",
+            "Only spherical surfaces",
+            "Only planar surfaces",
+            "Only cylindrical surfaces",
+        ],
         "correct": "A",
         "explanation": "Gauss's law (∮E·dA = Q/ε₀) holds for any closed surface, regardless of shape.",
         "difficulty": 2,
@@ -495,7 +531,12 @@ PHYSICS_TEMPLATES: list[dict[str, Any]] = [
     {
         "topic": "Electrostatic Potential and Capacitance",
         "question_text": "The capacitance of a parallel plate capacitor is doubled when:",
-        "options": ["The area of plates is doubled", "The separation is doubled", "The potential is doubled", "The charge is doubled"],
+        "options": [
+            "The area of plates is doubled",
+            "The separation is doubled",
+            "The potential is doubled",
+            "The charge is doubled",
+        ],
         "correct": "A",
         "explanation": "C = ε₀A/d. Doubling the area A doubles the capacitance.",
         "difficulty": 2,
@@ -562,7 +603,12 @@ PHYSICS_TEMPLATES: list[dict[str, Any]] = [
     {
         "topic": "Alternating Current",
         "question_text": "In a pure inductive AC circuit, the current:",
-        "options": ["Lags voltage by π/2", "Leads voltage by π/2", "Is in phase with voltage", "Lags voltage by π"],
+        "options": [
+            "Lags voltage by π/2",
+            "Leads voltage by π/2",
+            "Is in phase with voltage",
+            "Lags voltage by π",
+        ],
         "correct": "A",
         "explanation": "In a pure inductor, the induced EMF opposes the change in current, causing current to lag voltage by 90° (π/2).",
         "difficulty": 2,
@@ -599,7 +645,12 @@ PHYSICS_TEMPLATES: list[dict[str, Any]] = [
     {
         "topic": "Ray Optics and Optical Instruments",
         "question_text": "Total internal reflection occurs when light travels from:",
-        "options": ["Denser to rarer medium at angle > critical angle", "Rarer to denser medium", "Any medium at any angle", "Vacuum to glass"],
+        "options": [
+            "Denser to rarer medium at angle > critical angle",
+            "Rarer to denser medium",
+            "Any medium at any angle",
+            "Vacuum to glass",
+        ],
         "correct": "A",
         "explanation": "TIR requires light to travel from denser to rarer medium with incidence angle exceeding the critical angle.",
         "difficulty": 1,
@@ -656,7 +707,12 @@ PHYSICS_TEMPLATES: list[dict[str, Any]] = [
     {
         "topic": "Nuclei",
         "question_text": "Nuclear fusion occurs at high temperature because:",
-        "options": ["Nuclei need enough kinetic energy to overcome Coulomb repulsion", "Atoms ionize at high temperature", "Electrons are removed", "Neutrons become active"],
+        "options": [
+            "Nuclei need enough kinetic energy to overcome Coulomb repulsion",
+            "Atoms ionize at high temperature",
+            "Electrons are removed",
+            "Neutrons become active",
+        ],
         "correct": "A",
         "explanation": "High temperature gives nuclei enough kinetic energy to overcome the electrostatic repulsion between positively charged nuclei.",
         "difficulty": 2,
@@ -706,7 +762,12 @@ CHEMISTRY_TEMPLATES: list[dict[str, Any]] = [
     {
         "topic": "Some Basic Concepts of Chemistry",
         "question_text": "Avogadro's number represents the number of particles in:",
-        "options": ["One mole of any substance", "One gram of any substance", "One litre of any gas", "One atom"],
+        "options": [
+            "One mole of any substance",
+            "One gram of any substance",
+            "One litre of any gas",
+            "One atom",
+        ],
         "correct": "A",
         "explanation": "Avogadro's number (6.022 × 10²³) is the number of particles in one mole of any substance.",
         "difficulty": 1,
@@ -762,7 +823,12 @@ CHEMISTRY_TEMPLATES: list[dict[str, Any]] = [
     {
         "topic": "Classification of Elements and Periodicity",
         "question_text": "The ionization energy generally increases across a period because:",
-        "options": ["Nuclear charge increases while shielding remains similar", "Atomic size increases", "Number of shells increases", "Electron affinity decreases"],
+        "options": [
+            "Nuclear charge increases while shielding remains similar",
+            "Atomic size increases",
+            "Number of shells increases",
+            "Electron affinity decreases",
+        ],
         "correct": "A",
         "explanation": "Across a period, nuclear charge increases but electrons are added to the same shell, so effective nuclear charge increases, making electrons harder to remove.",
         "difficulty": 2,
@@ -781,7 +847,12 @@ CHEMISTRY_TEMPLATES: list[dict[str, Any]] = [
     {
         "topic": "Chemical Bonding and Molecular Structure",
         "question_text": "The bond angle in water is less than the tetrahedral angle because of:",
-        "options": ["Lone pair-lone pair repulsion", "Bond pair-bond pair repulsion", "Hybridization", "Electronegativity difference"],
+        "options": [
+            "Lone pair-lone pair repulsion",
+            "Bond pair-bond pair repulsion",
+            "Hybridization",
+            "Electronegativity difference",
+        ],
         "correct": "A",
         "explanation": "Two lone pairs on oxygen exert greater repulsion than bond pairs, compressing the H-O-H angle to 104.5° (vs 109.5°).",
         "difficulty": 2,
@@ -838,7 +909,12 @@ CHEMISTRY_TEMPLATES: list[dict[str, Any]] = [
     {
         "topic": "Equilibrium",
         "question_text": "Le Chatelier's principle states that if a system at equilibrium is disturbed, it will:",
-        "options": ["Shift to counteract the disturbance", "Remain unchanged", "Always shift right", "Always shift left"],
+        "options": [
+            "Shift to counteract the disturbance",
+            "Remain unchanged",
+            "Always shift right",
+            "Always shift left",
+        ],
         "correct": "A",
         "explanation": "Le Chatelier's principle: the system shifts in the direction that minimizes the effect of the disturbance.",
         "difficulty": 1,
@@ -857,7 +933,12 @@ CHEMISTRY_TEMPLATES: list[dict[str, Any]] = [
     {
         "topic": "Redox Reactions",
         "question_text": "In the reaction 2Na + Cl₂ → 2NaCl, sodium is:",
-        "options": ["Oxidized", "Reduced", "Neither oxidized nor reduced", "Both oxidized and reduced"],
+        "options": [
+            "Oxidized",
+            "Reduced",
+            "Neither oxidized nor reduced",
+            "Both oxidized and reduced",
+        ],
         "correct": "A",
         "explanation": "Na loses an electron (Na → Na⁺ + e⁻), so it is oxidized. Chlorine gains electrons and is reduced.",
         "difficulty": 1,
@@ -896,7 +977,12 @@ CHEMISTRY_TEMPLATES: list[dict[str, Any]] = [
     {
         "topic": "The p-Block Elements",
         "question_text": "Boron trifluoride (BF₃) acts as a Lewis acid because:",
-        "options": ["It has an incomplete octet", "It is highly electronegative", "It has lone pairs", "It is a strong oxidizing agent"],
+        "options": [
+            "It has an incomplete octet",
+            "It is highly electronegative",
+            "It has lone pairs",
+            "It is a strong oxidizing agent",
+        ],
         "correct": "A",
         "explanation": "BF₃ has only 6 electrons around boron (incomplete octet), so it can accept an electron pair → Lewis acid.",
         "difficulty": 2,
@@ -953,7 +1039,12 @@ CHEMISTRY_TEMPLATES: list[dict[str, Any]] = [
     {
         "topic": "The Solid State",
         "question_text": "Schottky defect in crystals is observed when:",
-        "options": ["Equal number of cations and anions are missing", "Cations move to interstitial sites", "Extra electrons are trapped", "Impurities are present"],
+        "options": [
+            "Equal number of cations and anions are missing",
+            "Cations move to interstitial sites",
+            "Extra electrons are trapped",
+            "Impurities are present",
+        ],
         "correct": "A",
         "explanation": "Schottky defect involves missing equal numbers of cations and anions from lattice sites, maintaining electrical neutrality.",
         "difficulty": 2,
@@ -1001,7 +1092,12 @@ CHEMISTRY_TEMPLATES: list[dict[str, Any]] = [
     {
         "topic": "Chemical Kinetics",
         "question_text": "For a first-order reaction, the half-life is:",
-        "options": ["Independent of initial concentration", "Proportional to initial concentration", "Inversely proportional to initial concentration", "Proportional to square of initial concentration"],
+        "options": [
+            "Independent of initial concentration",
+            "Proportional to initial concentration",
+            "Inversely proportional to initial concentration",
+            "Proportional to square of initial concentration",
+        ],
         "correct": "A",
         "explanation": "For first-order: t₁/₂ = 0.693/k, independent of initial concentration.",
         "difficulty": 2,
@@ -1059,7 +1155,12 @@ CHEMISTRY_TEMPLATES: list[dict[str, Any]] = [
     {
         "topic": "The d- and f-Block Elements",
         "question_text": "Transition metals show variable oxidation states because:",
-        "options": ["Both (n-1)d and ns electrons can participate in bonding", "They have high ionization energy", "They are highly electronegative", "They form complexes easily"],
+        "options": [
+            "Both (n-1)d and ns electrons can participate in bonding",
+            "They have high ionization energy",
+            "They are highly electronegative",
+            "They form complexes easily",
+        ],
         "correct": "A",
         "explanation": "The small energy difference between (n-1)d and ns orbitals allows both to participate in bonding, giving multiple oxidation states.",
         "difficulty": 2,
@@ -1078,7 +1179,12 @@ CHEMISTRY_TEMPLATES: list[dict[str, Any]] = [
     {
         "topic": "Coordination Compounds",
         "question_text": "The IUPAC name of [Pt(NH₃)₂Cl₂] is:",
-        "options": ["Diamminedichloridoplatinum(II)", "Diamminedichloroplatinum(IV)", "Dichlorodiammineplatinum(II)", "Platinum diammine dichloride"],
+        "options": [
+            "Diamminedichloridoplatinum(II)",
+            "Diamminedichloroplatinum(IV)",
+            "Dichlorodiammineplatinum(II)",
+            "Platinum diammine dichloride",
+        ],
         "correct": "A",
         "explanation": "Ligands named alphabetically: ammine before chloro. Oxidation state of Pt: x + 0 + 2(-1) = 0, so x = +2.",
         "difficulty": 3,
@@ -1088,7 +1194,12 @@ CHEMISTRY_TEMPLATES: list[dict[str, Any]] = [
     {
         "topic": "Haloalkanes and Haloarenes",
         "question_text": "SN2 reaction proceeds with:",
-        "options": ["Inversion of configuration", "Retention of configuration", "Racemization", "No change in configuration"],
+        "options": [
+            "Inversion of configuration",
+            "Retention of configuration",
+            "Racemization",
+            "No change in configuration",
+        ],
         "correct": "A",
         "explanation": "SN2 involves backside attack by the nucleophile, causing Walden inversion (complete stereochemical inversion).",
         "difficulty": 2,
@@ -1098,7 +1209,12 @@ CHEMISTRY_TEMPLATES: list[dict[str, Any]] = [
     {
         "topic": "Alcohols, Phenols and Ethers",
         "question_text": "Lucas reagent is a mixture of:",
-        "options": ["Conc. HCl + anhydrous ZnCl₂", "Conc. HNO₃ + ZnCl₂", "Conc. H₂SO₄ + ZnCl₂", "Conc. HCl + CuCl₂"],
+        "options": [
+            "Conc. HCl + anhydrous ZnCl₂",
+            "Conc. HNO₃ + ZnCl₂",
+            "Conc. H₂SO₄ + ZnCl₂",
+            "Conc. HCl + CuCl₂",
+        ],
         "correct": "A",
         "explanation": "Lucas reagent = conc. HCl + anhydrous ZnCl₂, used to distinguish 1°, 2°, and 3° alcohols.",
         "difficulty": 2,
@@ -1107,7 +1223,12 @@ CHEMISTRY_TEMPLATES: list[dict[str, Any]] = [
     {
         "topic": "Alcohols, Phenols and Ethers",
         "question_text": "Phenol is more acidic than alcohol because:",
-        "options": ["The phenoxide ion is resonance stabilized", "Phenol has higher molecular weight", "Phenol forms hydrogen bonds", "Phenol is aromatic"],
+        "options": [
+            "The phenoxide ion is resonance stabilized",
+            "Phenol has higher molecular weight",
+            "Phenol forms hydrogen bonds",
+            "Phenol is aromatic",
+        ],
         "correct": "A",
         "explanation": "The phenoxide ion's negative charge is delocalized over the benzene ring through resonance, stabilizing it.",
         "difficulty": 2,
@@ -1126,7 +1247,12 @@ CHEMISTRY_TEMPLATES: list[dict[str, Any]] = [
     {
         "topic": "Aldehydes, Ketones and Carboxylic Acids",
         "question_text": "The aldol condensation reaction is given by:",
-        "options": ["Aldehydes with α-hydrogen", "All aldehydes", "All ketones", "Carboxylic acids"],
+        "options": [
+            "Aldehydes with α-hydrogen",
+            "All aldehydes",
+            "All ketones",
+            "Carboxylic acids",
+        ],
         "correct": "A",
         "explanation": "Aldol condensation requires at least one α-hydrogen to form the enolate ion intermediate.",
         "difficulty": 3,
@@ -1136,7 +1262,12 @@ CHEMISTRY_TEMPLATES: list[dict[str, Any]] = [
     {
         "topic": "Amines",
         "question_text": "The basicity order of amines in aqueous solution for methyl group is:",
-        "options": ["(CH₃)₂NH > CH₃NH₂ > (CH₃)₃N > NH₃", "CH₃NH₂ > (CH₃)₂NH > (CH₃)₃N > NH₃", "(CH₃)₃N > (CH₃)₂NH > CH₃NH₂ > NH₃", "NH₃ > CH₃NH₂ > (CH₃)₂NH > (CH₃)₃N"],
+        "options": [
+            "(CH₃)₂NH > CH₃NH₂ > (CH₃)₃N > NH₃",
+            "CH₃NH₂ > (CH₃)₂NH > (CH₃)₃N > NH₃",
+            "(CH₃)₃N > (CH₃)₂NH > CH₃NH₂ > NH₃",
+            "NH₃ > CH₃NH₂ > (CH₃)₂NH > (CH₃)₃N",
+        ],
         "correct": "A",
         "explanation": "In aqueous solution, basicity depends on inductive effect, solvation, and steric hindrance. For methyl amines: 2° > 1° > 3° > NH₃.",
         "difficulty": 4,
@@ -1155,7 +1286,12 @@ CHEMISTRY_TEMPLATES: list[dict[str, Any]] = [
     {
         "topic": "Biomolecules",
         "question_text": "Glucose and fructose are:",
-        "options": ["Functional isomers", "Chain isomers", "Position isomers", "Geometrical isomers"],
+        "options": [
+            "Functional isomers",
+            "Chain isomers",
+            "Position isomers",
+            "Geometrical isomers",
+        ],
         "correct": "A",
         "explanation": "Glucose (aldehyde) and fructose (ketone) have the same formula C₆H₁₂O₆ but different functional groups → functional isomers.",
         "difficulty": 2,
@@ -1165,7 +1301,12 @@ CHEMISTRY_TEMPLATES: list[dict[str, Any]] = [
     {
         "topic": "Polymers",
         "question_text": "Nylon-6,6 is formed from:",
-        "options": ["Hexamethylenediamine and adipic acid", "Caprolactam", "Phenol and formaldehyde", "Ethylene glycol and terephthalic acid"],
+        "options": [
+            "Hexamethylenediamine and adipic acid",
+            "Caprolactam",
+            "Phenol and formaldehyde",
+            "Ethylene glycol and terephthalic acid",
+        ],
         "correct": "A",
         "explanation": "Nylon-6,6 is a condensation polymer from hexamethylenediamine (6 carbons) and adipic acid (6 carbons).",
         "difficulty": 2,
@@ -1206,7 +1347,12 @@ BIOLOGY_TEMPLATES: list[dict[str, Any]] = [
     {
         "topic": "Biological Classification",
         "question_text": "Viruses are considered non-living because they:",
-        "options": ["Can be crystallized and lack cellular structure", "Are very small", "Cause diseases", "Have DNA or RNA"],
+        "options": [
+            "Can be crystallized and lack cellular structure",
+            "Are very small",
+            "Cause diseases",
+            "Have DNA or RNA",
+        ],
         "correct": "A",
         "explanation": "Viruses lack cellular organization, cannot reproduce independently, and can be crystallized — all properties of non-living matter.",
         "difficulty": 2,
@@ -1255,7 +1401,12 @@ BIOLOGY_TEMPLATES: list[dict[str, Any]] = [
     {
         "topic": "Cell — The Unit of Life",
         "question_text": "The fluid mosaic model of the plasma membrane was proposed by:",
-        "options": ["Singer and Nicolson", "Watson and Crick", "Robertson", "Schleiden and Schwann"],
+        "options": [
+            "Singer and Nicolson",
+            "Watson and Crick",
+            "Robertson",
+            "Schleiden and Schwann",
+        ],
         "correct": "A",
         "explanation": "Singer and Nicolson (1972) proposed the fluid mosaic model — a lipid bilayer with embedded proteins.",
         "difficulty": 2,
@@ -1274,7 +1425,12 @@ BIOLOGY_TEMPLATES: list[dict[str, Any]] = [
     {
         "topic": "Biomolecules",
         "question_text": "The primary structure of a protein refers to:",
-        "options": ["Sequence of amino acids", "Alpha helix formation", "Beta pleated sheet", "3D folding"],
+        "options": [
+            "Sequence of amino acids",
+            "Alpha helix formation",
+            "Beta pleated sheet",
+            "3D folding",
+        ],
         "correct": "A",
         "explanation": "Primary structure is the linear sequence of amino acids linked by peptide bonds.",
         "difficulty": 1,
@@ -1331,7 +1487,12 @@ BIOLOGY_TEMPLATES: list[dict[str, Any]] = [
     {
         "topic": "Respiration in Plants",
         "question_text": "The electron transport chain in cellular respiration is located in:",
-        "options": ["Inner mitochondrial membrane", "Outer mitochondrial membrane", "Matrix", "Cytoplasm"],
+        "options": [
+            "Inner mitochondrial membrane",
+            "Outer mitochondrial membrane",
+            "Matrix",
+            "Cytoplasm",
+        ],
         "correct": "A",
         "explanation": "The ETC complexes are embedded in the inner mitochondrial membrane, creating a proton gradient for ATP synthesis.",
         "difficulty": 2,
@@ -1351,7 +1512,12 @@ BIOLOGY_TEMPLATES: list[dict[str, Any]] = [
     {
         "topic": "Structural Organisation in Animals",
         "question_text": "Which type of epithelium lines the inner surface of blood vessels?",
-        "options": ["Squamous epithelium", "Cuboidal epithelium", "Columnar epithelium", "Stratified epithelium"],
+        "options": [
+            "Squamous epithelium",
+            "Cuboidal epithelium",
+            "Columnar epithelium",
+            "Stratified epithelium",
+        ],
         "correct": "A",
         "explanation": "Simple squamous epithelium (endothelium) lines blood vessels, allowing easy diffusion of substances.",
         "difficulty": 2,
@@ -1380,7 +1546,12 @@ BIOLOGY_TEMPLATES: list[dict[str, Any]] = [
     {
         "topic": "Breathing and Exchange of Gases",
         "question_text": "The volume of air remaining in the lungs after a forced expiration is called:",
-        "options": ["Residual volume", "Tidal volume", "Vital capacity", "Expiratory reserve volume"],
+        "options": [
+            "Residual volume",
+            "Tidal volume",
+            "Vital capacity",
+            "Expiratory reserve volume",
+        ],
         "correct": "A",
         "explanation": "Residual volume (~1200 mL) is the air that remains in lungs even after maximum forced expiration.",
         "difficulty": 2,
@@ -1409,7 +1580,12 @@ BIOLOGY_TEMPLATES: list[dict[str, Any]] = [
     {
         "topic": "Locomotion and Movement",
         "question_text": "The sliding filament theory of muscle contraction states that:",
-        "options": ["Actin filaments slide over myosin filaments", "Myosin filaments shorten", "Actin filaments shorten", "Z-lines move apart"],
+        "options": [
+            "Actin filaments slide over myosin filaments",
+            "Myosin filaments shorten",
+            "Actin filaments shorten",
+            "Z-lines move apart",
+        ],
         "correct": "A",
         "explanation": "During contraction, thin (actin) filaments slide past thick (myosin) filaments — the filaments themselves do not shorten.",
         "difficulty": 2,
@@ -1447,7 +1623,12 @@ BIOLOGY_TEMPLATES: list[dict[str, Any]] = [
     {
         "topic": "Sexual Reproduction in Flowering Plants",
         "question_text": "Double fertilization in angiosperms involves:",
-        "options": ["One sperm fuses with egg, another with polar nuclei", "Two sperms fuse with egg", "Two eggs are fertilized", "One sperm fuses with two eggs"],
+        "options": [
+            "One sperm fuses with egg, another with polar nuclei",
+            "Two sperms fuse with egg",
+            "Two eggs are fertilized",
+            "One sperm fuses with two eggs",
+        ],
         "correct": "A",
         "explanation": "One sperm fertilizes the egg (→ zygote), the other fuses with two polar nuclei (→ triploid endosperm).",
         "difficulty": 2,
@@ -1476,7 +1657,12 @@ BIOLOGY_TEMPLATES: list[dict[str, Any]] = [
     {
         "topic": "Principles of Inheritance and Variation",
         "question_text": "Linked genes do not show independent assortment because they are:",
-        "options": ["Located on the same chromosome", "Located on different chromosomes", "Recessive", "Dominant"],
+        "options": [
+            "Located on the same chromosome",
+            "Located on different chromosomes",
+            "Recessive",
+            "Dominant",
+        ],
         "correct": "A",
         "explanation": "Linked genes are on the same chromosome and tend to be inherited together, violating Mendel's law of independent assortment.",
         "difficulty": 2,
@@ -1495,7 +1681,12 @@ BIOLOGY_TEMPLATES: list[dict[str, Any]] = [
     {
         "topic": "Molecular Basis of Inheritance",
         "question_text": "The lac operon is an example of:",
-        "options": ["Inducible gene regulation", "Repressible gene regulation", "Constitutive expression", "Post-transcriptional regulation"],
+        "options": [
+            "Inducible gene regulation",
+            "Repressible gene regulation",
+            "Constitutive expression",
+            "Post-transcriptional regulation",
+        ],
         "correct": "A",
         "explanation": "The lac operon is induced by lactose (allolactose), which inactivates the repressor, allowing transcription.",
         "difficulty": 3,
@@ -1543,7 +1734,12 @@ BIOLOGY_TEMPLATES: list[dict[str, Any]] = [
     {
         "topic": "Biotechnology — Principles and Processes",
         "question_text": "PCR (Polymerase Chain Reaction) requires:",
-        "options": ["Taq polymerase, primers, dNTPs, template DNA", "RNA polymerase, primers, NTPs", "Restriction enzymes, ligase, vector", "Reverse transcriptase, mRNA"],
+        "options": [
+            "Taq polymerase, primers, dNTPs, template DNA",
+            "RNA polymerase, primers, NTPs",
+            "Restriction enzymes, ligase, vector",
+            "Reverse transcriptase, mRNA",
+        ],
         "correct": "A",
         "explanation": "PCR requires thermostable Taq polymerase, specific primers, dNTPs, and template DNA for amplification.",
         "difficulty": 2,
@@ -1562,7 +1758,12 @@ BIOLOGY_TEMPLATES: list[dict[str, Any]] = [
     {
         "topic": "Organisms and Populations",
         "question_text": "The carrying capacity of an environment is:",
-        "options": ["The maximum population size it can sustain", "The minimum population size", "The average population size", "The growth rate"],
+        "options": [
+            "The maximum population size it can sustain",
+            "The minimum population size",
+            "The average population size",
+            "The growth rate",
+        ],
         "correct": "A",
         "explanation": "Carrying capacity (K) is the maximum population size that an environment can sustain indefinitely.",
         "difficulty": 1,
@@ -1581,7 +1782,12 @@ BIOLOGY_TEMPLATES: list[dict[str, Any]] = [
     {
         "topic": "Biodiversity and Conservation",
         "question_text": "Biodiversity hotspots are regions with:",
-        "options": ["High endemism and significant habitat loss", "High temperature", "Low rainfall", "High altitude"],
+        "options": [
+            "High endemism and significant habitat loss",
+            "High temperature",
+            "Low rainfall",
+            "High altitude",
+        ],
         "correct": "A",
         "explanation": "Hotspots have ≥1500 endemic plant species and have lost ≥70% of original habitat (Myers criteria).",
         "difficulty": 2,
@@ -1722,7 +1928,12 @@ MATCH_FOLLOWING_TEMPLATES: list[dict[str, Any]] = [
     {
         "topic": "Body Fluids and Circulation",
         "column_a": ["SA node", "AV node", "Bundle of His", "Purkinje fibers"],
-        "column_b": ["Pacemaker", "Delay impulse", "Conduct to ventricles", "Ventricular contraction"],
+        "column_b": [
+            "Pacemaker",
+            "Delay impulse",
+            "Conduct to ventricles",
+            "Ventricular contraction",
+        ],
         "correct": {"A": "1", "B": "2", "C": "3", "D": "4"},
         "explanation": "SA node = pacemaker, AV node delays impulse, Bundle of His conducts to ventricles, Purkinje fibers trigger ventricular contraction.",
         "difficulty": 2,
@@ -1730,7 +1941,12 @@ MATCH_FOLLOWING_TEMPLATES: list[dict[str, Any]] = [
     },
     {
         "topic": "Principles of Inheritance and Variation",
-        "column_a": ["Law of Dominance", "Law of Segregation", "Law of Independent Assortment", "Incomplete Dominance"],
+        "column_a": [
+            "Law of Dominance",
+            "Law of Segregation",
+            "Law of Independent Assortment",
+            "Incomplete Dominance",
+        ],
         "column_b": ["3:1 ratio", "Gametes are pure", "9:3:3:1 ratio", "1:2:1 ratio"],
         "correct": {"A": "1", "B": "2", "C": "3", "D": "4"},
         "explanation": "Dominance → 3:1 phenotypic ratio, Segregation → gametes carry one allele each, Independent Assortment → 9:3:3:1, Incomplete Dominance → 1:2:1.",
@@ -1740,7 +1956,12 @@ MATCH_FOLLOWING_TEMPLATES: list[dict[str, Any]] = [
     {
         "topic": "Electrochemistry",
         "column_a": ["Galvanic cell", "Electrolytic cell", "Fuel cell", "Dry cell"],
-        "column_b": ["Chemical → Electrical", "Electrical → Chemical", "Continuous fuel supply", "Leclanché cell"],
+        "column_b": [
+            "Chemical → Electrical",
+            "Electrical → Chemical",
+            "Continuous fuel supply",
+            "Leclanché cell",
+        ],
         "correct": {"A": "1", "B": "2", "C": "3", "D": "4"},
         "explanation": "Galvanic: chemical to electrical, Electrolytic: electrical to chemical, Fuel cell: continuous fuel, Dry cell: Leclanché type.",
         "difficulty": 2,
@@ -1832,13 +2053,18 @@ NUMERIC_TEMPLATES: list[dict[str, Any]] = [
 # ---------------------------------------------------------------------------
 
 ALL_TEMPLATES: list[dict[str, Any]] = (
-    PHYSICS_TEMPLATES + CHEMISTRY_TEMPLATES + BIOLOGY_TEMPLATES
-    + ASSERTION_REASON_TEMPLATES + MATCH_FOLLOWING_TEMPLATES + NUMERIC_TEMPLATES
+    PHYSICS_TEMPLATES
+    + CHEMISTRY_TEMPLATES
+    + BIOLOGY_TEMPLATES
+    + ASSERTION_REASON_TEMPLATES
+    + MATCH_FOLLOWING_TEMPLATES
+    + NUMERIC_TEMPLATES
 )
 
 # ---------------------------------------------------------------------------
 # Data classes
 # ---------------------------------------------------------------------------
+
 
 @dataclass
 class GeneratedQuestion:
@@ -1985,6 +2211,7 @@ CHAPTER_ID_MAP: dict[str, str] = {
 # Subject detection helper
 # ---------------------------------------------------------------------------
 
+
 def _detect_subject(topic: str) -> str:
     """Detect subject from topic name."""
     for subject, grades in SYLLABUS.items():
@@ -1992,9 +2219,80 @@ def _detect_subject(topic: str) -> str:
             if topic in topics:
                 return subject.value
     # Fallback: keyword-based detection
-    physics_kw = ["motion", "force", "energy", "wave", "optics", "electric", "magnet", "thermo", "oscill", "gravit", "unit", "rotat", "kinetic", "semiconductor", "atom", "nuclei", "dual", "alternating", "electromagnetic"]
-    chemistry_kw = ["bond", "atom", "periodic", "equilibrium", "redox", "organic", "solution", "electrochem", "kinetics", "surface", "metallur", "coordination", "alcohol", "aldehyde", "amine", "biomolecule", "polymer", "solid state", "hydrogen", "hydrocarbon"]
-    biology_kw = ["cell", "reproduction", "genetics", "evolution", "health", "biotech", "ecolog", "biodiversity", "environment", "plant", "animal", "body", "breathing", "excret", "locomotion", "neural", "photosynthesis", "respiration", "living", "classification", "morphology", "anatomy", "biomol", "division", "growth", "fluid", "organism", "population", "ecosystem"]
+    physics_kw = [
+        "motion",
+        "force",
+        "energy",
+        "wave",
+        "optics",
+        "electric",
+        "magnet",
+        "thermo",
+        "oscill",
+        "gravit",
+        "unit",
+        "rotat",
+        "kinetic",
+        "semiconductor",
+        "atom",
+        "nuclei",
+        "dual",
+        "alternating",
+        "electromagnetic",
+    ]
+    chemistry_kw = [
+        "bond",
+        "atom",
+        "periodic",
+        "equilibrium",
+        "redox",
+        "organic",
+        "solution",
+        "electrochem",
+        "kinetics",
+        "surface",
+        "metallur",
+        "coordination",
+        "alcohol",
+        "aldehyde",
+        "amine",
+        "biomolecule",
+        "polymer",
+        "solid state",
+        "hydrogen",
+        "hydrocarbon",
+    ]
+    biology_kw = [
+        "cell",
+        "reproduction",
+        "genetics",
+        "evolution",
+        "health",
+        "biotech",
+        "ecolog",
+        "biodiversity",
+        "environment",
+        "plant",
+        "animal",
+        "body",
+        "breathing",
+        "excret",
+        "locomotion",
+        "neural",
+        "photosynthesis",
+        "respiration",
+        "living",
+        "classification",
+        "morphology",
+        "anatomy",
+        "biomol",
+        "division",
+        "growth",
+        "fluid",
+        "organism",
+        "population",
+        "ecosystem",
+    ]
 
     topic_lower = topic.lower()
     if any(kw in topic_lower for kw in physics_kw):
@@ -2015,7 +2313,10 @@ def _get_chapter_id(topic: str) -> str:
 # Distractor generation helpers
 # ---------------------------------------------------------------------------
 
-def _generate_numeric_distractors(correct: float, count: int = 3, rng: random.Random | None = None) -> list[float]:
+
+def _generate_numeric_distractors(
+    correct: float, count: int = 3, rng: random.Random | None = None
+) -> list[float]:
     """Generate plausible numeric distractors near the correct value."""
     if rng is None:
         rng = random.Random()
@@ -2052,6 +2353,7 @@ def _generate_mcq_distractors(
 # ---------------------------------------------------------------------------
 # Question Generator Service
 # ---------------------------------------------------------------------------
+
 
 class QuizGenerator:
     """Generates NEET-style MCQ questions using template-based generation."""
@@ -2152,15 +2454,11 @@ class QuizGenerator:
             kwargs["correct_answer"] = str(filled.get("correct_value", 0.0))
 
             # Generate distractors as options for display
-            distractors = _generate_numeric_distractors(
-                filled.get("correct_value", 0.0), 3, rng
-            )
+            distractors = _generate_numeric_distractors(filled.get("correct_value", 0.0), 3, rng)
             all_vals = [filled.get("correct_value", 0.0)] + distractors
             rng.shuffle(all_vals)
             labels = ["A", "B", "C", "D"]
-            kwargs["options"] = {
-                labels[i]: str(v) for i, v in enumerate(all_vals)
-            }
+            kwargs["options"] = {labels[i]: str(v) for i, v in enumerate(all_vals)}
             for label, val in kwargs["options"].items():
                 if float(val) == filled.get("correct_value", 0.0):
                     kwargs["correct_answer"] = label
@@ -2284,9 +2582,9 @@ class QuizGenerator:
 
         # Filter templates by subject topics and difficulty
         pool = [
-            t for t in self._templates
-            if t["topic"] in topics
-            and min_diff <= t.get("difficulty", 1) <= max_diff
+            t
+            for t in self._templates
+            if t["topic"] in topics and min_diff <= t.get("difficulty", 1) <= max_diff
         ]
 
         if not pool:
@@ -2367,7 +2665,23 @@ _PARAMETERIZED_QUESTIONS: dict[str, list[dict[str, Any]]] = {
         {"m": "10", "v": "5", "ke_a": "125", "ke_b": "250", "ke_c": "50", "ke_d": "500"},
     ],
     "Some Basic Concepts of Chemistry": [
-        {"compound": "CO₂", "mass": "22", "mol_a": "0.5", "mol_b": "0.25", "mol_c": "1.0", "mol_d": "2.0", "explanation": "Molar mass of CO₂ = 44 g/mol. Moles = 22/44 = 0.5 mol."},
-        {"compound": "H₂O", "mass": "36", "mol_a": "2.0", "mol_b": "1.0", "mol_c": "0.5", "mol_d": "4.0", "explanation": "Molar mass of H₂O = 18 g/mol. Moles = 36/18 = 2.0 mol."},
+        {
+            "compound": "CO₂",
+            "mass": "22",
+            "mol_a": "0.5",
+            "mol_b": "0.25",
+            "mol_c": "1.0",
+            "mol_d": "2.0",
+            "explanation": "Molar mass of CO₂ = 44 g/mol. Moles = 22/44 = 0.5 mol.",
+        },
+        {
+            "compound": "H₂O",
+            "mass": "36",
+            "mol_a": "2.0",
+            "mol_b": "1.0",
+            "mol_c": "0.5",
+            "mol_d": "4.0",
+            "explanation": "Molar mass of H₂O = 18 g/mol. Moles = 36/18 = 2.0 mol.",
+        },
     ],
 }

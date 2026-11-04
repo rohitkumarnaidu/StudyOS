@@ -16,6 +16,7 @@ def client():
     os.environ["STUDYOS_DATABASE_URL"] = ""
     os.environ["STUDYOS_EXPOSE_ERROR_DETAIL"] = "true"
     from studyos_api.core.config import get_settings
+
     get_settings.cache_clear()
     app = create_app()
     with TestClient(app, base_url="http://testserver", raise_server_exceptions=False) as c:

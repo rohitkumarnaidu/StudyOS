@@ -1,8 +1,5 @@
 """Tests for core/config.py — Settings validation and production hardening."""
 
-import os
-from unittest.mock import patch
-
 import pytest
 
 from studyos_api.core.config import Settings, get_settings

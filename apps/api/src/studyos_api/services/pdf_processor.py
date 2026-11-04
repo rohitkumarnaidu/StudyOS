@@ -89,7 +89,9 @@ class PdfProcessor:
                 self._embedder.embed_note(full_text, note_id)
 
             result.status = "ready"
-            logger.info("pdf.processed", note_id=note_id, type=pdf_type.value, pages=result.page_count)
+            logger.info(
+                "pdf.processed", note_id=note_id, type=pdf_type.value, pages=result.page_count
+            )
             return result
 
         except Exception as e:

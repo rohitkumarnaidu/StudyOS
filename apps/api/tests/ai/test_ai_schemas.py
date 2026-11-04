@@ -30,12 +30,16 @@ class TestAISchemas:
 
     def test_ai_chat_payload(self) -> None:
         usage = AIUsagePayload(prompt_tokens=10, completion_tokens=5, total_tokens=15)
-        payload = AIChatPayload(text="Hello!", provider_id="openai", model="gpt-4o-mini", usage=usage)
+        payload = AIChatPayload(
+            text="Hello!", provider_id="openai", model="gpt-4o-mini", usage=usage
+        )
         assert payload.text == "Hello!"
 
     def test_ai_chat_success_response(self) -> None:
         usage = AIUsagePayload(prompt_tokens=10, completion_tokens=5, total_tokens=15)
-        payload = AIChatPayload(text="Hello!", provider_id="openai", model="gpt-4o-mini", usage=usage)
+        payload = AIChatPayload(
+            text="Hello!", provider_id="openai", model="gpt-4o-mini", usage=usage
+        )
         resp = AIChatSuccessResponse(data=payload, meta={"api_version": "v1"})
         assert resp.data.text == "Hello!"
 
@@ -57,6 +61,8 @@ class TestAISchemas:
         assert resp.data is not None
 
     def test_mcp_tool_call_request(self) -> None:
-        req = MCPToolCallRequest(server_id="test-server", name="search", arguments={"query": "test"})
+        req = MCPToolCallRequest(
+            server_id="test-server", name="search", arguments={"query": "test"}
+        )
         assert req.server_id == "test-server"
         assert req.name == "search"

@@ -111,9 +111,7 @@ class PerformancePredictor:
 
         total = progress_row["total_subtopics"] if progress_row["total_subtopics"] else 0
         completed = (
-            progress_row["completed_subtopics"]
-            if progress_row["completed_subtopics"]
-            else 0
+            progress_row["completed_subtopics"] if progress_row["completed_subtopics"] else 0
         )
         completion_rate = completed / total if total > 0 else 0.0
 
@@ -173,7 +171,7 @@ class PerformancePredictor:
         data_confidence = min(total_questions / 100.0, 1.0)
         coverage_confidence = completion_rate
 
-        combined_confidence = (data_confidence * 0.6 + coverage_confidence * 0.4)
+        combined_confidence = data_confidence * 0.6 + coverage_confidence * 0.4
         margin = 80.0 * (1.0 - combined_confidence) + 20.0
 
         return round(margin, 2)

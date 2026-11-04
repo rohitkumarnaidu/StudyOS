@@ -2,16 +2,16 @@
 
 import pytest
 from fastapi import FastAPI, HTTPException
-from fastapi.testclient import TestClient
 from fastapi.exceptions import RequestValidationError
+from fastapi.testclient import TestClient
 
 from studyos_api.core.errors import (
     AppError,
     app_error_handler,
     http_exception_handler,
+    problem,
     unhandled_exception_handler,
     validation_exception_handler,
-    problem,
 )
 
 
@@ -23,15 +23,27 @@ class TestProblem:
         assert body["status"] == 500
 
     def test_problem_with_detail(self) -> None:
-        body = problem(type_uri="https://example.com/error", title="Error", status_code=400, detail="Bad input")
+        body = problem(
+            type_uri="https://example.com/error", title="Error", status_code=400, detail="Bad input"
+        )
         assert body["detail"] == "Bad input"
 
     def test_problem_with_instance(self) -> None:
-        body = problem(type_uri="https://example.com/error", title="Error", status_code=404, instance="/users/123")
+        body = problem(
+            type_uri="https://example.com/error",
+            title="Error",
+            status_code=404,
+            instance="/users/123",
+        )
         assert body["instance"] == "/users/123"
 
     def test_problem_with_extensions(self) -> None:
-        body = problem(type_uri="https://example.com/error", title="Error", status_code=422, extensions={"code": "validation"})
+        body = problem(
+            type_uri="https://example.com/error",
+            title="Error",
+            status_code=422,
+            extensions={"code": "validation"},
+        )
         assert body["code"] == "validation"
 
 
@@ -75,7 +87,9 @@ class TestErrorHandlers:
     def test_app_error_handler(self, app: FastAPI) -> None:
         @app.get("/app-error")
         def raise_app_error():
-            raise AppError(code="bad_request", title="Bad Request", status_code=400, detail="Invalid input")
+            raise AppError(
+                code="bad_request", title="Bad Request", status_code=400, detail="Invalid input"
+            )
 
         client = TestClient(app)
         resp = client.get("/app-error")

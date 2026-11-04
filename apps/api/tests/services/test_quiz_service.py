@@ -1,6 +1,6 @@
 """Tests for quiz_service."""
 
-from studyos_api.services.quiz_service import QuizService, QuizSession, MistakeEntry
+from studyos_api.services.quiz_service import MistakeEntry, QuizService, QuizSession
 
 
 class TestQuizSessionModel:

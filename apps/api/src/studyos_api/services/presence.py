@@ -93,18 +93,13 @@ class PresenceService:
     def get_user_presence(self, user_id: str) -> list[UserPresence]:
         """Get all active presence entries for a user."""
         conn_ids = self._user_connections.get(user_id, set())
-        return [
-            self._connections[cid]
-            for cid in conn_ids
-            if cid in self._connections
-        ]
+        return [self._connections[cid] for cid in conn_ids if cid in self._connections]
 
     def is_user_online(self, user_id: str) -> bool:
         """Check if a user has any active connections."""
         conn_ids = self._user_connections.get(user_id, set())
         return any(
-            cid in self._connections and self._connections[cid].is_online
-            for cid in conn_ids
+            cid in self._connections and self._connections[cid].is_online for cid in conn_ids
         )
 
     def get_online_users(self) -> list[str]:
@@ -112,8 +107,7 @@ class PresenceService:
         online = []
         for user_id, conn_ids in self._user_connections.items():
             if any(
-                cid in self._connections and self._connections[cid].is_online
-                for cid in conn_ids
+                cid in self._connections and self._connections[cid].is_online for cid in conn_ids
             ):
                 online.append(user_id)
         return online
@@ -128,11 +122,7 @@ class PresenceService:
 
     def cleanup_stale(self) -> int:
         """Remove stale connections. Returns count of removed entries."""
-        stale = [
-            cid
-            for cid, presence in self._connections.items()
-            if not presence.is_online
-        ]
+        stale = [cid for cid, presence in self._connections.items() if not presence.is_online]
         for cid in stale:
             self.remove_presence(cid)
         if stale:

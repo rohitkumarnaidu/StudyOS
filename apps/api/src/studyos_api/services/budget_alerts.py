@@ -62,25 +62,29 @@ class SoftBudgetAlerts:
 
         for threshold_pct, alert_type in [(0.5, "50pct"), (0.8, "80pct"), (1.0, "100pct")]:
             if token_ratio >= threshold_pct and alert_type + "_tokens" not in notified:
-                alerts.append(BudgetAlert(
-                    profile_id=profile_id,
-                    threshold_type=f"tokens_{alert_type}",
-                    message=f"You've used {round(token_ratio * 100)}% of your monthly token allocation.",
-                    usage_value=current_tokens,
-                    threshold_value=thresholds["token_limit"],
-                    metadata={"ratio": round(token_ratio, 2)},
-                ))
+                alerts.append(
+                    BudgetAlert(
+                        profile_id=profile_id,
+                        threshold_type=f"tokens_{alert_type}",
+                        message=f"You've used {round(token_ratio * 100)}% of your monthly token allocation.",
+                        usage_value=current_tokens,
+                        threshold_value=thresholds["token_limit"],
+                        metadata={"ratio": round(token_ratio, 2)},
+                    )
+                )
                 notified.add(alert_type + "_tokens")
 
             if request_ratio >= threshold_pct and alert_type + "_requests" not in notified:
-                alerts.append(BudgetAlert(
-                    profile_id=profile_id,
-                    threshold_type=f"requests_{alert_type}",
-                    message=f"You've made {round(request_ratio * 100)}% of your monthly request allocation.",
-                    usage_value=current_requests,
-                    threshold_value=thresholds["request_limit"],
-                    metadata={"ratio": round(request_ratio, 2)},
-                ))
+                alerts.append(
+                    BudgetAlert(
+                        profile_id=profile_id,
+                        threshold_type=f"requests_{alert_type}",
+                        message=f"You've made {round(request_ratio * 100)}% of your monthly request allocation.",
+                        usage_value=current_requests,
+                        threshold_value=thresholds["request_limit"],
+                        metadata={"ratio": round(request_ratio, 2)},
+                    )
+                )
                 notified.add(alert_type + "_requests")
 
         self._notified[profile_id] = notified

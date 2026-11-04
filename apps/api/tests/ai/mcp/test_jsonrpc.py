@@ -26,7 +26,9 @@ class TestMCPJsonRpcClientCall:
     @respx.mock
     async def test_call_success(self):
         route = respx.post("http://localhost:3000").mock(
-            return_value=httpx.Response(200, json={"jsonrpc": "2.0", "result": {"tools": []}, "id": 1})
+            return_value=httpx.Response(
+                200, json={"jsonrpc": "2.0", "result": {"tools": []}, "id": 1}
+            )
         )
 
         async with httpx.AsyncClient() as client:
@@ -47,7 +49,9 @@ class TestMCPJsonRpcClientCall:
 
         async with httpx.AsyncClient() as client:
             rpc = MCPJsonRpcClient("http://localhost:3000", client)
-            result = await rpc.call("tools/call", {"name": "my_tool", "arguments": {"key": "value"}})
+            result = await rpc.call(
+                "tools/call", {"name": "my_tool", "arguments": {"key": "value"}}
+            )
 
         assert result == "ok"
 
@@ -55,11 +59,14 @@ class TestMCPJsonRpcClientCall:
     @respx.mock
     async def test_call_error_response(self):
         respx.post("http://localhost:3000").mock(
-            return_value=httpx.Response(200, json={
-                "jsonrpc": "2.0",
-                "error": {"code": -32600, "message": "Invalid Request"},
-                "id": 1,
-            })
+            return_value=httpx.Response(
+                200,
+                json={
+                    "jsonrpc": "2.0",
+                    "error": {"code": -32600, "message": "Invalid Request"},
+                    "id": 1,
+                },
+            )
         )
 
         async with httpx.AsyncClient() as client:
@@ -70,9 +77,7 @@ class TestMCPJsonRpcClientCall:
     @pytest.mark.asyncio
     @respx.mock
     async def test_call_http_error(self):
-        respx.post("http://localhost:3000").mock(
-            return_value=httpx.Response(500)
-        )
+        respx.post("http://localhost:3000").mock(return_value=httpx.Response(500))
 
         async with httpx.AsyncClient() as client:
             rpc = MCPJsonRpcClient("http://localhost:3000", client)
@@ -83,7 +88,9 @@ class TestMCPJsonRpcClientCall:
     @respx.mock
     async def test_call_non_dict_result(self):
         respx.post("http://localhost:3000").mock(
-            return_value=httpx.Response(200, json={"jsonrpc": "2.0", "result": "string_result", "id": 1})
+            return_value=httpx.Response(
+                200, json={"jsonrpc": "2.0", "result": "string_result", "id": 1}
+            )
         )
 
         async with httpx.AsyncClient() as client:
@@ -118,6 +125,7 @@ class TestMCPJsonRpcClientCall:
             await rpc.call("tools/list", {"foo": "bar"})
 
         import json
+
         body = json.loads(route.calls[0].request.read().decode())
         assert body["jsonrpc"] == "2.0"
         assert body["method"] == "tools/list"

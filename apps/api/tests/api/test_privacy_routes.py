@@ -2,7 +2,7 @@
 
 import os
 import uuid
-from unittest.mock import AsyncMock, MagicMock, patch
+from unittest.mock import AsyncMock, MagicMock
 
 import pytest
 from fastapi.testclient import TestClient
@@ -18,6 +18,7 @@ def configure_test_env() -> None:
     os.environ["STUDYOS_JWT_SECRET"] = "test-jwt-secret-for-testing-only"
     os.environ["STUDYOS_JWT_ISSUER"] = "studyos-test"
     from studyos_api.core.config import get_settings
+
     get_settings.cache_clear()
 
 
@@ -30,6 +31,7 @@ def app():
 def auth_token():
     from studyos_api.core.config import get_settings
     from studyos_api.security.tokens import mint_access_token
+
     settings = get_settings()
     return mint_access_token(settings, sub=str(uuid.uuid4()), roles=["student"])
 
@@ -48,14 +50,14 @@ def _mock_pool_for_app(app_instance):
     mock_tx.__aenter__ = AsyncMock(return_value=None)
     mock_tx.__aexit__ = AsyncMock(return_value=False)
     mock_conn.transaction = MagicMock(return_value=mock_tx)
-    
+
     mock_pool = AsyncMock()
     mock_pool.acquire = MagicMock()
     mock_acq = AsyncMock()
     mock_acq.__aenter__ = AsyncMock(return_value=mock_conn)
     mock_acq.__aexit__ = AsyncMock(return_value=False)
     mock_pool.acquire.return_value = mock_acq
-    
+
     app_instance.state.db_pool = mock_pool
     return mock_pool
 
@@ -84,6 +86,7 @@ class TestPrivacyRoutesExport:
     def test_export_with_profile_data(self, app, auth_headers) -> None:
         mock_pool = _mock_pool_for_app(app)
         from datetime import datetime
+
         mock_profile = {
             "id": uuid.uuid4(),
             "email": "test@example.com",
@@ -110,17 +113,19 @@ class TestPrivacyRoutesExport:
             "total_tokens": 150,
             "created_at": datetime.now(),
         }
-        
+
         mock_conn = AsyncMock()
         mock_conn.fetchrow = AsyncMock(side_effect=[mock_profile, mock_streak])
-        mock_conn.fetch = AsyncMock(side_effect=[
-            [mock_completion],
-            [mock_usage],
-        ])
+        mock_conn.fetch = AsyncMock(
+            side_effect=[
+                [mock_completion],
+                [mock_usage],
+            ]
+        )
         mock_conn.execute = AsyncMock(return_value="")
-        
+
         mock_pool.acquire.return_value.__aenter__ = AsyncMock(return_value=mock_conn)
-        
+
         with TestClient(app, base_url="http://testserver") as client:
             resp = client.get("/v1/privacy/export", headers=auth_headers)
             assert resp.status_code == 200
@@ -152,7 +157,7 @@ class TestPrivacyRoutesDelete:
         mock_refresh_store = AsyncMock()
         mock_refresh_store.revoke_all_for_profile = AsyncMock()
         app.state.refresh_store = mock_refresh_store
-        
+
         with TestClient(app, base_url="http://testserver") as client:
             resp = client.delete("/v1/privacy/account", headers=auth_headers)
             assert resp.status_code == 204

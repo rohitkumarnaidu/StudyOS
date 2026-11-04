@@ -2,8 +2,8 @@
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any
 from collections.abc import Callable, Coroutine
+from typing import TYPE_CHECKING, Any
 
 import structlog
 
@@ -82,10 +82,17 @@ class EventBus:
             result = []
             for stream, msgs in messages:
                 for msg_id, fields in msgs:
-                    result.append((msg_id.decode() if isinstance(msg_id, bytes) else msg_id, {
-                        k.decode() if isinstance(k, bytes) else k: v.decode() if isinstance(v, bytes) else v
-                        for k, v in fields.items()
-                    }))
+                    result.append(
+                        (
+                            msg_id.decode() if isinstance(msg_id, bytes) else msg_id,
+                            {
+                                k.decode() if isinstance(k, bytes) else k: v.decode()
+                                if isinstance(v, bytes)
+                                else v
+                                for k, v in fields.items()
+                            },
+                        )
+                    )
             return result
         except Exception:
             logger.exception("event_bus.consume_failed", group=group_name)
@@ -200,9 +207,7 @@ class EventBus:
         if group_name in self._consumer_groups:
             return
         try:
-            await self._redis.xgroup_create(
-                _STREAM_NAME, group_name, id="0", mkstream=True
-            )
+            await self._redis.xgroup_create(_STREAM_NAME, group_name, id="0", mkstream=True)
             self._consumer_groups[group_name] = group_name
             logger.info("event_bus.group_created", group=group_name)
         except Exception:
@@ -230,6 +235,7 @@ def get_event_bus() -> EventBus:
     global _bus
     if _bus is None:
         from studyos_api.services import cache
+
         redis = cache._client if hasattr(cache, "_client") and cache._client else None
         _bus = EventBus(redis=redis)
     return _bus

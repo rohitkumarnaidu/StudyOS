@@ -4,10 +4,10 @@ from __future__ import annotations
 
 import time
 from dataclasses import dataclass, field
+from datetime import UTC
 from typing import Any
 
 import structlog
-from datetime import UTC
 
 logger = structlog.get_logger(__name__)
 
@@ -29,6 +29,7 @@ class AuditEntry:
     @property
     def timestamp_iso(self) -> str:
         from datetime import datetime
+
         return datetime.fromtimestamp(self.timestamp, tz=UTC).isoformat()
 
 
@@ -64,7 +65,7 @@ class AIAuditTrail:
         self._entries.append(entry)
 
         if len(self._entries) > self._max_entries:
-            self._entries = self._entries[-self._max_entries:]
+            self._entries = self._entries[-self._max_entries :]
 
         logger.info(
             "ai.audit.logged",
@@ -125,10 +126,7 @@ class AIAuditTrail:
 
     def get_recent_errors(self, limit: int = 10) -> list[AuditEntry]:
         """Get recent failed AI requests."""
-        return [
-            e for e in reversed(self._entries)
-            if e.status == "error"
-        ][:limit]
+        return [e for e in reversed(self._entries) if e.status == "error"][:limit]
 
     def get_entry_count(self) -> int:
         """Get total number of audit entries."""

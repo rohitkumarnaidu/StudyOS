@@ -1,11 +1,7 @@
 """Tests for backup and disaster recovery scripts."""
 
-import json
 import os
-import subprocess
 from pathlib import Path
-
-import pytest
 
 SCRIPTS_DIR = Path(__file__).parent.parent.parent.parent.parent / "scripts"
 BACKUP_DIR = SCRIPTS_DIR / "backup"
@@ -127,11 +123,21 @@ class TestDRDrillScript:
 
 class TestRunbooks:
     def test_dr_runbook_exists(self) -> None:
-        runbook = Path(__file__).parent.parent.parent.parent.parent / "docs" / "runbooks" / "disaster-recovery.md"
+        runbook = (
+            Path(__file__).parent.parent.parent.parent.parent
+            / "docs"
+            / "runbooks"
+            / "disaster-recovery.md"
+        )
         assert runbook.exists()
 
     def test_dr_runbook_has_recovery_sections(self) -> None:
-        runbook = Path(__file__).parent.parent.parent.parent.parent / "docs" / "runbooks" / "disaster-recovery.md"
+        runbook = (
+            Path(__file__).parent.parent.parent.parent.parent
+            / "docs"
+            / "runbooks"
+            / "disaster-recovery.md"
+        )
         content = runbook.read_text()
         assert "Database Failure Recovery" in content
         assert "Redis Failure Recovery" in content
@@ -139,18 +145,33 @@ class TestRunbooks:
         assert "Full System Outage Recovery" in content
 
     def test_dr_runbook_has_escalation_matrix(self) -> None:
-        runbook = Path(__file__).parent.parent.parent.parent.parent / "docs" / "runbooks" / "disaster-recovery.md"
+        runbook = (
+            Path(__file__).parent.parent.parent.parent.parent
+            / "docs"
+            / "runbooks"
+            / "disaster-recovery.md"
+        )
         content = runbook.read_text()
         assert "Escalation Matrix" in content
         assert "P1" in content
         assert "P2" in content
 
     def test_multi_region_checklist_exists(self) -> None:
-        checklist = Path(__file__).parent.parent.parent.parent.parent / "docs" / "runbooks" / "multi-region-readiness.md"
+        checklist = (
+            Path(__file__).parent.parent.parent.parent.parent
+            / "docs"
+            / "runbooks"
+            / "multi-region-readiness.md"
+        )
         assert checklist.exists()
 
     def test_multi_region_checklist_has_sections(self) -> None:
-        checklist = Path(__file__).parent.parent.parent.parent.parent / "docs" / "runbooks" / "multi-region-readiness.md"
+        checklist = (
+            Path(__file__).parent.parent.parent.parent.parent
+            / "docs"
+            / "runbooks"
+            / "multi-region-readiness.md"
+        )
         content = checklist.read_text()
         assert "Infrastructure" in content
         assert "Application" in content

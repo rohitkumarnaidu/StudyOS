@@ -2,8 +2,8 @@
 
 import pytest
 
-from studyos_api.services.active_recall import ActiveRecallEngine, RecallSession
-from studyos_api.services.revision_pack_generator import RevisionPack, RevisionPackGenerator
+from studyos_api.services.active_recall import ActiveRecallEngine
+from studyos_api.services.revision_pack_generator import RevisionPackGenerator
 
 
 class TestRevisionPackGenerator:
@@ -136,7 +136,9 @@ class TestActiveRecallEngine:
         assert "error" in result
 
     def test_get_session(self, engine: ActiveRecallEngine) -> None:
-        engine.create_session("sess-1", [{"question_id": "q1", "question": "Q?", "answer": "A"}], "2026-05-19")
+        engine.create_session(
+            "sess-1", [{"question_id": "q1", "question": "Q?", "answer": "A"}], "2026-05-19"
+        )
         session = engine.get_session("sess-1")
         assert session is not None
         assert session.session_id == "sess-1"
@@ -151,17 +153,25 @@ class TestActiveRecallEngine:
         assert results["score"] == 1
 
     def test_list_sessions(self, engine: ActiveRecallEngine) -> None:
-        engine.create_session("s1", [{"question_id": "q1", "question": "Q?", "answer": "A"}], "2026-05-19")
-        engine.create_session("s2", [{"question_id": "q1", "question": "Q?", "answer": "A"}], "2026-05-19")
+        engine.create_session(
+            "s1", [{"question_id": "q1", "question": "Q?", "answer": "A"}], "2026-05-19"
+        )
+        engine.create_session(
+            "s2", [{"question_id": "q1", "question": "Q?", "answer": "A"}], "2026-05-19"
+        )
         sessions = engine.list_sessions()
         assert len(sessions) == 2
 
     def test_delete_session(self, engine: ActiveRecallEngine) -> None:
-        engine.create_session("s1", [{"question_id": "q1", "question": "Q?", "answer": "A"}], "2026-05-19")
+        engine.create_session(
+            "s1", [{"question_id": "q1", "question": "Q?", "answer": "A"}], "2026-05-19"
+        )
         assert engine.delete_session("s1") is True
         assert engine.get_session("s1") is None
 
     def test_reset(self, engine: ActiveRecallEngine) -> None:
-        engine.create_session("s1", [{"question_id": "q1", "question": "Q?", "answer": "A"}], "2026-05-19")
+        engine.create_session(
+            "s1", [{"question_id": "q1", "question": "Q?", "answer": "A"}], "2026-05-19"
+        )
         engine.reset()
         assert engine.list_sessions() == []

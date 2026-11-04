@@ -2,8 +2,6 @@
 
 from __future__ import annotations
 
-import pytest
-
 from studyos_api.services.concept_gap_analyzer import ConceptGapAnalyzer
 
 
@@ -34,7 +32,10 @@ class TestConceptGapAnalyzer:
 
     def test_get_gap_score_no_attempts(self) -> None:
         self.analyzer._concept_data["algebra"] = {
-            "attempts": 0, "mistakes": 0, "last_mistake": "", "related": set()
+            "attempts": 0,
+            "mistakes": 0,
+            "last_mistake": "",
+            "related": set(),
         }
         assert self.analyzer.get_gap_score("algebra") == 1.0
 
@@ -79,7 +80,9 @@ class TestConceptGapAnalyzer:
         for i in range(5):
             self.analyzer.record_concept_attempt("critical", is_correct=False, timestamp=f"t{i}")
         for i in range(4):
-            self.analyzer.record_concept_attempt("moderate", is_correct=(i % 2 == 0), timestamp=f"t{i}")
+            self.analyzer.record_concept_attempt(
+                "moderate", is_correct=(i % 2 == 0), timestamp=f"t{i}"
+            )
 
         gaps = self.analyzer.analyze_gaps(min_attempts=3)
         if len(gaps) > 1:
@@ -87,7 +90,9 @@ class TestConceptGapAnalyzer:
 
     def test_get_weak_concepts(self) -> None:
         for i in range(5):
-            self.analyzer.record_concept_attempt(f"concept_{i}", is_correct=(i > 2), timestamp=f"t{i}")
+            self.analyzer.record_concept_attempt(
+                f"concept_{i}", is_correct=(i > 2), timestamp=f"t{i}"
+            )
 
         weak = self.analyzer.get_weak_concepts(top_n=3)
         assert len(weak) <= 3
@@ -96,12 +101,18 @@ class TestConceptGapAnalyzer:
         assert self.analyzer.get_mastery_level("unknown") == "critical"
 
         self.analyzer._concept_data["mastered"] = {
-            "attempts": 10, "mistakes": 0, "last_mistake": "", "related": set()
+            "attempts": 10,
+            "mistakes": 0,
+            "last_mistake": "",
+            "related": set(),
         }
         assert self.analyzer.get_mastery_level("mastered") == "mastered"
 
         self.analyzer._concept_data["weak"] = {
-            "attempts": 10, "mistakes": 8, "last_mistake": "t1", "related": set()
+            "attempts": 10,
+            "mistakes": 8,
+            "last_mistake": "t1",
+            "related": set(),
         }
         assert self.analyzer.get_mastery_level("weak") == "critical"
 

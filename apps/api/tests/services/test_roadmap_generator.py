@@ -1,14 +1,13 @@
 """Tests for roadmap_generator service."""
 
 from datetime import date, timedelta
-from unittest.mock import patch
 
 import pytest
 
 from studyos_api.services.roadmap_generator import (
+    NEET_SYLLABUS,
     ChapterTarget,
     DayPlan,
-    NEET_SYLLABUS,
     Roadmap,
     RoadmapGenerator,
     RoadmapStatus,
@@ -74,12 +73,20 @@ class TestDayPlan:
 
     def test_total_minutes_auto_calc(self) -> None:
         ct1 = ChapterTarget(
-            id="ch-1", name="A", subject="Physics", grade="11th",
-            priority_score=50, estimated_minutes=30,
+            id="ch-1",
+            name="A",
+            subject="Physics",
+            grade="11th",
+            priority_score=50,
+            estimated_minutes=30,
         )
         ct2 = ChapterTarget(
-            id="ch-2", name="B", subject="Physics", grade="11th",
-            priority_score=50, estimated_minutes=45,
+            id="ch-2",
+            name="B",
+            subject="Physics",
+            grade="11th",
+            priority_score=50,
+            estimated_minutes=45,
         )
         dp = DayPlan(
             date="2026-01-15",
@@ -448,8 +455,12 @@ class TestRoadmapGeneratorGetRevisionChapters:
             day_type="study",
             chapters=[
                 ChapterTarget(
-                    id="ch-1", name="Motion", subject="Physics", grade="11th",
-                    priority_score=80, estimated_minutes=60,
+                    id="ch-1",
+                    name="Motion",
+                    subject="Physics",
+                    grade="11th",
+                    priority_score=80,
+                    estimated_minutes=60,
                 ),
             ],
         )
@@ -469,8 +480,12 @@ class TestRoadmapGeneratorGetRevisionChapters:
                 day_type="study",
                 chapters=[
                     ChapterTarget(
-                        id=f"ch-{i}", name=f"Topic {i}", subject="Physics", grade="11th",
-                        priority_score=50, estimated_minutes=30,
+                        id=f"ch-{i}",
+                        name=f"Topic {i}",
+                        subject="Physics",
+                        grade="11th",
+                        priority_score=50,
+                        estimated_minutes=30,
                     ),
                 ],
             )

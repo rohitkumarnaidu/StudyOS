@@ -68,11 +68,7 @@ class OTelMiddleware(BaseHTTPMiddleware):
     @property
     def metrics(self) -> dict:
         """Get current middleware metrics."""
-        avg_latency = (
-            self._latency_total / self._request_count
-            if self._request_count > 0
-            else 0.0
-        )
+        avg_latency = self._latency_total / self._request_count if self._request_count > 0 else 0.0
         return {
             "service_name": self._service_name,
             "total_requests": self._request_count,

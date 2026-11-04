@@ -59,15 +59,21 @@ class ExamOptimizer:
                 "subject_analysis": subject_analysis,
                 "recommendations": recommendations,
                 "daily_target_hours": self._compute_daily_hours(
-                    phase, subject_analysis,
+                    phase,
+                    subject_analysis,
                 ),
                 "weekly_milestones": self._compute_weekly_milestones(
-                    phase, days_to_exam, subject_analysis,
+                    phase,
+                    days_to_exam,
+                    subject_analysis,
                 ),
             }
 
     async def _analyze_subject(
-        self, conn: asyncpg.Connection, profile_id: UUID, subject_id: UUID,
+        self,
+        conn: asyncpg.Connection,
+        profile_id: UUID,
+        subject_id: UUID,
     ) -> dict[str, Any]:
         chapters = await conn.fetch(
             """
@@ -144,56 +150,64 @@ class ExamOptimizer:
 
         for subject in subject_analysis:
             if subject["completion_rate"] < 0.3:
-                recommendations.append({
-                    "type": "priority_focus",
-                    "subject": subject["subject_name"],
-                    "message": (
-                        f"Focus on {subject['subject_name']} — "
-                        f"only {subject['completion_rate']*100:.0f}% complete"
-                    ),
-                    "priority": "critical",
-                })
+                recommendations.append(
+                    {
+                        "type": "priority_focus",
+                        "subject": subject["subject_name"],
+                        "message": (
+                            f"Focus on {subject['subject_name']} — "
+                            f"only {subject['completion_rate'] * 100:.0f}% complete"
+                        ),
+                        "priority": "critical",
+                    }
+                )
             elif subject["completion_rate"] < 0.6:
-                recommendations.append({
-                    "type": "accelerate",
-                    "subject": subject["subject_name"],
-                    "message": (
-                        f"Accelerate {subject['subject_name']} — "
-                        f"{subject['completion_rate']*100:.0f}% complete"
-                    ),
-                    "priority": "high",
-                })
+                recommendations.append(
+                    {
+                        "type": "accelerate",
+                        "subject": subject["subject_name"],
+                        "message": (
+                            f"Accelerate {subject['subject_name']} — "
+                            f"{subject['completion_rate'] * 100:.0f}% complete"
+                        ),
+                        "priority": "high",
+                    }
+                )
 
         if phase == "crash":
-            recommendations.append({
-                "type": "strategy",
-                "message": "Crash phase: Focus only on high-weightage chapters and revision",
-                "priority": "critical",
-            })
+            recommendations.append(
+                {
+                    "type": "strategy",
+                    "message": "Crash phase: Focus only on high-weightage chapters and revision",
+                    "priority": "critical",
+                }
+            )
         elif phase == "intensive":
-            recommendations.append({
-                "type": "strategy",
-                "message": "Intensive phase: Complete remaining chapters + start mock tests",
-                "priority": "high",
-            })
+            recommendations.append(
+                {
+                    "type": "strategy",
+                    "message": "Intensive phase: Complete remaining chapters + start mock tests",
+                    "priority": "high",
+                }
+            )
 
         weak_count = sum(len(s["weak_chapters"]) for s in subject_analysis)
         if weak_count > 10:
-            recommendations.append({
-                "type": "warning",
-                "message": (
-                    f"{weak_count} chapters need significant attention — "
-                    "consider recovery plan"
-                ),
-                "priority": "high",
-            })
+            recommendations.append(
+                {
+                    "type": "warning",
+                    "message": (
+                        f"{weak_count} chapters need significant attention — consider recovery plan"
+                    ),
+                    "priority": "high",
+                }
+            )
 
         return recommendations
 
     def _compute_daily_hours(self, phase: str, subject_analysis: list[dict[str, Any]]) -> float:
-        avg_completion = (
-            sum(s["completion_rate"] for s in subject_analysis)
-            / max(len(subject_analysis), 1)
+        avg_completion = sum(s["completion_rate"] for s in subject_analysis) / max(
+            len(subject_analysis), 1
         )
 
         if phase == "crash":
@@ -223,12 +237,14 @@ class ExamOptimizer:
 
         for week in range(1, min(weeks, 12) + 1):
             target_completion = min(week * chapters_per_week / max(total_chapters, 1), 1.0)
-            milestones.append({
-                "week": week,
-                "target_chapters": round(week * chapters_per_week),
-                "target_completion_pct": round(target_completion * 100, 1),
-                "focus": self._get_week_focus(phase, week, subject_analysis),
-            })
+            milestones.append(
+                {
+                    "week": week,
+                    "target_chapters": round(week * chapters_per_week),
+                    "target_completion_pct": round(target_completion * 100, 1),
+                    "focus": self._get_week_focus(phase, week, subject_analysis),
+                }
+            )
 
         return milestones
 
@@ -246,8 +262,7 @@ class ExamOptimizer:
             return "Mock tests + revision"
         if phase == "focused":
             weak_subjects = [
-                s["subject_name"] for s in subject_analysis
-                if s["completion_rate"] < 0.5
+                s["subject_name"] for s in subject_analysis if s["completion_rate"] < 0.5
             ]
             if weak_subjects and week <= len(weak_subjects):
                 return f"Focus on {weak_subjects[week - 1]}"

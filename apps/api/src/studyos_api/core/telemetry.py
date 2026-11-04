@@ -57,8 +57,8 @@ def init_telemetry(
         logger.warning(
             "telemetry.import_error",
             hint="pip install opentelemetry-api opentelemetry-sdk "
-                 "opentelemetry-exporter-otlp-proto-http "
-                 "opentelemetry-instrumentation-fastapi",
+            "opentelemetry-exporter-otlp-proto-http "
+            "opentelemetry-instrumentation-fastapi",
         )
     except Exception as e:
         logger.error("telemetry.init_failed", error=str(e))

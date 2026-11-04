@@ -1,13 +1,9 @@
 """Tests for AI generation Celery tasks."""
 
-from unittest.mock import patch
-
-import pytest
-
 from studyos_api.tasks.ai_tasks import (
     generate_quiz_from_notes,
-    generate_roadmap,
     generate_revision_pack,
+    generate_roadmap,
     generate_study_plan,
     summarize_document,
 )

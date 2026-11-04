@@ -5,8 +5,6 @@ from datetime import date, timedelta
 from unittest.mock import AsyncMock, MagicMock
 from uuid import uuid4
 
-import pytest
-
 from studyos_api.services.recovery_planner import RecoveryPlanner
 
 
@@ -70,6 +68,7 @@ class TestRecoveryPlannerWithMockDB:
 
     def test_generate_plan_empty_chapters(self):
         from datetime import datetime
+
         mock_pool, mock_conn = _make_mock_pool()
         mock_conn.fetch = AsyncMock(return_value=[])
         mock_conn.fetchrow = AsyncMock(return_value={"id": uuid4(), "created_at": datetime.now()})
@@ -104,18 +103,21 @@ class TestRecoveryPlannerWithMockDB:
 
     def test_get_active_plan_found(self):
         from datetime import datetime
+
         mock_pool, mock_conn = _make_mock_pool()
-        mock_conn.fetchrow = AsyncMock(return_value={
-            "id": uuid4(),
-            "trigger_reason": "behind_schedule",
-            "original_completion_date": date.today() + timedelta(days=180),
-            "revised_completion_date": date.today() + timedelta(days=120),
-            "accelerated_chapters": [{"chapter_id": "ch1"}],
-            "skipped_chapters": [],
-            "daily_hours_target": 10.0,
-            "status": "active",
-            "created_at": datetime(2024, 1, 1),
-        })
+        mock_conn.fetchrow = AsyncMock(
+            return_value={
+                "id": uuid4(),
+                "trigger_reason": "behind_schedule",
+                "original_completion_date": date.today() + timedelta(days=180),
+                "revised_completion_date": date.today() + timedelta(days=120),
+                "accelerated_chapters": [{"chapter_id": "ch1"}],
+                "skipped_chapters": [],
+                "daily_hours_target": 10.0,
+                "status": "active",
+                "created_at": datetime(2024, 1, 1),
+            }
+        )
         planner = RecoveryPlanner(pool=mock_pool)
 
         loop = asyncio.new_event_loop()

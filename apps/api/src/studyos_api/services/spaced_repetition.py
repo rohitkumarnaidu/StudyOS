@@ -128,12 +128,8 @@ class SpacedRepetitionEngine:
         """Get statistics about a set of SM2 items."""
         due = self.get_due_items(items, today)
         overdue = self.get_overdue_items(items, today)
-        avg_ease = (
-            sum(i.ease_factor for i in items) / len(items) if items else 0.0
-        )
-        avg_interval = (
-            sum(i.interval for i in items) / len(items) if items else 0.0
-        )
+        avg_ease = sum(i.ease_factor for i in items) / len(items) if items else 0.0
+        avg_interval = sum(i.interval for i in items) / len(items) if items else 0.0
 
         return {
             "total_items": len(items),
@@ -148,5 +144,6 @@ class SpacedRepetitionEngine:
     def _add_days(date_str: str, days: int) -> str:
         """Add days to a YYYY-MM-DD date string."""
         from datetime import datetime, timedelta
+
         dt = datetime.strptime(date_str, "%Y-%m-%d") + timedelta(days=days)
         return dt.strftime("%Y-%m-%d")

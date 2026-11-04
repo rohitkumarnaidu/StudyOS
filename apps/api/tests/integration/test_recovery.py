@@ -10,7 +10,7 @@ Tests recovery scenarios:
 
 import os
 import uuid
-from unittest.mock import AsyncMock, MagicMock, patch
+from unittest.mock import MagicMock, patch
 
 import pytest
 from fastapi.testclient import TestClient
@@ -26,6 +26,7 @@ def configure_test_env() -> None:
     os.environ["STUDYOS_EXPOSE_ERROR_DETAIL"] = "true"
     os.environ["STUDYOS_ALLOW_LEGACY_DEMO_BEARER"] = "true"
     from studyos_api.core.config import get_settings
+
     get_settings.cache_clear()
 
 
@@ -54,9 +55,7 @@ class TestSessionRecovery:
 
         settings = get_settings()
         with patch.object(settings, "access_token_ttl_seconds", -1):
-            expired_token = mint_access_token(
-                settings, sub=str(uuid.uuid4()), roles=["student"]
-            )
+            expired_token = mint_access_token(settings, sub=str(uuid.uuid4()), roles=["student"])
 
         resp = client.get(
             "/v1/progress/streak",
@@ -80,8 +79,9 @@ class TestSessionRecovery:
 
 class TestCacheRecovery:
     def test_cache_falls_back_to_in_memory(self, client):
-        from studyos_api.services import cache
         import asyncio
+
+        from studyos_api.services import cache
 
         cache._local_cache.clear()
         cache._enabled = False
@@ -100,8 +100,9 @@ class TestCacheRecovery:
             assert resp.status_code == 200
 
     def test_cache_delete_without_redis(self, client):
-        from studyos_api.services import cache
         import asyncio
+
+        from studyos_api.services import cache
 
         cache._local_cache.clear()
         cache._enabled = False

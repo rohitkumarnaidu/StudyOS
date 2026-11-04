@@ -20,7 +20,9 @@ def init_cache(url: str | None = None) -> None:
         return
     try:
         import asyncio
+
         import redis.asyncio as redis  # type: ignore[import-not-found]
+
         _client = redis.from_url(url, decode_responses=True)
         # Verify connection actually works (from_url is lazy)
         asyncio.get_event_loop().run_until_complete(_client.ping())

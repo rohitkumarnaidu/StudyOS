@@ -1,6 +1,5 @@
 """Tests for upload_security.py — magic-byte validation, size limits, MIME checks."""
 
-
 from studyos_api.services.upload_security import (
     MAX_UPLOAD_SIZE,
     validate_upload,

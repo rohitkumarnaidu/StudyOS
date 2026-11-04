@@ -3,8 +3,6 @@
 import os
 from unittest.mock import patch
 
-import pytest
-
 from studyos_api.tasks.celery_app import _build_celery_config, celery_app
 
 
@@ -25,6 +23,7 @@ class TestCeleryConfig:
     def test_custom_broker_url(self) -> None:
         with patch.dict(os.environ, {"STUDYOS_CELERY_BROKER_URL": "redis://custom:6379/5"}):
             from studyos_api.core.config import get_settings
+
             get_settings.cache_clear()
             config = _build_celery_config()
             assert config["broker_url"] == "redis://custom:6379/5"
@@ -39,6 +38,7 @@ class TestCeleryConfig:
             },
         ):
             from studyos_api.core.config import get_settings
+
             get_settings.cache_clear()
             config = _build_celery_config()
             assert config["broker_url"] == "redis://fallback:6379/0"
@@ -71,6 +71,7 @@ class TestCeleryConfig:
             },
         ):
             from studyos_api.core.config import get_settings
+
             get_settings.cache_clear()
             config = _build_celery_config()
             assert config["task_default_retry_delay"] == 120

@@ -58,7 +58,8 @@ class PdfTextExtractor:
 
     def _check_availability(self) -> bool:
         try:
-            import pdfplumber
+            import pdfplumber  # noqa: F401
+
             return True
         except ImportError:
             return False
@@ -68,7 +69,7 @@ class PdfTextExtractor:
         if not self._available:
             return self._mock_extract(pdf_bytes)
 
-        import pdfplumber
+        import pdfplumber  # noqa: F401
 
         doc = ExtractedDocument()
         with pdfplumber.open(io.BytesIO(pdf_bytes)) as pdf:
@@ -76,11 +77,13 @@ class PdfTextExtractor:
             for i, page in enumerate(pdf.pages):
                 text = page.extract_text() or ""
                 has_images = len(page.images) > 0
-                doc.pages.append(ExtractedPage(
-                    page_number=i + 1,
-                    text=text,
-                    has_images=has_images,
-                ))
+                doc.pages.append(
+                    ExtractedPage(
+                        page_number=i + 1,
+                        text=text,
+                        has_images=has_images,
+                    )
+                )
             doc.total_words = sum(p.word_count for p in doc.pages)
             doc.has_text = doc.total_words > 0
 

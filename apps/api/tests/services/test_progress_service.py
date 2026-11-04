@@ -4,8 +4,6 @@ import asyncio
 from unittest.mock import AsyncMock, MagicMock
 from uuid import uuid4
 
-import pytest
-
 from studyos_api.services.progress_service import ProgressService
 
 
@@ -31,9 +29,7 @@ class TestProgressServiceNoPool:
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
         try:
-            result = loop.run_until_complete(
-                service.toggle_subtopic_completion(uuid4(), uuid4())
-            )
+            result = loop.run_until_complete(service.toggle_subtopic_completion(uuid4(), uuid4()))
         finally:
             loop.close()
         assert result == {}
@@ -43,9 +39,7 @@ class TestProgressServiceNoPool:
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
         try:
-            result = loop.run_until_complete(
-                service.get_chapter_progress(uuid4(), uuid4())
-            )
+            result = loop.run_until_complete(service.get_chapter_progress(uuid4(), uuid4()))
         finally:
             loop.close()
         assert result == {}
@@ -55,9 +49,7 @@ class TestProgressServiceNoPool:
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
         try:
-            result = loop.run_until_complete(
-                service.get_subject_progress(uuid4(), uuid4())
-            )
+            result = loop.run_until_complete(service.get_subject_progress(uuid4(), uuid4()))
         finally:
             loop.close()
         assert result == {}
@@ -67,9 +59,7 @@ class TestProgressServiceNoPool:
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
         try:
-            result = loop.run_until_complete(
-                service.get_exam_progress(uuid4(), uuid4())
-            )
+            result = loop.run_until_complete(service.get_exam_progress(uuid4(), uuid4()))
         finally:
             loop.close()
         assert result == {}
@@ -80,36 +70,48 @@ class TestToggleSubtopicCompletion:
 
     def test_create_new_completion(self):
         mock_pool, mock_conn = _make_mock_pool()
-        mock_conn.fetchrow = AsyncMock(side_effect=[
-            None,  # No existing completion
-            {"id": "new-id", "profile_id": "p1", "subtopic_id": "s1", "completed_at": "now", "created_at": "now"},
-        ])
+        mock_conn.fetchrow = AsyncMock(
+            side_effect=[
+                None,  # No existing completion
+                {
+                    "id": "new-id",
+                    "profile_id": "p1",
+                    "subtopic_id": "s1",
+                    "completed_at": "now",
+                    "created_at": "now",
+                },
+            ]
+        )
         service = ProgressService(pool=mock_pool)
 
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
         try:
-            result = loop.run_until_complete(
-                service.toggle_subtopic_completion(uuid4(), uuid4())
-            )
+            result = loop.run_until_complete(service.toggle_subtopic_completion(uuid4(), uuid4()))
         finally:
             loop.close()
         assert result["id"] == "new-id"
 
     def test_soft_delete_existing_completion(self):
         mock_pool, mock_conn = _make_mock_pool()
-        mock_conn.fetchrow = AsyncMock(side_effect=[
-            {"id": "existing-id", "deleted_at": None},  # Existing, not deleted
-            {"id": "existing-id", "profile_id": "p1", "subtopic_id": "s1", "completed_at": "now", "deleted_at": "now"},
-        ])
+        mock_conn.fetchrow = AsyncMock(
+            side_effect=[
+                {"id": "existing-id", "deleted_at": None},  # Existing, not deleted
+                {
+                    "id": "existing-id",
+                    "profile_id": "p1",
+                    "subtopic_id": "s1",
+                    "completed_at": "now",
+                    "deleted_at": "now",
+                },
+            ]
+        )
         service = ProgressService(pool=mock_pool)
 
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
         try:
-            result = loop.run_until_complete(
-                service.toggle_subtopic_completion(uuid4(), uuid4())
-            )
+            result = loop.run_until_complete(service.toggle_subtopic_completion(uuid4(), uuid4()))
         finally:
             loop.close()
         assert result["id"] == "existing-id"
@@ -117,18 +119,24 @@ class TestToggleSubtopicCompletion:
 
     def test_restore_soft_deleted_completion(self):
         mock_pool, mock_conn = _make_mock_pool()
-        mock_conn.fetchrow = AsyncMock(side_effect=[
-            {"id": "existing-id", "deleted_at": "2024-01-01"},  # Existing, soft-deleted
-            {"id": "existing-id", "profile_id": "p1", "subtopic_id": "s1", "completed_at": "now", "created_at": "now"},
-        ])
+        mock_conn.fetchrow = AsyncMock(
+            side_effect=[
+                {"id": "existing-id", "deleted_at": "2024-01-01"},  # Existing, soft-deleted
+                {
+                    "id": "existing-id",
+                    "profile_id": "p1",
+                    "subtopic_id": "s1",
+                    "completed_at": "now",
+                    "created_at": "now",
+                },
+            ]
+        )
         service = ProgressService(pool=mock_pool)
 
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
         try:
-            result = loop.run_until_complete(
-                service.toggle_subtopic_completion(uuid4(), uuid4())
-            )
+            result = loop.run_until_complete(service.toggle_subtopic_completion(uuid4(), uuid4()))
         finally:
             loop.close()
         assert result["id"] == "existing-id"
@@ -139,18 +147,18 @@ class TestGetChapterProgress:
 
     def test_chapter_progress_with_data(self):
         mock_pool, mock_conn = _make_mock_pool()
-        mock_conn.fetchrow = AsyncMock(side_effect=[
-            {"total": 10},  # Total subtopics
-            {"completed": 5},  # Completed subtopics
-        ])
+        mock_conn.fetchrow = AsyncMock(
+            side_effect=[
+                {"total": 10},  # Total subtopics
+                {"completed": 5},  # Completed subtopics
+            ]
+        )
         service = ProgressService(pool=mock_pool)
 
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
         try:
-            result = loop.run_until_complete(
-                service.get_chapter_progress(uuid4(), uuid4())
-            )
+            result = loop.run_until_complete(service.get_chapter_progress(uuid4(), uuid4()))
         finally:
             loop.close()
         assert result["total_subtopics"] == 10
@@ -159,18 +167,18 @@ class TestGetChapterProgress:
 
     def test_chapter_progress_zero_total(self):
         mock_pool, mock_conn = _make_mock_pool()
-        mock_conn.fetchrow = AsyncMock(side_effect=[
-            {"total": 0},
-            {"completed": 0},
-        ])
+        mock_conn.fetchrow = AsyncMock(
+            side_effect=[
+                {"total": 0},
+                {"completed": 0},
+            ]
+        )
         service = ProgressService(pool=mock_pool)
 
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
         try:
-            result = loop.run_until_complete(
-                service.get_chapter_progress(uuid4(), uuid4())
-            )
+            result = loop.run_until_complete(service.get_chapter_progress(uuid4(), uuid4()))
         finally:
             loop.close()
         assert result["progress_pct"] == 0
@@ -183,9 +191,7 @@ class TestGetChapterProgress:
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
         try:
-            result = loop.run_until_complete(
-                service.get_chapter_progress(uuid4(), uuid4())
-            )
+            result = loop.run_until_complete(service.get_chapter_progress(uuid4(), uuid4()))
         finally:
             loop.close()
         assert result["total_subtopics"] == 0
@@ -197,18 +203,18 @@ class TestGetSubjectProgress:
 
     def test_subject_progress_with_chapters(self):
         mock_pool, mock_conn = _make_mock_pool()
-        mock_conn.fetch = AsyncMock(return_value=[
-            {"id": "ch1", "name": "Chapter 1", "total_subtopics": 10, "completed_subtopics": 5},
-            {"id": "ch2", "name": "Chapter 2", "total_subtopics": 8, "completed_subtopics": 8},
-        ])
+        mock_conn.fetch = AsyncMock(
+            return_value=[
+                {"id": "ch1", "name": "Chapter 1", "total_subtopics": 10, "completed_subtopics": 5},
+                {"id": "ch2", "name": "Chapter 2", "total_subtopics": 8, "completed_subtopics": 8},
+            ]
+        )
         service = ProgressService(pool=mock_pool)
 
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
         try:
-            result = loop.run_until_complete(
-                service.get_subject_progress(uuid4(), uuid4())
-            )
+            result = loop.run_until_complete(service.get_subject_progress(uuid4(), uuid4()))
         finally:
             loop.close()
         assert result["total_subtopics"] == 18
@@ -224,9 +230,7 @@ class TestGetSubjectProgress:
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
         try:
-            result = loop.run_until_complete(
-                service.get_subject_progress(uuid4(), uuid4())
-            )
+            result = loop.run_until_complete(service.get_subject_progress(uuid4(), uuid4()))
         finally:
             loop.close()
         assert result["total_subtopics"] == 0
@@ -239,18 +243,18 @@ class TestGetExamProgress:
 
     def test_exam_progress_with_subjects(self):
         mock_pool, mock_conn = _make_mock_pool()
-        mock_conn.fetch = AsyncMock(return_value=[
-            {"id": "s1", "name": "Physics", "total_subtopics": 20, "completed_subtopics": 10},
-            {"id": "s2", "name": "Chemistry", "total_subtopics": 15, "completed_subtopics": 15},
-        ])
+        mock_conn.fetch = AsyncMock(
+            return_value=[
+                {"id": "s1", "name": "Physics", "total_subtopics": 20, "completed_subtopics": 10},
+                {"id": "s2", "name": "Chemistry", "total_subtopics": 15, "completed_subtopics": 15},
+            ]
+        )
         service = ProgressService(pool=mock_pool)
 
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
         try:
-            result = loop.run_until_complete(
-                service.get_exam_progress(uuid4(), uuid4())
-            )
+            result = loop.run_until_complete(service.get_exam_progress(uuid4(), uuid4()))
         finally:
             loop.close()
         assert result["total_subtopics"] == 35
@@ -266,9 +270,7 @@ class TestGetExamProgress:
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
         try:
-            result = loop.run_until_complete(
-                service.get_exam_progress(uuid4(), uuid4())
-            )
+            result = loop.run_until_complete(service.get_exam_progress(uuid4(), uuid4()))
         finally:
             loop.close()
         assert result["total_subtopics"] == 0

@@ -62,7 +62,9 @@ class RoadmapController:
         return await self._performance_predictor.predict_score(profile_id)
 
     async def get_prediction_history(
-        self, profile_id: UUID, limit: int = 10,
+        self,
+        profile_id: UUID,
+        limit: int = 10,
     ) -> list[dict[str, Any]]:
         """Get prediction history."""
         return await self._performance_predictor.get_predictions(profile_id, limit)

@@ -1,7 +1,5 @@
 """Tests for token budget enforcement."""
 
-import pytest
-
 from studyos_api.services.token_budget import TokenBudgetEnforcer
 
 

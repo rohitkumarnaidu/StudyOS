@@ -39,6 +39,7 @@ class OpenAIEmbeddingProvider(EmbeddingProvider):
         if self._client is None and self._api_key:
             try:
                 from openai import AsyncOpenAI
+
                 self._client = AsyncOpenAI(api_key=self._api_key)
             except ImportError:
                 logger.warning("embedding.openai.import_error")
@@ -113,14 +114,16 @@ class EmbeddingPipeline:
 
         results = []
         for chunk, embedding in zip(chunks, embeddings):
-            results.append({
-                "source_id": chunk.source_id,
-                "chunk_index": chunk.chunk_index,
-                "content": chunk.content,
-                "embedding": embedding,
-                "token_estimate": chunk.token_estimate,
-                "metadata": chunk.metadata,
-            })
+            results.append(
+                {
+                    "source_id": chunk.source_id,
+                    "chunk_index": chunk.chunk_index,
+                    "content": chunk.content,
+                    "embedding": embedding,
+                    "token_estimate": chunk.token_estimate,
+                    "metadata": chunk.metadata,
+                }
+            )
 
         logger.info(
             "embedding_pipeline.processed",

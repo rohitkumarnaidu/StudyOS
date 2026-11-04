@@ -3,11 +3,11 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
+from datetime import UTC
 from enum import Enum
 from typing import Any
 
 import structlog
-from datetime import UTC
 
 logger = structlog.get_logger(__name__)
 
@@ -55,6 +55,7 @@ class BulkImportService:
     def create_job(self, job_id: str, total_files: int) -> BulkImportJob:
         """Create a new bulk import job."""
         from datetime import datetime
+
         job = BulkImportJob(
             id=job_id,
             total_files=total_files,
@@ -64,7 +65,9 @@ class BulkImportService:
         logger.info("bulk_import.created", job_id=job_id, files=total_files)
         return job
 
-    def update_progress(self, job_id: str, success: bool, result: dict[str, Any] | None = None) -> None:
+    def update_progress(
+        self, job_id: str, success: bool, result: dict[str, Any] | None = None
+    ) -> None:
         """Update job progress after processing a file."""
         job = self._jobs.get(job_id)
         if not job:
@@ -80,6 +83,7 @@ class BulkImportService:
         if job.processed_files >= job.total_files:
             job.status = JobStatus.COMPLETED if job.failed_files == 0 else JobStatus.FAILED
             from datetime import datetime
+
             job.completed_at = datetime.now(UTC).isoformat()
 
     def get_job(self, job_id: str) -> BulkImportJob | None:

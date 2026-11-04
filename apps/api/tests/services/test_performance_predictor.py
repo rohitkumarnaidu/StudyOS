@@ -2,7 +2,7 @@
 
 from datetime import date
 from unittest.mock import AsyncMock, MagicMock
-from uuid import UUID, uuid4
+from uuid import uuid4
 
 import pytest
 
@@ -169,20 +169,24 @@ class TestPerformancePredictorGetPredictions:
         conn = AsyncMock()
         today = date.today()
         rows = [
-            MockAsyncpgRow({
-                "predicted_score": 520.0,
-                "confidence_interval_lower": 480.0,
-                "confidence_interval_upper": 560.0,
-                "prediction_date": today,
-                "model_version": "v1",
-            }),
-            MockAsyncpgRow({
-                "predicted_score": 500.0,
-                "confidence_interval_lower": 450.0,
-                "confidence_interval_upper": 550.0,
-                "prediction_date": today,
-                "model_version": "v1",
-            }),
+            MockAsyncpgRow(
+                {
+                    "predicted_score": 520.0,
+                    "confidence_interval_lower": 480.0,
+                    "confidence_interval_upper": 560.0,
+                    "prediction_date": today,
+                    "model_version": "v1",
+                }
+            ),
+            MockAsyncpgRow(
+                {
+                    "predicted_score": 500.0,
+                    "confidence_interval_lower": 450.0,
+                    "confidence_interval_upper": 550.0,
+                    "prediction_date": today,
+                    "model_version": "v1",
+                }
+            ),
         ]
         conn.fetch.return_value = rows
 

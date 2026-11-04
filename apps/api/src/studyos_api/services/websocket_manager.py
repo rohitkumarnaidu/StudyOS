@@ -75,7 +75,9 @@ class ConnectionManager:
                 del self._user_rooms[connection_id]
         logger.info("ws.left_room", connection_id=connection_id, room_id=room_id)
 
-    async def broadcast_to_room(self, room_id: str, message: dict[str, Any], exclude: str | None = None) -> None:
+    async def broadcast_to_room(
+        self, room_id: str, message: dict[str, Any], exclude: str | None = None
+    ) -> None:
         """Broadcast a message to all connections in a room."""
         room = self._rooms.get(room_id, {})
         disconnected = []

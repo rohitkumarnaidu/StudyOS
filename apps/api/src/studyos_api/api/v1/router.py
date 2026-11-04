@@ -31,7 +31,9 @@ router.include_router(progress.router, prefix="/progress", tags=["progress"])
 router.include_router(privacy.router, prefix="/privacy", tags=["privacy"])
 router.include_router(roadmap.router, prefix="/roadmap", tags=["roadmap"])
 router.include_router(analytics.router, prefix="/analytics", tags=["analytics"])
-router.include_router(mistake_intelligence.router, prefix="/mistake-intelligence", tags=["mistake-intelligence"])
+router.include_router(
+    mistake_intelligence.router, prefix="/mistake-intelligence", tags=["mistake-intelligence"]
+)
 router.include_router(notes.router, prefix="/notes", tags=["notes"])
 router.include_router(quizzes.router, prefix="/quizzes", tags=["quizzes"])
 router.include_router(websocket.router, tags=["websocket"])

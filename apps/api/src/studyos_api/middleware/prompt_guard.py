@@ -36,9 +36,17 @@ _INJECTION_PATTERNS = [
     (re.compile(r"(?i)(dan|jailbreak|bypass|override)\s*(mode|rules|filter)?"), "jailbreak"),
     (re.compile(r"(?i)(act\s+as|pretend\s+to\s+be|roleplay\s+as)\s+"), "role_play"),
     (re.compile(r"(?i)reveal\s+(your\s+)?(system\s+)?(prompt|instructions|rules)"), "prompt_leak"),
-    (re.compile(r"(?i)output\s+(your\s+)?(initial|system|original)\s+(prompt|instructions)"), "prompt_leak"),
+    (
+        re.compile(r"(?i)output\s+(your\s+)?(initial|system|original)\s+(prompt|instructions)"),
+        "prompt_leak",
+    ),
     (re.compile(r"<\|.*?\|>"), "delimiter_abuse"),
-    (re.compile(r"(?i)do\s+not\s+(follow|obey|adhere\s+to)\s+(the\s+)?(rules|guidelines|policy)"), "rule_override"),
+    (
+        re.compile(
+            r"(?i)do\s+not\s+(follow|obey|adhere\s+to)\s+(the\s+)?(rules|guidelines|policy)"
+        ),
+        "rule_override",
+    ),
     (re.compile(r"(?i)(new\s+)?instructions?\s*[:：]"), "instruction_injection"),
 ]
 

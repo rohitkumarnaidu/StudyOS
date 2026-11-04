@@ -39,7 +39,7 @@ def generate_performance_report(
         return result
     except Exception as exc:
         logger.exception("reports.generate_performance_report.failed", profile_id=profile_id)
-        raise self.retry(exc=exc, countdown=60 * (2 ** self.request.retries))
+        raise self.retry(exc=exc, countdown=60 * (2**self.request.retries))
 
 
 @shared_task(
@@ -73,7 +73,7 @@ def generate_mock_test_analysis(
         return result
     except Exception as exc:
         logger.exception("reports.generate_mock_test_analysis.failed", mock_test_id=mock_test_id)
-        raise self.retry(exc=exc, countdown=90 * (2 ** self.request.retries))
+        raise self.retry(exc=exc, countdown=90 * (2**self.request.retries))
 
 
 @shared_task(
@@ -107,7 +107,7 @@ def export_study_data(
         return result
     except Exception as exc:
         logger.exception("reports.export_study_data.failed", profile_id=profile_id)
-        raise self.retry(exc=exc, countdown=30 * (2 ** self.request.retries))
+        raise self.retry(exc=exc, countdown=30 * (2**self.request.retries))
 
 
 @shared_task(
@@ -155,4 +155,4 @@ def generate_streak_report(
         return result
     except Exception as exc:
         logger.exception("reports.generate_streak_report.failed", profile_id=profile_id)
-        raise self.retry(exc=exc, countdown=120 * (2 ** self.request.retries))
+        raise self.retry(exc=exc, countdown=120 * (2**self.request.retries))

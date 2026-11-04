@@ -1,6 +1,10 @@
 """Tests for pdf_text_extractor service."""
 
-from studyos_api.services.pdf_text_extractor import PdfTextExtractor, ExtractedPage, ExtractedDocument
+from studyos_api.services.pdf_text_extractor import (
+    ExtractedDocument,
+    ExtractedPage,
+    PdfTextExtractor,
+)
 
 
 class TestExtractedPage:

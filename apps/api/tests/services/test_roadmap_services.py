@@ -1,8 +1,8 @@
 """Tests for Phase 8 roadmap services."""
 
 from datetime import date, timedelta
-from unittest.mock import AsyncMock, MagicMock, patch
-from uuid import UUID, uuid4
+from unittest.mock import AsyncMock, MagicMock
+from uuid import uuid4
 
 import pytest
 
@@ -146,7 +146,9 @@ class TestRecoveryPlanner:
     @pytest.mark.asyncio
     async def test_generate_recovery_no_pool(self):
         planner = RecoveryPlanner(pool=None)
-        result = await planner.generate_recovery_plan(uuid4(), None, date.today() + timedelta(days=90))
+        result = await planner.generate_recovery_plan(
+            uuid4(), None, date.today() + timedelta(days=90)
+        )
         assert "error" in result
 
     @pytest.mark.asyncio

@@ -3,7 +3,6 @@
 import json
 from unittest.mock import AsyncMock, MagicMock
 
-import httpx
 import pytest
 
 from studyos_api.ai.mcp.registry import MCPConnectorRegistry
@@ -31,10 +30,12 @@ class TestMCPConnectorRegistryInit:
 
     def test_multiple_servers(self):
         client = AsyncMock()
-        servers = json.dumps([
-            {"id": "server-a", "url": "http://localhost:3000/mcp"},
-            {"id": "server-b", "url": "http://localhost:3001/mcp"},
-        ])
+        servers = json.dumps(
+            [
+                {"id": "server-a", "url": "http://localhost:3000/mcp"},
+                {"id": "server-b", "url": "http://localhost:3001/mcp"},
+            ]
+        )
         settings = _make_settings(servers)
         registry = MCPConnectorRegistry(settings=settings, http_client=client)
         assert registry.list_connector_ids() == ["server-a", "server-b"]
@@ -60,17 +61,21 @@ class TestMCPConnectorRegistryInit:
 
     def test_mixed_http_and_stdio(self):
         client = AsyncMock()
-        servers = json.dumps([
-            {"id": "http-server", "url": "http://localhost:3000/mcp"},
-            {"id": "stdio-server", "command": "npx -y @some/mcp-server"},
-        ])
+        servers = json.dumps(
+            [
+                {"id": "http-server", "url": "http://localhost:3000/mcp"},
+                {"id": "stdio-server", "command": "npx -y @some/mcp-server"},
+            ]
+        )
         settings = _make_settings(servers)
         registry = MCPConnectorRegistry(settings=settings, http_client=client)
         assert registry.list_connector_ids() == ["http-server"]
 
     def test_invalid_record_skipped(self):
         client = AsyncMock()
-        servers = json.dumps([{"id": "valid", "url": "http://localhost:3000/mcp"}, {"bad": "record"}])
+        servers = json.dumps(
+            [{"id": "valid", "url": "http://localhost:3000/mcp"}, {"bad": "record"}]
+        )
         settings = _make_settings(servers)
         registry = MCPConnectorRegistry(settings=settings, http_client=client)
         assert "valid" in registry.list_connector_ids()
@@ -86,10 +91,12 @@ class TestMCPConnectorRegistryOperations:
 
     def test_list_connector_ids_sorted(self):
         client = AsyncMock()
-        servers = json.dumps([
-            {"id": "z-server", "url": "http://localhost:3000/mcp"},
-            {"id": "a-server", "url": "http://localhost:3001/mcp"},
-        ])
+        servers = json.dumps(
+            [
+                {"id": "z-server", "url": "http://localhost:3000/mcp"},
+                {"id": "a-server", "url": "http://localhost:3001/mcp"},
+            ]
+        )
         settings = _make_settings(servers)
         registry = MCPConnectorRegistry(settings=settings, http_client=client)
         ids = registry.list_connector_ids()
@@ -105,13 +112,17 @@ class TestMCPConnectorRegistryOperations:
 
     @pytest.mark.asyncio
     async def test_list_tools(self, registry):
-        registry._clients["test-server"].call = AsyncMock(return_value={"tools": [{"name": "tool1"}]})
+        registry._clients["test-server"].call = AsyncMock(
+            return_value={"tools": [{"name": "tool1"}]}
+        )
         result = await registry.list_tools("test-server")
         assert result == {"tools": [{"name": "tool1"}]}
 
     @pytest.mark.asyncio
     async def test_call_tool(self, registry):
-        registry._clients["test-server"].call = AsyncMock(return_value={"content": [{"text": "result"}]})
+        registry._clients["test-server"].call = AsyncMock(
+            return_value={"content": [{"text": "result"}]}
+        )
         result = await registry.call_tool("test-server", "tool1", {"arg1": "val1"})
         assert result == {"content": [{"text": "result"}]}
         registry._clients["test-server"].call.assert_awaited_once_with(

@@ -52,14 +52,16 @@ class RecoveryPlanner:
             chapter_statuses = []
             for chapter in chapters:
                 progress = await self._get_chapter_progress(conn, profile_id, chapter["id"])
-                chapter_statuses.append({
-                    "chapter_id": str(chapter["id"]),
-                    "chapter_name": chapter["name"],
-                    "subject_name": chapter["subject_name"],
-                    "weightage": float(chapter["weightage"] or 1.0),
-                    "completion_rate": progress["completion_rate"],
-                    "is_completed": progress["completion_rate"] >= 0.9,
-                })
+                chapter_statuses.append(
+                    {
+                        "chapter_id": str(chapter["id"]),
+                        "chapter_name": chapter["name"],
+                        "subject_name": chapter["subject_name"],
+                        "weightage": float(chapter["weightage"] or 1.0),
+                        "completion_rate": progress["completion_rate"],
+                        "is_completed": progress["completion_rate"] >= 0.9,
+                    }
+                )
 
             accelerated = []
             skipped = []
@@ -68,31 +70,37 @@ class RecoveryPlanner:
                 if ch["is_completed"]:
                     continue
                 if ch["weightage"] >= 5.0:
-                    accelerated.append({
-                        "chapter_id": ch["chapter_id"],
-                        "chapter_name": ch["chapter_name"],
-                        "subject_name": ch["subject_name"],
-                        "weightage": ch["weightage"],
-                        "current_completion": ch["completion_rate"],
-                        "priority": "high",
-                    })
+                    accelerated.append(
+                        {
+                            "chapter_id": ch["chapter_id"],
+                            "chapter_name": ch["chapter_name"],
+                            "subject_name": ch["subject_name"],
+                            "weightage": ch["weightage"],
+                            "current_completion": ch["completion_rate"],
+                            "priority": "high",
+                        }
+                    )
                 elif ch["weightage"] >= 3.0:
-                    accelerated.append({
-                        "chapter_id": ch["chapter_id"],
-                        "chapter_name": ch["chapter_name"],
-                        "subject_name": ch["subject_name"],
-                        "weightage": ch["weightage"],
-                        "current_completion": ch["completion_rate"],
-                        "priority": "medium",
-                    })
+                    accelerated.append(
+                        {
+                            "chapter_id": ch["chapter_id"],
+                            "chapter_name": ch["chapter_name"],
+                            "subject_name": ch["subject_name"],
+                            "weightage": ch["weightage"],
+                            "current_completion": ch["completion_rate"],
+                            "priority": "medium",
+                        }
+                    )
                 else:
-                    skipped.append({
-                        "chapter_id": ch["chapter_id"],
-                        "chapter_name": ch["chapter_name"],
-                        "subject_name": ch["subject_name"],
-                        "weightage": ch["weightage"],
-                        "reason": "low_weightage",
-                    })
+                    skipped.append(
+                        {
+                            "chapter_id": ch["chapter_id"],
+                            "chapter_name": ch["chapter_name"],
+                            "subject_name": ch["subject_name"],
+                            "weightage": ch["weightage"],
+                            "reason": "low_weightage",
+                        }
+                    )
 
             total_accelerated = len(accelerated)
             days_per_chapter = max(days_remaining / max(total_accelerated, 1), 0.5)
@@ -197,7 +205,10 @@ class RecoveryPlanner:
         return {"id": str(row["id"]), "created_at": row["created_at"].isoformat()}
 
     async def _get_chapter_progress(
-        self, conn: asyncpg.Connection, profile_id: UUID, chapter_id: UUID,
+        self,
+        conn: asyncpg.Connection,
+        profile_id: UUID,
+        chapter_id: UUID,
     ) -> dict[str, float]:
         row = await conn.fetchrow(
             """

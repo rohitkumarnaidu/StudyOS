@@ -1,9 +1,7 @@
 """Tests for Phase 4 notes services."""
 
-import pytest
-
 from studyos_api.services.bulk_import_service import BulkImportService, JobStatus
-from studyos_api.services.mindmap_parser import MindMapParser, MindMapNode
+from studyos_api.services.mindmap_parser import MindMapNode, MindMapParser
 from studyos_api.services.note_embedder import NoteEmbedder, RecursiveChunker, cosine_similarity
 from studyos_api.services.note_export import NoteExport
 from studyos_api.services.note_search import NoteDocument, NoteSearch
@@ -175,7 +173,15 @@ class TestNoteExport:
 
     def test_export_csv(self) -> None:
         exporter = NoteExport()
-        notes = [{"id": "1", "title": "Test", "summary": "Summary", "tags": [], "created_at": "2026-01-01"}]
+        notes = [
+            {
+                "id": "1",
+                "title": "Test",
+                "summary": "Summary",
+                "tags": [],
+                "created_at": "2026-01-01",
+            }
+        ]
         result = exporter.export_csv(notes)
         assert result.format == "csv"
         assert b"id,title" in result.content

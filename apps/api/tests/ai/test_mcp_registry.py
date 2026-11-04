@@ -1,6 +1,6 @@
 """Tests for AI MCP registry."""
 
-from unittest.mock import AsyncMock, MagicMock
+from unittest.mock import AsyncMock
 
 import pytest
 
@@ -11,6 +11,7 @@ class TestMCPConnectorRegistry:
     @pytest.fixture
     def mock_settings(self):
         from studyos_api.core.config import Settings
+
         return Settings(
             ai_mcp_servers_json="[]",
         )

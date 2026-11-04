@@ -1,15 +1,11 @@
 """Tests for MistakeIntelligenceController."""
 
 import uuid
-from unittest.mock import AsyncMock, MagicMock
+from unittest.mock import MagicMock
 
 import pytest
 
 from studyos_api.controllers.mistake_intelligence_controller import MistakeIntelligenceController
-from studyos_api.services.concept_gap_analyzer import ConceptGapAnalyzer
-from studyos_api.services.mistake_predictor import MistakePredictor
-from studyos_api.services.mistake_tracker import MistakeTracker, MistakeType
-from studyos_api.services.semantic_clusterer import SemanticClusterer
 
 
 @pytest.fixture

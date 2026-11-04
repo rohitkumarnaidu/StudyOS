@@ -2,8 +2,6 @@
 
 from unittest.mock import MagicMock, patch
 
-import pytest
-
 from studyos_api.services.auth_service import AuthService
 
 
@@ -20,7 +18,9 @@ class TestAuthServiceResolveOptionalUser:
         svc = AuthService()
         fake_claims = {"sub": "user-123", "roles": ["student", "admin"]}
 
-        with patch("studyos_api.services.auth_service.decode_access_token", return_value=fake_claims):
+        with patch(
+            "studyos_api.services.auth_service.decode_access_token", return_value=fake_claims
+        ):
             with patch("studyos_api.services.auth_service.get_settings") as mock_settings:
                 mock_settings.return_value = MagicMock(allow_legacy_demo_bearer=False)
                 user = svc.resolve_optional_user("valid.jwt.token")
@@ -33,7 +33,9 @@ class TestAuthServiceResolveOptionalUser:
         svc = AuthService()
         fake_claims = {"sub": "user-123"}
 
-        with patch("studyos_api.services.auth_service.decode_access_token", return_value=fake_claims):
+        with patch(
+            "studyos_api.services.auth_service.decode_access_token", return_value=fake_claims
+        ):
             with patch("studyos_api.services.auth_service.get_settings") as mock_settings:
                 mock_settings.return_value = MagicMock(allow_legacy_demo_bearer=False)
                 user = svc.resolve_optional_user("valid.jwt.token")
@@ -46,7 +48,9 @@ class TestAuthServiceResolveOptionalUser:
         svc = AuthService()
         fake_claims = {"sub": "user-123", "roles": "student"}
 
-        with patch("studyos_api.services.auth_service.decode_access_token", return_value=fake_claims):
+        with patch(
+            "studyos_api.services.auth_service.decode_access_token", return_value=fake_claims
+        ):
             with patch("studyos_api.services.auth_service.get_settings") as mock_settings:
                 mock_settings.return_value = MagicMock(allow_legacy_demo_bearer=False)
                 user = svc.resolve_optional_user("valid.jwt.token")
@@ -102,7 +106,9 @@ class TestAuthServiceResolveOptionalUser:
         svc = AuthService()
         fake_claims = {"sub": "real-user", "roles": ["student"]}
 
-        with patch("studyos_api.services.auth_service.decode_access_token", return_value=fake_claims):
+        with patch(
+            "studyos_api.services.auth_service.decode_access_token", return_value=fake_claims
+        ):
             with patch("studyos_api.services.auth_service.get_settings") as mock_settings:
                 mock_settings.return_value = MagicMock(allow_legacy_demo_bearer=True)
                 user = svc.resolve_optional_user("demo")
