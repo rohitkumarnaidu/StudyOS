@@ -14,12 +14,12 @@ export default function SyllabusPage() {
 }
 
 async function SyllabusContent() {
-  let defaultExam = null;
-  let chapters: any[] = [];
+  let defaultExam: Awaited<ReturnType<typeof getExams>>[number] | null = null;
+  let chapters: Awaited<ReturnType<typeof getChapters>> = [];
 
   try {
     const exams = await getExams();
-    defaultExam = exams[0];
+    defaultExam = exams[0] ?? null;
     if (defaultExam) {
       chapters = await getChapters(defaultExam.id);
     }
