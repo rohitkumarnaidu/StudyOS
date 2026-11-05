@@ -1,8 +1,8 @@
 """Extended tests for cache service to boost coverage."""
 
-import asyncio
+from unittest.mock import AsyncMock, MagicMock
+
 import pytest
-from unittest.mock import AsyncMock, MagicMock, patch
 
 from studyos_api.services import cache
 

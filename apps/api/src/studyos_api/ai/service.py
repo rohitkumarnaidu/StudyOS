@@ -8,7 +8,7 @@ from collections.abc import AsyncIterator, Sequence
 import httpx
 import structlog
 
-from studyos_api.ai.langsmith_tracing import trace_chat_call, record_trace_outputs
+from studyos_api.ai.langsmith_tracing import record_trace_outputs, trace_chat_call
 from studyos_api.ai.mcp.registry import MCPConnectorRegistry
 from studyos_api.ai.memory.context import SessionConversationMemory
 from studyos_api.ai.prompts.registry import PromptRegistry

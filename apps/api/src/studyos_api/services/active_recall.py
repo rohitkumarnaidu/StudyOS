@@ -3,10 +3,10 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
+from datetime import UTC
 from typing import Any
 
 import structlog
-from datetime import UTC
 
 logger = structlog.get_logger(__name__)
 
@@ -100,7 +100,9 @@ class ActiveRecallEngine:
             started_at=started_at,
         )
         self._sessions[session_id] = session
-        logger.info("active_recall.session_created", session_id=session_id, questions=len(questions))
+        logger.info(
+            "active_recall.session_created", session_id=session_id, questions=len(questions)
+        )
         return session
 
     def get_current_question(self, session_id: str) -> RecallQuestion | None:
@@ -201,4 +203,5 @@ class ActiveRecallEngine:
     @staticmethod
     def _now_iso() -> str:
         from datetime import datetime
+
         return datetime.now(UTC).isoformat()

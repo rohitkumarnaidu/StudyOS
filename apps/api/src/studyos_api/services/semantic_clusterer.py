@@ -47,13 +47,15 @@ class SemanticClusterer:
         profile_id: str = "",
     ) -> None:
         """Add a mistake to be clustered."""
-        self._mistakes.append({
-            "mistake_id": mistake_id,
-            "concept_tags": concept_tags,
-            "description": description,
-            "mistake_type": mistake_type,
-            "profile_id": profile_id,
-        })
+        self._mistakes.append(
+            {
+                "mistake_id": mistake_id,
+                "concept_tags": concept_tags,
+                "description": description,
+                "mistake_type": mistake_type,
+                "profile_id": profile_id,
+            }
+        )
 
     def cluster(self, min_cluster_size: int = 2) -> list[MistakeCluster]:
         """Cluster mistakes by concept overlap and semantic similarity."""

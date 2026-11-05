@@ -27,12 +27,14 @@ class WebhookEvent:
     next_retry_at: float = 0.0
 
     def to_json(self) -> str:
-        return json.dumps({
-            "id": self.delivery_id,
-            "event": self.event_type,
-            "timestamp": self.timestamp,
-            "data": self.payload,
-        })
+        return json.dumps(
+            {
+                "id": self.delivery_id,
+                "event": self.event_type,
+                "timestamp": self.timestamp,
+                "data": self.payload,
+            }
+        )
 
 
 def generate_signature(payload: str, secret: str) -> str:
@@ -53,7 +55,8 @@ def verify_signature(payload: str, signature: str, secret: str) -> bool:
 def compute_backoff(attempt: int, base_seconds: float = 1.0, max_seconds: float = 300.0) -> float:
     """Exponential backoff with jitter for webhook retries."""
     import random
-    delay = min(base_seconds * (2 ** attempt), max_seconds)
+
+    delay = min(base_seconds * (2**attempt), max_seconds)
     jitter = random.uniform(0, delay * 0.1)  # noqa: S311 (jitter doesn't need crypto security)
     return delay + jitter
 
@@ -70,6 +73,7 @@ class WebhookDeliveryService:
     def queue_event(self, event_type: str, payload: dict[str, Any]) -> WebhookEvent:
         """Queue a new webhook event for delivery."""
         import uuid
+
         event = WebhookEvent(
             event_type=event_type,
             payload=payload,

@@ -1,10 +1,10 @@
 """Tests for notification Celery tasks."""
 
 from studyos_api.tasks.notification_tasks import (
+    send_achievement_notification,
     send_burnout_alert,
     send_daily_digest,
     send_email,
-    send_achievement_notification,
     send_push_notification,
     send_revision_reminder,
 )

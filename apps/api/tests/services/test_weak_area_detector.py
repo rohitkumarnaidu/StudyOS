@@ -95,40 +95,64 @@ class TestCalculateWeaknessScore:
 
     def test_high_attempts_increases_confidence(self) -> None:
         score_low = _calculate_weakness_score(
-            accuracy=0.3, weight=1.0, recency=1.0, total_attempts=3,
+            accuracy=0.3,
+            weight=1.0,
+            recency=1.0,
+            total_attempts=3,
         )
         score_high = _calculate_weakness_score(
-            accuracy=0.3, weight=1.0, recency=1.0, total_attempts=30,
+            accuracy=0.3,
+            weight=1.0,
+            recency=1.0,
+            total_attempts=30,
         )
         assert score_high > score_low
 
     def test_subject_weight_impact(self) -> None:
         score_physics = _calculate_weakness_score(
-            accuracy=0.5, weight=1.2, recency=1.0, total_attempts=5,
+            accuracy=0.5,
+            weight=1.2,
+            recency=1.0,
+            total_attempts=5,
         )
         score_biology = _calculate_weakness_score(
-            accuracy=0.5, weight=1.0, recency=1.0, total_attempts=5,
+            accuracy=0.5,
+            weight=1.0,
+            recency=1.0,
+            total_attempts=5,
         )
         assert score_physics > score_biology
 
     def test_recency_impact(self) -> None:
         score_recent = _calculate_weakness_score(
-            accuracy=0.4, weight=1.0, recency=0.9, total_attempts=5,
+            accuracy=0.4,
+            weight=1.0,
+            recency=0.9,
+            total_attempts=5,
         )
         score_old = _calculate_weakness_score(
-            accuracy=0.4, weight=1.0, recency=0.2, total_attempts=5,
+            accuracy=0.4,
+            weight=1.0,
+            recency=0.2,
+            total_attempts=5,
         )
         assert score_recent > score_old
 
     def test_score_capped_at_1(self) -> None:
         score = _calculate_weakness_score(
-            accuracy=0.0, weight=5.0, recency=2.0, total_attempts=100,
+            accuracy=0.0,
+            weight=5.0,
+            recency=2.0,
+            total_attempts=100,
         )
         assert score <= 1.0
 
     def test_rounded_to_4_decimals(self) -> None:
         score = _calculate_weakness_score(
-            accuracy=0.333, weight=1.1, recency=0.77, total_attempts=7,
+            accuracy=0.333,
+            weight=1.1,
+            recency=0.77,
+            total_attempts=7,
         )
         assert len(str(score).split(".")[-1]) <= 4
 
@@ -136,34 +160,47 @@ class TestCalculateWeaknessScore:
 class TestTopicPerformance:
     def test_accuracy_property(self) -> None:
         tp = TopicPerformance(
-            topic="Test", chapter_id="ch1", subject="physics",
-            total_attempts=10, correct_attempts=7,
+            topic="Test",
+            chapter_id="ch1",
+            subject="physics",
+            total_attempts=10,
+            correct_attempts=7,
         )
         assert tp.accuracy == 0.7
 
     def test_accuracy_zero_attempts(self) -> None:
         tp = TopicPerformance(
-            topic="Test", chapter_id="ch1", subject="physics",
+            topic="Test",
+            chapter_id="ch1",
+            subject="physics",
         )
         assert tp.accuracy == 0.0
 
     def test_avg_time_property(self) -> None:
         tp = TopicPerformance(
-            topic="Test", chapter_id="ch1", subject="physics",
-            total_attempts=5, total_time_seconds=150.0,
+            topic="Test",
+            chapter_id="ch1",
+            subject="physics",
+            total_attempts=5,
+            total_time_seconds=150.0,
         )
         assert tp.avg_time_per_question == 30.0
 
     def test_avg_time_zero_attempts(self) -> None:
         tp = TopicPerformance(
-            topic="Test", chapter_id="ch1", subject="physics",
+            topic="Test",
+            chapter_id="ch1",
+            subject="physics",
         )
         assert tp.avg_time_per_question == 0.0
 
     def test_to_dict(self) -> None:
         tp = TopicPerformance(
-            topic="Motion", chapter_id="ch1", subject="physics",
-            total_attempts=10, correct_attempts=6,
+            topic="Motion",
+            chapter_id="ch1",
+            subject="physics",
+            total_attempts=10,
+            correct_attempts=6,
             total_time_seconds=300.0,
             last_attempt_at="2026-01-15T10:00:00",
             accuracy_history=[0.5, 0.6, 0.7],
@@ -179,30 +216,45 @@ class TestTopicPerformance:
 class TestQuizSessionResult:
     def test_accuracy_property(self) -> None:
         sr = QuizSessionResult(
-            session_id="s1", profile_id="p1", chapter_id="ch1",
-            topic="Test", subject="physics",
-            total_questions=10, correct_answers=7,
-            score_percent=70.0, time_taken_seconds=300.0,
+            session_id="s1",
+            profile_id="p1",
+            chapter_id="ch1",
+            topic="Test",
+            subject="physics",
+            total_questions=10,
+            correct_answers=7,
+            score_percent=70.0,
+            time_taken_seconds=300.0,
             completed_at="2026-01-15T10:00:00",
         )
         assert sr.accuracy == 0.7
 
     def test_accuracy_zero_questions(self) -> None:
         sr = QuizSessionResult(
-            session_id="s1", profile_id="p1", chapter_id="ch1",
-            topic="Test", subject="physics",
-            total_questions=0, correct_answers=0,
-            score_percent=0.0, time_taken_seconds=0.0,
+            session_id="s1",
+            profile_id="p1",
+            chapter_id="ch1",
+            topic="Test",
+            subject="physics",
+            total_questions=0,
+            correct_answers=0,
+            score_percent=0.0,
+            time_taken_seconds=0.0,
             completed_at="2026-01-15T10:00:00",
         )
         assert sr.accuracy == 0.0
 
     def test_to_dict(self) -> None:
         sr = QuizSessionResult(
-            session_id="s1", profile_id="p1", chapter_id="ch1",
-            topic="Motion", subject="physics",
-            total_questions=10, correct_answers=8,
-            score_percent=80.0, time_taken_seconds=200.0,
+            session_id="s1",
+            profile_id="p1",
+            chapter_id="ch1",
+            topic="Motion",
+            subject="physics",
+            total_questions=10,
+            correct_answers=8,
+            score_percent=80.0,
+            time_taken_seconds=200.0,
             completed_at="2026-01-15T10:00:00",
         )
         d = sr.to_dict()
@@ -243,9 +295,14 @@ class TestWeakAreaDetectorRecordSession:
 
     def test_record_updates_topic_performance(self, detector: WeakAreaDetector) -> None:
         detector.record_session(
-            session_id="s1", profile_id="p1", chapter_id="ch1",
-            topic="Motion", subject="physics",
-            total_questions=10, correct_answers=7, score_percent=70.0,
+            session_id="s1",
+            profile_id="p1",
+            chapter_id="ch1",
+            topic="Motion",
+            subject="physics",
+            total_questions=10,
+            correct_answers=7,
+            score_percent=70.0,
         )
         key = "physics:Motion"
         assert key in detector._topic_performance["p1"]
@@ -255,14 +312,24 @@ class TestWeakAreaDetectorRecordSession:
 
     def test_record_multiple_sessions_same_topic(self, detector: WeakAreaDetector) -> None:
         detector.record_session(
-            session_id="s1", profile_id="p1", chapter_id="ch1",
-            topic="Motion", subject="physics",
-            total_questions=10, correct_answers=7, score_percent=70.0,
+            session_id="s1",
+            profile_id="p1",
+            chapter_id="ch1",
+            topic="Motion",
+            subject="physics",
+            total_questions=10,
+            correct_answers=7,
+            score_percent=70.0,
         )
         detector.record_session(
-            session_id="s2", profile_id="p1", chapter_id="ch1",
-            topic="Motion", subject="physics",
-            total_questions=10, correct_answers=5, score_percent=50.0,
+            session_id="s2",
+            profile_id="p1",
+            chapter_id="ch1",
+            topic="Motion",
+            subject="physics",
+            total_questions=10,
+            correct_answers=5,
+            score_percent=50.0,
         )
         key = "physics:Motion"
         perf = detector._topic_performance["p1"][key]
@@ -272,9 +339,14 @@ class TestWeakAreaDetectorRecordSession:
 
     def test_record_with_custom_completed_at(self, detector: WeakAreaDetector) -> None:
         result = detector.record_session(
-            session_id="s1", profile_id="p1", chapter_id="ch1",
-            topic="Motion", subject="physics",
-            total_questions=10, correct_answers=7, score_percent=70.0,
+            session_id="s1",
+            profile_id="p1",
+            chapter_id="ch1",
+            topic="Motion",
+            subject="physics",
+            total_questions=10,
+            correct_answers=7,
+            score_percent=70.0,
             completed_at="2025-06-01T10:00:00+00:00",
         )
         assert result.completed_at == "2025-06-01T10:00:00+00:00"
@@ -285,18 +357,28 @@ class TestWeakAreaDetectorRecordSession:
             {"is_correct": False, "time_taken": 60.0, "difficulty": 3},
         ]
         result = detector.record_session(
-            session_id="s1", profile_id="p1", chapter_id="ch1",
-            topic="Motion", subject="physics",
-            total_questions=2, correct_answers=1, score_percent=50.0,
+            session_id="s1",
+            profile_id="p1",
+            chapter_id="ch1",
+            topic="Motion",
+            subject="physics",
+            total_questions=2,
+            correct_answers=1,
+            score_percent=50.0,
             question_results=qr,
         )
         assert len(result.question_results) == 2
 
     def test_record_without_topic(self, detector: WeakAreaDetector) -> None:
         detector.record_session(
-            session_id="s1", profile_id="p1", chapter_id="ch1",
-            topic=None, subject=None,
-            total_questions=10, correct_answers=5, score_percent=50.0,
+            session_id="s1",
+            profile_id="p1",
+            chapter_id="ch1",
+            topic=None,
+            subject=None,
+            total_questions=10,
+            correct_answers=5,
+            score_percent=50.0,
         )
         assert "s1" in detector._sessions
         assert len(detector._topic_performance.get("p1", {})) == 0
@@ -307,9 +389,14 @@ class TestWeakAreaDetectorAnalyzeSession:
     def detector(self) -> WeakAreaDetector:
         det = WeakAreaDetector()
         det.record_session(
-            session_id="s1", profile_id="p1", chapter_id="ch1",
-            topic="Motion", subject="physics",
-            total_questions=10, correct_answers=7, score_percent=70.0,
+            session_id="s1",
+            profile_id="p1",
+            chapter_id="ch1",
+            topic="Motion",
+            subject="physics",
+            total_questions=10,
+            correct_answers=7,
+            score_percent=70.0,
             time_taken_seconds=300.0,
         )
         return det
@@ -335,9 +422,14 @@ class TestWeakAreaDetectorAnalyzeSession:
             {"is_correct": False, "time_taken": 45.0, "difficulty": 2},
         ]
         detector.record_session(
-            session_id="s2", profile_id="p1", chapter_id="ch1",
-            topic="Motion", subject="physics",
-            total_questions=4, correct_answers=2, score_percent=50.0,
+            session_id="s2",
+            profile_id="p1",
+            chapter_id="ch1",
+            topic="Motion",
+            subject="physics",
+            total_questions=4,
+            correct_answers=2,
+            score_percent=50.0,
             time_taken_seconds=150.0,
             question_results=qr,
         )
@@ -362,16 +454,26 @@ class TestWeakAreaDetectorGetWeakAreas:
         now = datetime.now(UTC)
         for i in range(5):
             det.record_session(
-                session_id=f"s{i}", profile_id="p1", chapter_id="ch1",
-                topic="Motion", subject="physics",
-                total_questions=10, correct_answers=3, score_percent=30.0,
+                session_id=f"s{i}",
+                profile_id="p1",
+                chapter_id="ch1",
+                topic="Motion",
+                subject="physics",
+                total_questions=10,
+                correct_answers=3,
+                score_percent=30.0,
                 completed_at=(now - timedelta(days=i)).isoformat(),
             )
         for i in range(5, 10):
             det.record_session(
-                session_id=f"s{i}", profile_id="p1", chapter_id="ch2",
-                topic="Thermodynamics", subject="physics",
-                total_questions=10, correct_answers=8, score_percent=80.0,
+                session_id=f"s{i}",
+                profile_id="p1",
+                chapter_id="ch2",
+                topic="Thermodynamics",
+                subject="physics",
+                total_questions=10,
+                correct_answers=8,
+                score_percent=80.0,
                 completed_at=(now - timedelta(days=i - 5)).isoformat(),
             )
         return det
@@ -412,9 +514,14 @@ class TestWeakAreaDetectorGetWeakAreas:
 
     def test_below_min_attempts_excluded(self, detector: WeakAreaDetector) -> None:
         detector.record_session(
-            session_id="s_new", profile_id="p1", chapter_id="ch3",
-            topic="New Topic", subject="chemistry",
-            total_questions=2, correct_answers=1, score_percent=50.0,
+            session_id="s_new",
+            profile_id="p1",
+            chapter_id="ch3",
+            topic="New Topic",
+            subject="chemistry",
+            total_questions=2,
+            correct_answers=1,
+            score_percent=50.0,
         )
         weak = detector.get_weak_areas("p1")
         topics = [w["topic"] for w in weak]
@@ -428,16 +535,26 @@ class TestWeakAreaDetectorGetSubjectBreakdown:
         now = datetime.now(UTC)
         for i in range(6):
             det.record_session(
-                session_id=f"s{i}", profile_id="p1", chapter_id="ch1",
-                topic="Motion", subject="physics",
-                total_questions=10, correct_answers=5 + i, score_percent=50.0 + i * 5,
+                session_id=f"s{i}",
+                profile_id="p1",
+                chapter_id="ch1",
+                topic="Motion",
+                subject="physics",
+                total_questions=10,
+                correct_answers=5 + i,
+                score_percent=50.0 + i * 5,
                 completed_at=(now - timedelta(days=i)).isoformat(),
             )
         for i in range(6):
             det.record_session(
-                session_id=f"s{i + 10}", profile_id="p1", chapter_id="ch2",
-                topic="Equilibrium", subject="chemistry",
-                total_questions=10, correct_answers=7 + i, score_percent=70.0 + i * 2,
+                session_id=f"s{i + 10}",
+                profile_id="p1",
+                chapter_id="ch2",
+                topic="Equilibrium",
+                subject="chemistry",
+                total_questions=10,
+                correct_answers=7 + i,
+                score_percent=70.0 + i * 2,
                 completed_at=(now - timedelta(days=i)).isoformat(),
             )
         return det
@@ -475,9 +592,14 @@ class TestWeakAreaDetectorGetImprovementTrend:
         now = datetime.now(UTC)
         for i in range(10):
             det.record_session(
-                session_id=f"s{i}", profile_id="p1", chapter_id="ch1",
-                topic="Motion", subject="physics",
-                total_questions=10, correct_answers=3 + i, score_percent=30.0 + i * 5,
+                session_id=f"s{i}",
+                profile_id="p1",
+                chapter_id="ch1",
+                topic="Motion",
+                subject="physics",
+                total_questions=10,
+                correct_answers=3 + i,
+                score_percent=30.0 + i * 5,
                 completed_at=(now - timedelta(days=10 - i)).isoformat(),
             )
         return det
@@ -503,9 +625,14 @@ class TestWeakAreaDetectorGetImprovementTrend:
     def test_single_session(self, detector: WeakAreaDetector) -> None:
         det = WeakAreaDetector()
         det.record_session(
-            session_id="s1", profile_id="p1", chapter_id="ch1",
-            topic="Motion", subject="physics",
-            total_questions=10, correct_answers=5, score_percent=50.0,
+            session_id="s1",
+            profile_id="p1",
+            chapter_id="ch1",
+            topic="Motion",
+            subject="physics",
+            total_questions=10,
+            correct_answers=5,
+            score_percent=50.0,
         )
         trend = det.get_improvement_trend("p1")
         assert trend["total_sessions"] == 1
@@ -532,9 +659,14 @@ class TestWeakAreaDetectorGenerateRecommendations:
         now = datetime.now(UTC)
         for i in range(5):
             det.record_session(
-                session_id=f"s{i}", profile_id="p1", chapter_id="ch1",
-                topic="Motion", subject="physics",
-                total_questions=10, correct_answers=2, score_percent=20.0,
+                session_id=f"s{i}",
+                profile_id="p1",
+                chapter_id="ch1",
+                topic="Motion",
+                subject="physics",
+                total_questions=10,
+                correct_answers=2,
+                score_percent=20.0,
                 completed_at=(now - timedelta(days=i)).isoformat(),
             )
         return det
@@ -570,9 +702,14 @@ class TestWeakAreaDetectorGenerateFullReport:
         now = datetime.now(UTC)
         for i in range(5):
             det.record_session(
-                session_id=f"s{i}", profile_id="p1", chapter_id="ch1",
-                topic="Motion", subject="physics",
-                total_questions=10, correct_answers=4, score_percent=40.0,
+                session_id=f"s{i}",
+                profile_id="p1",
+                chapter_id="ch1",
+                topic="Motion",
+                subject="physics",
+                total_questions=10,
+                correct_answers=4,
+                score_percent=40.0,
                 completed_at=(now - timedelta(days=i)).isoformat(),
             )
         return det
@@ -623,19 +760,34 @@ class TestWeakAreaDetectorGetProfileStats:
     def detector(self) -> WeakAreaDetector:
         det = WeakAreaDetector()
         det.record_session(
-            session_id="s1", profile_id="p1", chapter_id="ch1",
-            topic="Motion", subject="physics",
-            total_questions=10, correct_answers=7, score_percent=70.0,
+            session_id="s1",
+            profile_id="p1",
+            chapter_id="ch1",
+            topic="Motion",
+            subject="physics",
+            total_questions=10,
+            correct_answers=7,
+            score_percent=70.0,
         )
         det.record_session(
-            session_id="s2", profile_id="p1", chapter_id="ch2",
-            topic="Thermodynamics", subject="physics",
-            total_questions=10, correct_answers=5, score_percent=50.0,
+            session_id="s2",
+            profile_id="p1",
+            chapter_id="ch2",
+            topic="Thermodynamics",
+            subject="physics",
+            total_questions=10,
+            correct_answers=5,
+            score_percent=50.0,
         )
         det.record_session(
-            session_id="s3", profile_id="p1", chapter_id="ch3",
-            topic="Equilibrium", subject="chemistry",
-            total_questions=10, correct_answers=8, score_percent=80.0,
+            session_id="s3",
+            profile_id="p1",
+            chapter_id="ch3",
+            topic="Equilibrium",
+            subject="chemistry",
+            total_questions=10,
+            correct_answers=8,
+            score_percent=80.0,
         )
         return det
 
@@ -665,14 +817,24 @@ class TestWeakAreaDetectorReset:
     def detector(self) -> WeakAreaDetector:
         det = WeakAreaDetector()
         det.record_session(
-            session_id="s1", profile_id="p1", chapter_id="ch1",
-            topic="Motion", subject="physics",
-            total_questions=10, correct_answers=7, score_percent=70.0,
+            session_id="s1",
+            profile_id="p1",
+            chapter_id="ch1",
+            topic="Motion",
+            subject="physics",
+            total_questions=10,
+            correct_answers=7,
+            score_percent=70.0,
         )
         det.record_session(
-            session_id="s2", profile_id="p2", chapter_id="ch2",
-            topic="Equilibrium", subject="chemistry",
-            total_questions=10, correct_answers=8, score_percent=80.0,
+            session_id="s2",
+            profile_id="p2",
+            chapter_id="ch2",
+            topic="Equilibrium",
+            subject="chemistry",
+            total_questions=10,
+            correct_answers=8,
+            score_percent=80.0,
         )
         return det
 
@@ -701,9 +863,14 @@ class TestWeakAreaDetectorEdgeCases:
         now = datetime.now(UTC)
         for i in range(5):
             det.record_session(
-                session_id=f"s{i}", profile_id="p1", chapter_id="ch1",
-                topic="Motion", subject="physics",
-                total_questions=10, correct_answers=10, score_percent=100.0,
+                session_id=f"s{i}",
+                profile_id="p1",
+                chapter_id="ch1",
+                topic="Motion",
+                subject="physics",
+                total_questions=10,
+                correct_answers=10,
+                score_percent=100.0,
                 completed_at=(now - timedelta(days=i)).isoformat(),
             )
         weak = det.get_weak_areas("p1")
@@ -715,9 +882,14 @@ class TestWeakAreaDetectorEdgeCases:
         now = datetime.now(UTC)
         for i in range(5):
             det.record_session(
-                session_id=f"s{i}", profile_id="p1", chapter_id="ch1",
-                topic="Motion", subject="physics",
-                total_questions=10, correct_answers=0, score_percent=0.0,
+                session_id=f"s{i}",
+                profile_id="p1",
+                chapter_id="ch1",
+                topic="Motion",
+                subject="physics",
+                total_questions=10,
+                correct_answers=0,
+                score_percent=0.0,
                 completed_at=(now - timedelta(days=i)).isoformat(),
             )
         weak = det.get_weak_areas("p1")
@@ -731,9 +903,14 @@ class TestWeakAreaDetectorEdgeCases:
         for idx, subj in enumerate(subjects):
             for i in range(5):
                 det.record_session(
-                    session_id=f"s{idx}_{i}", profile_id="p1", chapter_id=f"ch{idx}",
-                    topic=f"Topic {subj}", subject=subj,
-                    total_questions=10, correct_answers=3, score_percent=30.0,
+                    session_id=f"s{idx}_{i}",
+                    profile_id="p1",
+                    chapter_id=f"ch{idx}",
+                    topic=f"Topic {subj}",
+                    subject=subj,
+                    total_questions=10,
+                    correct_answers=3,
+                    score_percent=30.0,
                     completed_at=(now - timedelta(days=i)).isoformat(),
                 )
         breakdown = det.get_subject_breakdown("p1")

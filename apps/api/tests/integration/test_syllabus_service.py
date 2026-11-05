@@ -1,7 +1,7 @@
 """Integration tests for syllabus service with mocked database pool."""
 
 from unittest.mock import AsyncMock, MagicMock
-from uuid import UUID, uuid4
+from uuid import uuid4
 
 import pytest
 

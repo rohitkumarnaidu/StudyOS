@@ -87,11 +87,13 @@ class NoteStructurer:
         concepts = []
         for i, para in enumerate(paragraphs[:10]):
             first_line = para.split("\n")[0][:80]
-            concepts.append(ConceptCard(
-                title=first_line,
-                definition=para[:200],
-                tags=[f"concept-{i+1}"],
-            ))
+            concepts.append(
+                ConceptCard(
+                    title=first_line,
+                    definition=para[:200],
+                    tags=[f"concept-{i + 1}"],
+                )
+            )
         return concepts
 
     def _extract_formulas(self, text: str) -> list[str]:

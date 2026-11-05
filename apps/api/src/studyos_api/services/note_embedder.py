@@ -58,11 +58,13 @@ class RecursiveChunker:
             chunk_words = words[start:end]
             chunk_text = " ".join(chunk_words)
 
-            chunks.append(TextChunk(
-                chunk_id=f"chunk-{start}-{len(chunk_text)}",
-                content=chunk_text,
-                page_number=page_number,
-            ))
+            chunks.append(
+                TextChunk(
+                    chunk_id=f"chunk-{start}-{len(chunk_text)}",
+                    content=chunk_text,
+                    page_number=page_number,
+                )
+            )
 
             start = end - self._overlap
 
@@ -84,13 +86,15 @@ class NoteEmbedder:
 
         for chunk in chunks:
             embedding = self._get_embedding(chunk.content)
-            embedded.append(EmbeddedChunk(
-                chunk_id=f"{note_id}-{chunk.chunk_id}",
-                content=chunk.content,
-                embedding=embedding,
-                page_number=chunk.page_number,
-                metadata={"note_id": note_id},
-            ))
+            embedded.append(
+                EmbeddedChunk(
+                    chunk_id=f"{note_id}-{chunk.chunk_id}",
+                    content=chunk.content,
+                    embedding=embedding,
+                    page_number=chunk.page_number,
+                    metadata={"note_id": note_id},
+                )
+            )
 
         logger.info("note.embedded", note_id=note_id, chunks=len(embedded))
         return embedded
@@ -101,6 +105,7 @@ class NoteEmbedder:
             return self._mock_embedding(text)
 
         import httpx
+
         response = httpx.post(
             "https://api.openai.com/v1/embeddings",
             headers={
@@ -116,8 +121,9 @@ class NoteEmbedder:
     def _mock_embedding(self, text: str) -> list[float]:
         """Generate deterministic mock embedding."""
         import hashlib
+
         h = hashlib.md5(text.encode()).hexdigest()
-        return [int(h[i:i+2], 16) / 255.0 for i in range(0, 32, 2)]
+        return [int(h[i : i + 2], 16) / 255.0 for i in range(0, 32, 2)]
 
 
 def cosine_similarity(a: list[float], b: list[float]) -> float:

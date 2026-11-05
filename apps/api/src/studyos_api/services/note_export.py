@@ -57,7 +57,9 @@ class NoteExport:
             if note.get("concepts"):
                 lines.append("\n### Key Concepts\n")
                 for concept in note["concepts"]:
-                    lines.append(f"- **{concept.get('title', '')}**: {concept.get('definition', '')}")
+                    lines.append(
+                        f"- **{concept.get('title', '')}**: {concept.get('definition', '')}"
+                    )
             lines.append("\n---\n")
 
         content = "\n".join(lines).encode("utf-8")
@@ -76,7 +78,9 @@ class NoteExport:
                 title = note.get("title", "untitled").replace("/", "_")
                 zf.writestr(f"{title}.json", json.dumps(note, indent=2, ensure_ascii=False))
 
-            summary = json.dumps({"total_notes": len(notes), "notes": [n.get("title") for n in notes]}, indent=2)
+            summary = json.dumps(
+                {"total_notes": len(notes), "notes": [n.get("title") for n in notes]}, indent=2
+            )
             zf.writestr("manifest.json", summary)
 
         buffer.seek(0)
@@ -90,18 +94,21 @@ class NoteExport:
     def export_csv(self, notes: list[dict[str, Any]]) -> ExportResult:
         """Export notes as CSV."""
         import csv
+
         buffer = io.StringIO()
         writer = csv.writer(buffer)
         writer.writerow(["id", "title", "summary", "tags", "created_at"])
 
         for note in notes:
-            writer.writerow([
-                note.get("id", ""),
-                note.get("title", ""),
-                (note.get("summary", "") or "")[:500],
-                ", ".join(note.get("tags", [])),
-                note.get("created_at", ""),
-            ])
+            writer.writerow(
+                [
+                    note.get("id", ""),
+                    note.get("title", ""),
+                    (note.get("summary", "") or "")[:500],
+                    ", ".join(note.get("tags", [])),
+                    note.get("created_at", ""),
+                ]
+            )
 
         content = buffer.getvalue().encode("utf-8")
         return ExportResult(

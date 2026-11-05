@@ -6,7 +6,7 @@ from unittest.mock import MagicMock
 import jwt
 import pytest
 
-from studyos_api.security.tokens import mint_access_token, decode_access_token
+from studyos_api.security.tokens import decode_access_token, mint_access_token
 
 
 @pytest.mark.unit

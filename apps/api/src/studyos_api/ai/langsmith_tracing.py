@@ -101,6 +101,7 @@ def _send_trace(event_type: str, payload: dict[str, Any]) -> None:
 
     try:
         import httpx
+
         with httpx.Client(timeout=5.0) as client:
             if event_type == "patch":
                 client.patch(url, headers=headers, json=payload)

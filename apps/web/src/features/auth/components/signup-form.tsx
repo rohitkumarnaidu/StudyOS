@@ -95,19 +95,23 @@ function SignupFormInner() {
           <Input
             id="displayName"
             type="text"
+            aria-label="Full name"
+            placeholder="Full name"
             autoComplete="name"
             {...form.register("displayName")}
           />
         </FormField>
 
         <FormField<SignupFormValues> name="email" label="Email">
-          <Input id="email" type="email" autoComplete="email" {...form.register("email")} />
+          <Input id="email" type="email" aria-label="Email" placeholder="Email" autoComplete="email" {...form.register("email")} />
         </FormField>
 
         <FormField<SignupFormValues> name="password" label="Password" hint="Min 8 characters">
           <Input
             id="password"
             type="password"
+            aria-label="Password"
+            placeholder="Password"
             autoComplete="new-password"
             {...form.register("password")}
           />

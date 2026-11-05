@@ -57,7 +57,7 @@ def recursive_split(
 
         refined = list(good)
         for chunk in bad:
-            refined.extend(recursive_split(chunk, separators[i + 1:], chunk_size, chunk_overlap))
+            refined.extend(recursive_split(chunk, separators[i + 1 :], chunk_size, chunk_overlap))
         return refined
 
     return _split_by_chars(text, chunk_size, chunk_overlap)

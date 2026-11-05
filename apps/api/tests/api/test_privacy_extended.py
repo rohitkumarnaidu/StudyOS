@@ -1,12 +1,11 @@
 """Extended tests for privacy endpoints — service-level tests."""
 
-import os
-from unittest.mock import AsyncMock, MagicMock, patch
+from unittest.mock import MagicMock
 from uuid import uuid4
 
 import pytest
 
-from studyos_api.api.v1.routes.privacy import export_user_data, delete_account, get_db_pool
+from studyos_api.api.v1.routes.privacy import delete_account, export_user_data, get_db_pool
 
 
 class TestPrivacyExportService:

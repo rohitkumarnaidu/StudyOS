@@ -1,8 +1,13 @@
 """Tests for AI usage tracking."""
 
 import asyncio
+
 from studyos_api.ai.types import TokenUsage
-from studyos_api.ai.usage import InMemoryUsageStore, LoggingUsageSink, CompositeUsageSink, UsageEvent
+from studyos_api.ai.usage import (
+    CompositeUsageSink,
+    InMemoryUsageStore,
+    LoggingUsageSink,
+)
 
 
 class TestInMemoryUsageStore:

@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: "Syllabus",
 };
@@ -12,9 +14,18 @@ export default function SyllabusPage() {
 }
 
 async function SyllabusContent() {
-  const exams = await getExams();
-  const defaultExam = exams[0];
-  const chapters = defaultExam ? await getChapters(defaultExam.id) : [];
+  let defaultExam: Awaited<ReturnType<typeof getExams>>[number] | null = null;
+  let chapters: Awaited<ReturnType<typeof getChapters>> = [];
+
+  try {
+    const exams = await getExams();
+    defaultExam = exams[0] ?? null;
+    if (defaultExam) {
+      chapters = await getChapters(defaultExam.id);
+    }
+  } catch {
+    // Fallback when backend is unreachable during static build or test
+  }
 
   return (
     <div className="space-y-6">

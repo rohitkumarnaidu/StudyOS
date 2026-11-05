@@ -26,9 +26,7 @@ class AuditLoggingMiddleware(BaseHTTPMiddleware):
 
     async def dispatch(self, request: Request, call_next: RequestResponseEndpoint) -> Response:
         # Check if this path requires audit logging
-        requires_audit = any(
-            request.url.path.startswith(path) for path in AUDIT_PATHS
-        )
+        requires_audit = any(request.url.path.startswith(path) for path in AUDIT_PATHS)
 
         if not requires_audit:
             return await call_next(request)

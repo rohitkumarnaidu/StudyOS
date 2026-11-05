@@ -16,6 +16,7 @@ def client():
     os.environ["STUDYOS_DATABASE_URL"] = ""
     os.environ["STUDYOS_EXPOSE_ERROR_DETAIL"] = "true"
     from studyos_api.core.config import get_settings
+
     get_settings.cache_clear()
     app = create_app()
     with TestClient(app, base_url="http://testserver", raise_server_exceptions=False) as c:
@@ -24,9 +25,10 @@ def client():
 
 @pytest.fixture
 def auth_headers():
+    import uuid
+
     from studyos_api.core.config import get_settings
     from studyos_api.security.tokens import mint_access_token
-    import uuid
 
     settings = get_settings()
     token = mint_access_token(settings, sub=str(uuid.uuid4()), roles=["student"])

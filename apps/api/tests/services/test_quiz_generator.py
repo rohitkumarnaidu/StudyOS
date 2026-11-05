@@ -1,7 +1,6 @@
 """Tests for quiz_generator service."""
 
 import random
-from datetime import date, timedelta
 
 import pytest
 
@@ -9,8 +8,8 @@ from studyos_api.services.quiz_generator import (
     ALL_TEMPLATES,
     ASSERTION_REASON_TEMPLATES,
     BIOLOGY_TEMPLATES,
-    CHEMISTRY_TEMPLATES,
     CHAPTER_ID_MAP,
+    CHEMISTRY_TEMPLATES,
     MATCH_FOLLOWING_TEMPLATES,
     NUMERIC_TEMPLATES,
     PHYSICS_TEMPLATES,

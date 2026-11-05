@@ -3,7 +3,6 @@
 import pytest
 
 from studyos_api.services.budget_alerts import (
-    BudgetAlert,
     SoftBudgetAlerts,
     get_budget_alerts,
     reset_budget_alerts,

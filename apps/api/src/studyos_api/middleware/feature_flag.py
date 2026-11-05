@@ -28,9 +28,7 @@ class FeatureFlagMiddleware(BaseHTTPMiddleware):
         request.state.user_id = user_id
 
         response = await call_next(request)
-        response.headers["x-feature-flags"] = ",".join(
-            k for k, v in flags.items() if v
-        )
+        response.headers["x-feature-flags"] = ",".join(k for k, v in flags.items() if v)
 
         return response
 
@@ -39,6 +37,7 @@ class FeatureFlagMiddleware(BaseHTTPMiddleware):
         if auth_header.startswith("Bearer "):
             token = auth_header[7:]
             import hashlib
+
             return hashlib.sha256(token.encode()).hexdigest()[:16]
 
         session_id = request.headers.get("x-session-id")

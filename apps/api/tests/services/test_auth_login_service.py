@@ -1,7 +1,7 @@
 """Tests for AuthLoginService."""
 
 import uuid
-from unittest.mock import AsyncMock, MagicMock, patch
+from unittest.mock import AsyncMock, MagicMock
 
 import pytest
 
@@ -139,12 +139,14 @@ class TestAuthLoginServiceWithPool:
         from studyos_api.security.passwords import hash_password
 
         hashed = hash_password("correct_password")
-        mock_conn.fetchrow = AsyncMock(return_value={
-            "id": uuid.uuid4(),
-            "email": "user@example.com",
-            "app_role": "student",
-            "password_hash": hashed,
-        })
+        mock_conn.fetchrow = AsyncMock(
+            return_value={
+                "id": uuid.uuid4(),
+                "email": "user@example.com",
+                "app_role": "student",
+                "password_hash": hashed,
+            }
+        )
 
         store = MemoryRefreshStore()
         service = AuthLoginService(pool=mock_pool, refresh_store=store, settings=settings)
@@ -164,12 +166,14 @@ class TestAuthLoginServiceWithPool:
 
         profile_id = uuid.uuid4()
         hashed = hash_password("correct_password")
-        mock_conn.fetchrow = AsyncMock(return_value={
-            "id": profile_id,
-            "email": "user@example.com",
-            "app_role": "student",
-            "password_hash": hashed,
-        })
+        mock_conn.fetchrow = AsyncMock(
+            return_value={
+                "id": profile_id,
+                "email": "user@example.com",
+                "app_role": "student",
+                "password_hash": hashed,
+            }
+        )
 
         store = MemoryRefreshStore()
         service = AuthLoginService(pool=mock_pool, refresh_store=store, settings=settings)
@@ -193,12 +197,14 @@ class TestAuthLoginServiceWithPool:
 
         profile_id = uuid.uuid4()
         hashed = hash_password("correct_password")
-        mock_conn.fetchrow = AsyncMock(return_value={
-            "id": profile_id,
-            "email": None,
-            "app_role": "student",
-            "password_hash": hashed,
-        })
+        mock_conn.fetchrow = AsyncMock(
+            return_value={
+                "id": profile_id,
+                "email": None,
+                "app_role": "student",
+                "password_hash": hashed,
+            }
+        )
 
         store = MemoryRefreshStore()
         service = AuthLoginService(pool=mock_pool, refresh_store=store, settings=settings)

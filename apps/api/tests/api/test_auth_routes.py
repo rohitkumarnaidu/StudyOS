@@ -1,6 +1,7 @@
 """Integration tests for auth routes — covering gaps."""
 
 import os
+
 import pytest
 from fastapi.testclient import TestClient
 
@@ -14,6 +15,7 @@ def configure_test_env() -> None:
     os.environ["STUDYOS_DATABASE_URL"] = ""
     os.environ["STUDYOS_ALLOW_LEGACY_DEMO_BEARER"] = "true"
     from studyos_api.core.config import get_settings
+
     get_settings.cache_clear()
 
 

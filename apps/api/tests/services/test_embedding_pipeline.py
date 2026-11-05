@@ -1,16 +1,16 @@
 """Tests for embedding_pipeline service."""
 
 import asyncio
-from unittest.mock import MagicMock, AsyncMock, patch
+from unittest.mock import AsyncMock, MagicMock
 
 import pytest
 
 from studyos_api.services.embedding_pipeline import (
+    DEFAULT_EMBEDDING_DIM,
+    EmbeddingPipeline,
     EmbeddingProvider,
     OpenAIEmbeddingProvider,
-    EmbeddingPipeline,
     _cosine_similarity,
-    DEFAULT_EMBEDDING_DIM,
 )
 
 
@@ -79,9 +79,7 @@ class TestOpenAIEmbeddingProvider:
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
         try:
-            results = loop.run_until_complete(
-                provider.embed_batch(["text1", "text2", "text3"])
-            )
+            results = loop.run_until_complete(provider.embed_batch(["text1", "text2", "text3"]))
         finally:
             loop.close()
         assert len(results) == 3
@@ -145,9 +143,7 @@ class TestEmbeddingPipeline:
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
         try:
-            result = loop.run_until_complete(
-                pipeline.process_document("", "doc-empty")
-            )
+            result = loop.run_until_complete(pipeline.process_document("", "doc-empty"))
         finally:
             loop.close()
         assert result == []
@@ -172,9 +168,7 @@ class TestEmbeddingPipeline:
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
         try:
-            result = loop.run_until_complete(
-                pipeline.process_single("Single text embedding")
-            )
+            result = loop.run_until_complete(pipeline.process_single("Single text embedding"))
         finally:
             loop.close()
         assert len(result) == 10
@@ -205,9 +199,7 @@ class TestEmbeddingPipeline:
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
         try:
-            result = loop.run_until_complete(
-                pipeline.search_by_similarity("query", stored)
-            )
+            result = loop.run_until_complete(pipeline.search_by_similarity("query", stored))
         finally:
             loop.close()
         assert len(result) == 2

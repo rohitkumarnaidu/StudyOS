@@ -98,16 +98,18 @@ class TestPostgresUsageStoreUserSummary:
 
     @pytest.mark.asyncio
     async def test_user_usage_summary_with_data(self, mock_pool, mock_conn):
-        mock_conn.fetch = AsyncMock(return_value=[
-            {
-                "provider": "openai",
-                "model": "gpt-4",
-                "request_count": 10,
-                "total_input_tokens": 100,
-                "total_output_tokens": 200,
-                "total_tokens": 300,
-            }
-        ])
+        mock_conn.fetch = AsyncMock(
+            return_value=[
+                {
+                    "provider": "openai",
+                    "model": "gpt-4",
+                    "request_count": 10,
+                    "total_input_tokens": 100,
+                    "total_output_tokens": 200,
+                    "total_tokens": 300,
+                }
+            ]
+        )
         store = PostgresUsageStore(pool=mock_pool)
         result = await store.user_usage_summary("user-123", days=7)
 
@@ -143,14 +145,16 @@ class TestPostgresUsageStoreGlobalDaily:
 
     @pytest.mark.asyncio
     async def test_global_daily_usage_with_data(self, mock_pool, mock_conn):
-        mock_conn.fetch = AsyncMock(return_value=[
-            {
-                "usage_date": "2024-01-01",
-                "provider": "openai",
-                "request_count": 50,
-                "total_tokens": 5000,
-            }
-        ])
+        mock_conn.fetch = AsyncMock(
+            return_value=[
+                {
+                    "usage_date": "2024-01-01",
+                    "provider": "openai",
+                    "request_count": 50,
+                    "total_tokens": 5000,
+                }
+            ]
+        )
         store = PostgresUsageStore(pool=mock_pool)
         result = await store.global_daily_usage(days=7)
 

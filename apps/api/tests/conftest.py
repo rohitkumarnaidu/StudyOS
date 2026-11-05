@@ -22,6 +22,7 @@ def configure_test_env() -> None:
     os.environ.setdefault("STUDYOS_ALLOW_LEGACY_DEMO_BEARER", "true")
     # Clear any cached settings
     from studyos_api.core.config import get_settings
+
     get_settings.cache_clear()
 
 
@@ -29,6 +30,7 @@ def configure_test_env() -> None:
 def clear_settings_cache() -> None:
     """Clear settings cache before each test to prevent pollution."""
     from studyos_api.core.config import get_settings
+
     get_settings.cache_clear()
     yield
     get_settings.cache_clear()
@@ -48,5 +50,3 @@ async def api_client(app: FastAPI) -> AsyncIterator[AsyncClient]:
     transport = ASGITransport(app=app)
     async with AsyncClient(transport=transport, base_url="http://test") as client:
         yield client
-
-

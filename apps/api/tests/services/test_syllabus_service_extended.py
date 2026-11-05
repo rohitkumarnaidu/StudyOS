@@ -139,7 +139,9 @@ class TestSyllabusServiceGetChapterWithTopicsWithData:
 
         chapter_row = FakeRow(id=chapter_id, name="Biology", sort_order=1)
         topic_row = FakeRow(id=topic_id, name="Cells", sort_order=1)
-        subtopic_row = FakeRow(id=subtopic_id, name="Cell membrane", sort_order=1, estimated_minutes=30)
+        subtopic_row = FakeRow(
+            id=subtopic_id, name="Cell membrane", sort_order=1, estimated_minutes=30
+        )
 
         pool = MockPool()
         pool._conn._rows = [chapter_row]

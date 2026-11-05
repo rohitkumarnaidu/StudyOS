@@ -4,7 +4,6 @@ import pytest
 
 from studyos_api.services.ai_audit import (
     AIAuditTrail,
-    AuditEntry,
     get_audit_trail,
     reset_audit_trail,
 )
@@ -94,7 +93,9 @@ class TestAIAuditTrail:
         assert stats["success_rate"] == pytest.approx(2 / 3)
 
     def test_search_by_content(self, audit: AIAuditTrail) -> None:
-        audit.log("u1", "chat", "gpt-4o-mini", "openai", "What is photosynthesis?", "Photosynthesis is...")
+        audit.log(
+            "u1", "chat", "gpt-4o-mini", "openai", "What is photosynthesis?", "Photosynthesis is..."
+        )
         audit.log("u1", "chat", "gpt-4o-mini", "openai", "What is gravity?", "Gravity is...")
         results = audit.search("photosynthesis")
         assert len(results) == 1

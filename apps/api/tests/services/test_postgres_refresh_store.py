@@ -127,16 +127,18 @@ class TestPostgresRefreshStore:
     async def test_validate_and_rotate_revoked_session(self, store, mock_conn):
         sid = uuid.uuid4()
         fam = uuid.uuid4()
-        mock_conn.fetchrow = AsyncMock(return_value={
-            "id": sid,
-            "profile_id": uuid.uuid4(),
-            "family_id": fam,
-            "refresh_token_hash": "wrong_hash",
-            "revoked_at": datetime.now(tz=UTC),
-            "expires_at": datetime.now(tz=UTC) + timedelta(hours=1),
-            "email": "user@example.com",
-            "app_role": "student",
-        })
+        mock_conn.fetchrow = AsyncMock(
+            return_value={
+                "id": sid,
+                "profile_id": uuid.uuid4(),
+                "family_id": fam,
+                "refresh_token_hash": "wrong_hash",
+                "revoked_at": datetime.now(tz=UTC),
+                "expires_at": datetime.now(tz=UTC) + timedelta(hours=1),
+                "email": "user@example.com",
+                "app_role": "student",
+            }
+        )
         token = f"{sid}:secret"
         result = await store.validate_and_rotate(
             token,
@@ -149,16 +151,18 @@ class TestPostgresRefreshStore:
     @pytest.mark.asyncio
     async def test_validate_and_rotate_expired_session(self, store, mock_conn):
         sid = uuid.uuid4()
-        mock_conn.fetchrow = AsyncMock(return_value={
-            "id": sid,
-            "profile_id": uuid.uuid4(),
-            "family_id": uuid.uuid4(),
-            "refresh_token_hash": "wrong_hash",
-            "revoked_at": None,
-            "expires_at": datetime.now(tz=UTC) - timedelta(seconds=1),
-            "email": "user@example.com",
-            "app_role": "student",
-        })
+        mock_conn.fetchrow = AsyncMock(
+            return_value={
+                "id": sid,
+                "profile_id": uuid.uuid4(),
+                "family_id": uuid.uuid4(),
+                "refresh_token_hash": "wrong_hash",
+                "revoked_at": None,
+                "expires_at": datetime.now(tz=UTC) - timedelta(seconds=1),
+                "email": "user@example.com",
+                "app_role": "student",
+            }
+        )
         token = f"{sid}:secret"
         result = await store.validate_and_rotate(
             token,
@@ -171,16 +175,18 @@ class TestPostgresRefreshStore:
     @pytest.mark.asyncio
     async def test_validate_and_rotate_hash_mismatch(self, store, mock_conn):
         sid = uuid.uuid4()
-        mock_conn.fetchrow = AsyncMock(return_value={
-            "id": sid,
-            "profile_id": uuid.uuid4(),
-            "family_id": uuid.uuid4(),
-            "refresh_token_hash": hash_refresh("different_secret"),
-            "revoked_at": None,
-            "expires_at": datetime.now(tz=UTC) + timedelta(hours=1),
-            "email": "user@example.com",
-            "app_role": "student",
-        })
+        mock_conn.fetchrow = AsyncMock(
+            return_value={
+                "id": sid,
+                "profile_id": uuid.uuid4(),
+                "family_id": uuid.uuid4(),
+                "refresh_token_hash": hash_refresh("different_secret"),
+                "revoked_at": None,
+                "expires_at": datetime.now(tz=UTC) + timedelta(hours=1),
+                "email": "user@example.com",
+                "app_role": "student",
+            }
+        )
         token = f"{sid}:secret"
         result = await store.validate_and_rotate(
             token,
@@ -199,16 +205,18 @@ class TestPostgresRefreshStore:
         raw = f"{sid}:{secret}"
         h = hash_refresh(raw)
 
-        mock_conn.fetchrow = AsyncMock(return_value={
-            "id": sid,
-            "profile_id": profile_id,
-            "family_id": fam,
-            "refresh_token_hash": h,
-            "revoked_at": None,
-            "expires_at": datetime.now(tz=UTC) + timedelta(hours=1),
-            "email": "user@example.com",
-            "app_role": "student",
-        })
+        mock_conn.fetchrow = AsyncMock(
+            return_value={
+                "id": sid,
+                "profile_id": profile_id,
+                "family_id": fam,
+                "refresh_token_hash": h,
+                "revoked_at": None,
+                "expires_at": datetime.now(tz=UTC) + timedelta(hours=1),
+                "email": "user@example.com",
+                "app_role": "student",
+            }
+        )
 
         result = await store.validate_and_rotate(
             raw,

@@ -61,7 +61,7 @@ class MindMapParser:
 
     def _build_tree(self, text: str) -> MindMapNode:
         """Build a tree from hierarchical text (indentation-based)."""
-        lines = [l for l in text.split("\n") if l.strip()]
+        lines = [line for line in text.split("\n") if line.strip()]
         if not lines:
             return MindMapNode(id="root", label="Empty Mind Map")
 

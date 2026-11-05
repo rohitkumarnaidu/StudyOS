@@ -1,9 +1,6 @@
 """Tests for content filter middleware."""
 
-import pytest
-
 from studyos_api.middleware.content_filter import (
-    ContentFilterResult,
     ContentFlag,
     filter_content,
     is_safe_content,
@@ -12,7 +9,9 @@ from studyos_api.middleware.content_filter import (
 
 class TestContentFilter:
     def test_safe_content(self) -> None:
-        result = filter_content("Photosynthesis is the process by which plants convert sunlight into energy.")
+        result = filter_content(
+            "Photosynthesis is the process by which plants convert sunlight into energy."
+        )
         assert result.flag == ContentFlag.SAFE
         assert result.blocked is False
         assert result.flags == []

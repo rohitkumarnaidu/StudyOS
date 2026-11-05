@@ -2,8 +2,6 @@
 
 from __future__ import annotations
 
-import pytest
-
 from studyos_api.services.mistake_predictor import MistakePredictor
 
 
@@ -13,7 +11,12 @@ class TestMistakePredictor:
 
     def test_record_outcome(self) -> None:
         self.predictor.record_outcome(
-            "algebra", is_correct=False, time_taken=45.0, confidence=0.3, difficulty=0.7, timestamp="t1"
+            "algebra",
+            is_correct=False,
+            time_taken=45.0,
+            confidence=0.3,
+            difficulty=0.7,
+            timestamp="t1",
         )
         assert len(self.predictor._history) == 1
         assert self.predictor._history[0]["concept"] == "algebra"
@@ -25,13 +28,17 @@ class TestMistakePredictor:
 
     def test_predict_all_correct(self) -> None:
         for i in range(5):
-            self.predictor.record_outcome("algebra", is_correct=True, confidence=0.9, time_taken=60.0)
+            self.predictor.record_outcome(
+                "algebra", is_correct=True, confidence=0.9, time_taken=60.0
+            )
         prob = self.predictor.predict_mistake_probability("algebra")
         assert prob < 0.3
 
     def test_predict_all_wrong(self) -> None:
         for i in range(5):
-            self.predictor.record_outcome("algebra", is_correct=False, confidence=0.2, time_taken=20.0)
+            self.predictor.record_outcome(
+                "algebra", is_correct=False, confidence=0.2, time_taken=20.0
+            )
         prob = self.predictor.predict_mistake_probability("algebra")
         assert prob > 0.5
 
@@ -44,7 +51,9 @@ class TestMistakePredictor:
 
     def test_predict_with_high_difficulty(self) -> None:
         for i in range(5):
-            self.predictor.record_outcome("algebra", is_correct=False, confidence=0.3, time_taken=20.0)
+            self.predictor.record_outcome(
+                "algebra", is_correct=False, confidence=0.3, time_taken=20.0
+            )
         prob = self.predictor.predict_mistake_probability("algebra", upcoming_difficulty=0.9)
         assert prob > 0.5
 
@@ -69,7 +78,9 @@ class TestMistakePredictor:
         for i in range(5):
             self.predictor.record_outcome("weak", is_correct=False, confidence=0.1, time_taken=10.0)
         for i in range(5):
-            self.predictor.record_outcome("strong", is_correct=True, confidence=0.9, time_taken=60.0)
+            self.predictor.record_outcome(
+                "strong", is_correct=True, confidence=0.9, time_taken=60.0
+            )
 
         high_risk = self.predictor.get_high_risk_concepts(threshold=0.6)
         assert "weak" in high_risk

@@ -133,7 +133,9 @@ class TestPresenceService:
         presence.set_presence("u2", "c2")
         assert presence.get_connection_count() == 2
 
-    def test_cleanup_stale(self, presence: PresenceService, monkeypatch: pytest.MonkeyPatch) -> None:
+    def test_cleanup_stale(
+        self, presence: PresenceService, monkeypatch: pytest.MonkeyPatch
+    ) -> None:
         now = time.time()
         monkeypatch.setattr(time, "time", lambda: now + 60)
         presence.set_presence("u1", "c1")

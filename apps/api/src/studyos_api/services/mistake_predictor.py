@@ -46,14 +46,16 @@ class MistakePredictor:
         timestamp: str = "",
     ) -> None:
         """Record a study outcome for prediction modeling."""
-        self._history.append({
-            "concept": concept,
-            "is_correct": is_correct,
-            "time_taken": time_taken,
-            "confidence": confidence,
-            "difficulty": difficulty,
-            "timestamp": timestamp,
-        })
+        self._history.append(
+            {
+                "concept": concept,
+                "is_correct": is_correct,
+                "time_taken": time_taken,
+                "confidence": confidence,
+                "difficulty": difficulty,
+                "timestamp": timestamp,
+            }
+        )
 
     def predict_mistake_probability(
         self,
@@ -79,7 +81,9 @@ class MistakePredictor:
         # Difficulty adjustment
         difficulty_factor = upcoming_difficulty * 0.2
 
-        probability = min(1.0, mistake_rate * 0.5 + confidence_factor + time_pressure + difficulty_factor)
+        probability = min(
+            1.0, mistake_rate * 0.5 + confidence_factor + time_pressure + difficulty_factor
+        )
         return round(probability, 3)
 
     def get_predictions(self, concepts: list[str] | None = None) -> list[MistakePrediction]:
@@ -94,13 +98,15 @@ class MistakePredictor:
             factors = self._identify_factors(concept)
             prevention = self._recommend_prevention(risk)
 
-            predictions.append(MistakePrediction(
-                concept=concept,
-                predicted_probability=prob,
-                risk_level=risk,
-                contributing_factors=factors,
-                recommended_prevention=prevention,
-            ))
+            predictions.append(
+                MistakePrediction(
+                    concept=concept,
+                    predicted_probability=prob,
+                    risk_level=risk,
+                    contributing_factors=factors,
+                    recommended_prevention=prevention,
+                )
+            )
 
         return sorted(predictions, key=lambda p: p.predicted_probability, reverse=True)
 
@@ -115,8 +121,8 @@ class MistakePredictor:
         if len(concept_outcomes) < 4:
             return "insufficient_data"
 
-        first_half = concept_outcomes[:len(concept_outcomes) // 2]
-        second_half = concept_outcomes[len(concept_outcomes) // 2:]
+        first_half = concept_outcomes[: len(concept_outcomes) // 2]
+        second_half = concept_outcomes[len(concept_outcomes) // 2 :]
 
         first_rate = sum(1 for o in first_half if o["is_correct"]) / len(first_half)
         second_rate = sum(1 for o in second_half if o["is_correct"]) / len(second_half)

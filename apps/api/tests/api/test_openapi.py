@@ -11,7 +11,6 @@ Tests OpenAPI document completeness and correctness:
 - Error responses documented (422, 401, 403, 429, 500)
 """
 
-import json
 import os
 
 import pytest
@@ -27,6 +26,7 @@ def openapi_schema():
     os.environ["STUDYOS_DATABASE_URL"] = ""
     os.environ["STUDYOS_EXPOSE_ERROR_DETAIL"] = "true"
     from studyos_api.core.config import get_settings
+
     get_settings.cache_clear()
 
     app = create_app()
@@ -40,9 +40,11 @@ def client():
     os.environ["STUDYOS_DATABASE_URL"] = ""
     os.environ["STUDYOS_EXPOSE_ERROR_DETAIL"] = "true"
     from studyos_api.core.config import get_settings
+
     get_settings.cache_clear()
 
     from fastapi.testclient import TestClient
+
     app = create_app()
     with TestClient(app, base_url="http://testserver", raise_server_exceptions=False) as c:
         yield c
@@ -102,7 +104,12 @@ class TestRouteDocumentation:
         auth_paths = [p for p in paths if "/auth/" in p]
         assert len(auth_paths) > 0, "Auth routes not documented"
 
-        expected_auth = ["/v1/auth/login", "/v1/auth/register", "/v1/auth/refresh", "/v1/auth/logout"]
+        expected_auth = [
+            "/v1/auth/login",
+            "/v1/auth/register",
+            "/v1/auth/refresh",
+            "/v1/auth/logout",
+        ]
         for expected in expected_auth:
             assert expected in paths, f"Auth route {expected} not documented"
 

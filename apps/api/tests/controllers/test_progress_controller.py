@@ -18,7 +18,9 @@ class TestProgressController:
         return ProgressController(service=mock_service)
 
     @pytest.mark.asyncio
-    async def test_toggle_subtopic_success(self, controller: ProgressController, mock_service: AsyncMock) -> None:
+    async def test_toggle_subtopic_success(
+        self, controller: ProgressController, mock_service: AsyncMock
+    ) -> None:
         mock_request = MagicMock()
         mock_service.toggle_subtopic_completion.return_value = {
             "id": uuid4(),
@@ -34,18 +36,23 @@ class TestProgressController:
         mock_service.toggle_subtopic_completion.assert_called_once_with(profile_id, subtopic_id)
 
     @pytest.mark.asyncio
-    async def test_toggle_subtopic_failure(self, controller: ProgressController, mock_service: AsyncMock) -> None:
+    async def test_toggle_subtopic_failure(
+        self, controller: ProgressController, mock_service: AsyncMock
+    ) -> None:
         mock_request = MagicMock()
         mock_service.toggle_subtopic_completion.return_value = {}
         profile_id = uuid4()
         subtopic_id = uuid4()
 
         from fastapi import HTTPException
+
         with pytest.raises(HTTPException):
             await controller.toggle_subtopic(mock_request, profile_id, subtopic_id)
 
     @pytest.mark.asyncio
-    async def test_get_chapter_progress_success(self, controller: ProgressController, mock_service: AsyncMock) -> None:
+    async def test_get_chapter_progress_success(
+        self, controller: ProgressController, mock_service: AsyncMock
+    ) -> None:
         mock_request = MagicMock()
         mock_service.get_chapter_progress.return_value = {"completed": 5, "total": 10}
         profile_id = uuid4()
@@ -57,7 +64,9 @@ class TestProgressController:
         assert result["data"]["completed"] == 5
 
     @pytest.mark.asyncio
-    async def test_get_subject_progress_success(self, controller: ProgressController, mock_service: AsyncMock) -> None:
+    async def test_get_subject_progress_success(
+        self, controller: ProgressController, mock_service: AsyncMock
+    ) -> None:
         mock_request = MagicMock()
         mock_service.get_subject_progress.return_value = {"progress_pct": 75.0}
         profile_id = uuid4()
@@ -68,7 +77,9 @@ class TestProgressController:
         assert "data" in result
 
     @pytest.mark.asyncio
-    async def test_get_exam_progress_success(self, controller: ProgressController, mock_service: AsyncMock) -> None:
+    async def test_get_exam_progress_success(
+        self, controller: ProgressController, mock_service: AsyncMock
+    ) -> None:
         mock_request = MagicMock()
         mock_service.get_exam_progress.return_value = {"progress_pct": 50.0}
         profile_id = uuid4()

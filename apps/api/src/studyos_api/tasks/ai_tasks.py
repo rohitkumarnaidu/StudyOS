@@ -44,7 +44,7 @@ def generate_roadmap(
         return result
     except Exception as exc:
         logger.exception("ai.generate_roadmap.failed", profile_id=profile_id)
-        raise self.retry(exc=exc, countdown=60 * (2 ** self.request.retries))
+        raise self.retry(exc=exc, countdown=60 * (2**self.request.retries))
 
 
 @shared_task(
@@ -79,7 +79,7 @@ def generate_revision_pack(
         return result
     except Exception as exc:
         logger.exception("ai.generate_revision_pack.failed", profile_id=profile_id)
-        raise self.retry(exc=exc, countdown=30 * (2 ** self.request.retries))
+        raise self.retry(exc=exc, countdown=30 * (2**self.request.retries))
 
 
 @shared_task(
@@ -114,7 +114,7 @@ def generate_quiz_from_notes(
         return result
     except Exception as exc:
         logger.exception("ai.generate_quiz_from_notes.failed", profile_id=profile_id)
-        raise self.retry(exc=exc, countdown=45 * (2 ** self.request.retries))
+        raise self.retry(exc=exc, countdown=45 * (2**self.request.retries))
 
 
 @shared_task(
@@ -147,7 +147,7 @@ def summarize_document(
         return result
     except Exception as exc:
         logger.exception("ai.summarize_document.failed", document_id=document_id)
-        raise self.retry(exc=exc, countdown=120 * (2 ** self.request.retries))
+        raise self.retry(exc=exc, countdown=120 * (2**self.request.retries))
 
 
 @shared_task(
@@ -183,4 +183,4 @@ def generate_study_plan(
         return result
     except Exception as exc:
         logger.exception("ai.generate_study_plan.failed", profile_id=profile_id)
-        raise self.retry(exc=exc, countdown=60 * (2 ** self.request.retries))
+        raise self.retry(exc=exc, countdown=60 * (2**self.request.retries))

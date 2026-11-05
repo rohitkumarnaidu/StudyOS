@@ -1,7 +1,6 @@
 """Tests for AI http_client."""
 
-import asyncio
-from unittest.mock import MagicMock, patch
+from unittest.mock import MagicMock
 
 import httpx
 import pytest

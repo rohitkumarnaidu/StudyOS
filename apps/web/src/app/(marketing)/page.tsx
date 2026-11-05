@@ -25,6 +25,12 @@ export default function MarketingHomePage() {
             Sign in
           </Link>
           <Link
+            href="/signup"
+            className="inline-flex rounded-lg border border-border bg-card px-4 py-2 text-sm font-medium text-card-foreground shadow-sm transition-colors hover:bg-muted"
+          >
+            Sign up
+          </Link>
+          <Link
             href="/dashboard"
             className="inline-flex rounded-lg border border-border bg-card px-4 py-2 text-sm font-medium text-card-foreground shadow-sm transition-colors hover:bg-muted"
           >

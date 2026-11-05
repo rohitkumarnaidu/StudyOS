@@ -18,65 +18,143 @@ SUBJECTS = {
     "physics": {
         "name": "Physics",
         "chapters": [
-            "Physical World", "Units & Measurement", "Motion in a Straight Line",
-            "Motion in a Plane", "Laws of Motion", "Work, Energy & Power",
-            "System of Particles & Rotational Motion", "Gravitation",
-            "Mechanical Properties of Solids", "Mechanical Properties of Fluids",
-            "Thermal Properties of Matter", "Thermodynamics", "Kinetic Theory",
-            "Oscillations", "Waves", "Electric Charges & Fields",
-            "Electrostatic Potential & Capacitance", "Current Electricity",
-            "Moving Charges & Magnetism", "Magnetism & Matter",
-            "Electromagnetic Induction", "Alternating Current",
-            "Electromagnetic Waves", "Ray Optics & Optical Instruments",
-            "Wave Optics", "Dual Nature of Radiation & Matter", "Atoms",
-            "Nuclei", "Semiconductor Electronics",
+            "Physical World",
+            "Units & Measurement",
+            "Motion in a Straight Line",
+            "Motion in a Plane",
+            "Laws of Motion",
+            "Work, Energy & Power",
+            "System of Particles & Rotational Motion",
+            "Gravitation",
+            "Mechanical Properties of Solids",
+            "Mechanical Properties of Fluids",
+            "Thermal Properties of Matter",
+            "Thermodynamics",
+            "Kinetic Theory",
+            "Oscillations",
+            "Waves",
+            "Electric Charges & Fields",
+            "Electrostatic Potential & Capacitance",
+            "Current Electricity",
+            "Moving Charges & Magnetism",
+            "Magnetism & Matter",
+            "Electromagnetic Induction",
+            "Alternating Current",
+            "Electromagnetic Waves",
+            "Ray Optics & Optical Instruments",
+            "Wave Optics",
+            "Dual Nature of Radiation & Matter",
+            "Atoms",
+            "Nuclei",
+            "Semiconductor Electronics",
         ],
     },
     "chemistry": {
         "name": "Chemistry",
         "chapters": [
-            "Some Basic Concepts of Chemistry", "Structure of Atom",
-            "Classification of Elements", "Chemical Bonding",
-            "States of Matter", "Thermodynamics", "Equilibrium",
-            "Redox Reactions", "Hydrogen", "s-Block Elements",
-            "p-Block Elements", "Organic Chemistry – Basic Principles",
-            "Hydrocarbons", "Environmental Chemistry", "Solid State",
-            "Solutions", "Electrochemistry", "Chemical Kinetics",
-            "Surface Chemistry", "General Principles of Metallurgy",
-            "p-Block Elements (XII)", "d- & f-Block Elements",
-            "Coordination Compounds", "Haloalkanes & Haloarenes",
-            "Alcohols, Phenols & Ethers", "Aldehydes, Ketones & Carboxylic Acids",
-            "Amines", "Biomolecules", "Polymers", "Chemistry in Everyday Life",
+            "Some Basic Concepts of Chemistry",
+            "Structure of Atom",
+            "Classification of Elements",
+            "Chemical Bonding",
+            "States of Matter",
+            "Thermodynamics",
+            "Equilibrium",
+            "Redox Reactions",
+            "Hydrogen",
+            "s-Block Elements",
+            "p-Block Elements",
+            "Organic Chemistry – Basic Principles",
+            "Hydrocarbons",
+            "Environmental Chemistry",
+            "Solid State",
+            "Solutions",
+            "Electrochemistry",
+            "Chemical Kinetics",
+            "Surface Chemistry",
+            "General Principles of Metallurgy",
+            "p-Block Elements (XII)",
+            "d- & f-Block Elements",
+            "Coordination Compounds",
+            "Haloalkanes & Haloarenes",
+            "Alcohols, Phenols & Ethers",
+            "Aldehydes, Ketones & Carboxylic Acids",
+            "Amines",
+            "Biomolecules",
+            "Polymers",
+            "Chemistry in Everyday Life",
         ],
     },
     "biology": {
         "name": "Biology",
         "chapters": [
-            "The Living World", "Biological Classification", "Plant Kingdom",
-            "Animal Kingdom", "Morphology of Flowering Plants", "Anatomy of Flowering Plants",
-            "Structural Organisation in Animals", "Cell: The Unit of Life",
-            "Biomolecules", "Cell Cycle & Cell Division", "Transport in Plants",
-            "Mineral Nutrition", "Photosynthesis in Higher Plants", "Respiration in Plants",
-            "Plant Growth & Development", "Digestion & Absorption",
-            "Breathing & Exchange of Gases", "Body Fluids & Circulation",
-            "Excretory Products & Elimination", "Locomotion & Movement",
-            "Neural Control & Coordination", "Chemical Coordination & Integration",
-            "Reproduction in Organisms", "Sexual Reproduction in Flowering Plants",
-            "Human Reproduction", "Reproductive Health", "Principles of Inheritance",
-            "Molecular Basis of Inheritance", "Evolution", "Human Health & Disease",
-            "Strategies for Enhancement in Food Production", "Microbes in Human Welfare",
-            "Biotechnology: Principles", "Biotechnology: Applications", "Organisms & Populations",
-            "Ecosystem", "Biodiversity & Conservation", "Environmental Issues",
-            "Animal Husbandry", "Plant Breeding", "Tissue Culture",
-            "Genetics & Evolution", "Ecology", "Human Physiology",
-            "Plant Physiology", "Cell Biology", "Reproduction",
-            "Modern Biology", "Applied Biology", "Environmental Biology",
-            "Genetics", "Molecular Biology", "Evolution & Adaptation",
-            "Immunology", "Microbiology", "Biotechnology",
-            "Ecology & Environment", "Plant Anatomy", "Plant Taxonomy",
-            "Animal Anatomy", "Animal Taxonomy", "Physiology",
-            "Developmental Biology", "Biochemistry", "Cell & Molecular Biology",
-            "Genomics", "Proteomics", "Systems Biology",
+            "The Living World",
+            "Biological Classification",
+            "Plant Kingdom",
+            "Animal Kingdom",
+            "Morphology of Flowering Plants",
+            "Anatomy of Flowering Plants",
+            "Structural Organisation in Animals",
+            "Cell: The Unit of Life",
+            "Biomolecules",
+            "Cell Cycle & Cell Division",
+            "Transport in Plants",
+            "Mineral Nutrition",
+            "Photosynthesis in Higher Plants",
+            "Respiration in Plants",
+            "Plant Growth & Development",
+            "Digestion & Absorption",
+            "Breathing & Exchange of Gases",
+            "Body Fluids & Circulation",
+            "Excretory Products & Elimination",
+            "Locomotion & Movement",
+            "Neural Control & Coordination",
+            "Chemical Coordination & Integration",
+            "Reproduction in Organisms",
+            "Sexual Reproduction in Flowering Plants",
+            "Human Reproduction",
+            "Reproductive Health",
+            "Principles of Inheritance",
+            "Molecular Basis of Inheritance",
+            "Evolution",
+            "Human Health & Disease",
+            "Strategies for Enhancement in Food Production",
+            "Microbes in Human Welfare",
+            "Biotechnology: Principles",
+            "Biotechnology: Applications",
+            "Organisms & Populations",
+            "Ecosystem",
+            "Biodiversity & Conservation",
+            "Environmental Issues",
+            "Animal Husbandry",
+            "Plant Breeding",
+            "Tissue Culture",
+            "Genetics & Evolution",
+            "Ecology",
+            "Human Physiology",
+            "Plant Physiology",
+            "Cell Biology",
+            "Reproduction",
+            "Modern Biology",
+            "Applied Biology",
+            "Environmental Biology",
+            "Genetics",
+            "Molecular Biology",
+            "Evolution & Adaptation",
+            "Immunology",
+            "Microbiology",
+            "Biotechnology",
+            "Ecology & Environment",
+            "Plant Anatomy",
+            "Plant Taxonomy",
+            "Animal Anatomy",
+            "Animal Taxonomy",
+            "Physiology",
+            "Developmental Biology",
+            "Biochemistry",
+            "Cell & Molecular Biology",
+            "Genomics",
+            "Proteomics",
+            "Systems Biology",
         ],
     },
 }
@@ -86,6 +164,7 @@ TOTAL_CHAPTERS = sum(len(s["chapters"]) for s in SUBJECTS.values())
 # ---------------------------------------------------------------------------
 # Mock data generators
 # ---------------------------------------------------------------------------
+
 
 def _generate_seed(profile_id: str) -> dict[str, Any]:
     """Generate deterministic-but-varied mock data for a profile."""
@@ -99,8 +178,9 @@ def _generate_seed(profile_id: str) -> dict[str, Any]:
     subject_data: dict[str, dict[str, Any]] = {}
     total_completed = 0
     for subj_key, subj_info in SUBJECTS.items():
-        completed = random.randint(int(len(subj_info["chapters"]) * 0.2),
-                                   int(len(subj_info["chapters"]) * 0.85))
+        completed = random.randint(
+            int(len(subj_info["chapters"]) * 0.2), int(len(subj_info["chapters"]) * 0.85)
+        )
         total_completed += completed
         subject_data[subj_key] = {
             "name": subj_info["name"],
@@ -113,11 +193,13 @@ def _generate_seed(profile_id: str) -> dict[str, Any]:
     daily: list[dict[str, Any]] = []
     for i in range(total_study_days):
         d = start_date + timedelta(days=i)
-        daily.append({
-            "date": d.strftime("%Y-%m-%d"),
-            "subtopics_completed": random.randint(0, 8),
-            "study_minutes": random.randint(30, 240),
-        })
+        daily.append(
+            {
+                "date": d.strftime("%Y-%m-%d"),
+                "subtopics_completed": random.randint(0, 8),
+                "study_minutes": random.randint(30, 240),
+            }
+        )
 
     # Quiz history
     quizzes: list[dict[str, Any]] = []
@@ -126,12 +208,14 @@ def _generate_seed(profile_id: str) -> dict[str, Any]:
         d = start_date + timedelta(days=random.randint(0, total_study_days - 1))
         q_count = random.choice([15, 20, 30, 45])
         correct = int(q_count * random.uniform(0.35, 0.92))
-        quizzes.append({
-            "date": d.strftime("%Y-%m-%d"),
-            "score": correct,
-            "question_count": q_count,
-            "subject": random.choice(list(SUBJECTS.keys())),
-        })
+        quizzes.append(
+            {
+                "date": d.strftime("%Y-%m-%d"),
+                "score": correct,
+                "question_count": q_count,
+                "subject": random.choice(list(SUBJECTS.keys())),
+            }
+        )
     quizzes.sort(key=lambda x: x["date"])
 
     # Streaks
@@ -140,7 +224,9 @@ def _generate_seed(profile_id: str) -> dict[str, Any]:
 
     total_study_hours = round(sum(d["study_minutes"] for d in daily) / 60, 1)
     total_quizzes = len(quizzes)
-    avg_quiz = round(sum(q["score"] / q["question_count"] * 100 for q in quizzes) / max(total_quizzes, 1), 1)
+    avg_quiz = round(
+        sum(q["score"] / q["question_count"] * 100 for q in quizzes) / max(total_quizzes, 1), 1
+    )
 
     return {
         "total_study_days": total_study_days,
@@ -167,6 +253,7 @@ def _get_or_generate(profile_id: str) -> dict[str, Any]:
 # ---------------------------------------------------------------------------
 # Public API
 # ---------------------------------------------------------------------------
+
 
 def get_overview(profile_id: str) -> dict[str, Any]:
     """Return top-level analytics overview."""
@@ -195,13 +282,15 @@ def get_subject_progress(profile_id: str) -> list[dict[str, Any]]:
     result: list[dict[str, Any]] = []
     for subj_key, subj in data["subject_data"].items():
         pct = round(subj["completed"] / subj["total"] * 100, 1) if subj["total"] else 0
-        result.append({
-            "subject_id": subj_key,
-            "subject_name": subj["name"],
-            "completed": subj["completed"],
-            "total": subj["total"],
-            "percentage": pct,
-        })
+        result.append(
+            {
+                "subject_id": subj_key,
+                "subject_name": subj["name"],
+                "completed": subj["completed"],
+                "total": subj["total"],
+                "percentage": pct,
+            }
+        )
     return result
 
 
@@ -226,19 +315,31 @@ def get_weak_areas(profile_id: str) -> list[dict[str, Any]]:
         for ch_name in subj["chapters"]:
             progress_pct = random.randint(5, 95)
             quiz_avg = round(random.uniform(25, 85), 1) if random.random() > 0.3 else None
-            last_studied = (datetime.now() - timedelta(days=random.randint(1, 90))).strftime("%Y-%m-%d") if random.random() > 0.2 else None
+            last_studied = (
+                (datetime.now() - timedelta(days=random.randint(1, 90))).strftime("%Y-%m-%d")
+                if random.random() > 0.2
+                else None
+            )
 
             if progress_pct < 40 or (quiz_avg is not None and quiz_avg < 50):
-                priority = "high" if progress_pct < 25 or (quiz_avg is not None and quiz_avg < 35) else "medium" if progress_pct < 40 else "low"
-                weak.append({
-                    "chapter_id": f"{subj_key}-{hash(ch_name) % 10000:04d}",
-                    "chapter_name": ch_name,
-                    "subject_name": subj["name"],
-                    "progress_pct": progress_pct,
-                    "quiz_avg": quiz_avg,
-                    "last_studied": last_studied,
-                    "priority": priority,
-                })
+                priority = (
+                    "high"
+                    if progress_pct < 25 or (quiz_avg is not None and quiz_avg < 35)
+                    else "medium"
+                    if progress_pct < 40
+                    else "low"
+                )
+                weak.append(
+                    {
+                        "chapter_id": f"{subj_key}-{hash(ch_name) % 10000:04d}",
+                        "chapter_name": ch_name,
+                        "subject_name": subj["name"],
+                        "progress_pct": progress_pct,
+                        "quiz_avg": quiz_avg,
+                        "last_studied": last_studied,
+                        "priority": priority,
+                    }
+                )
 
     weak.sort(key=lambda x: {"high": 0, "medium": 1, "low": 2}[x["priority"]])
     return weak
@@ -267,6 +368,7 @@ def get_streak_calendar(profile_id: str, month: str | None = None) -> dict[str, 
 
     # Build calendar grid
     import calendar
+
     cal = calendar.Calendar()
     days_in_month = cal.monthdayscalendar(year, mon)
 
@@ -276,11 +378,13 @@ def get_streak_calendar(profile_id: str, month: str | None = None) -> dict[str, 
             if day_num == 0:
                 continue
             d_str = f"{year:04d}-{mon:02d}-{day_num:02d}"
-            calendar_days.append({
-                "date": d_str,
-                "has_activity": d_str in study_dates,
-                "day": day_num,
-            })
+            calendar_days.append(
+                {
+                    "date": d_str,
+                    "has_activity": d_str in study_dates,
+                    "day": day_num,
+                }
+            )
 
     return {
         "month": month or f"{year:04d}-{mon:02d}",
@@ -304,12 +408,14 @@ def get_performance_prediction(profile_id: str) -> dict[str, Any]:
     for subj_key, subj in data["subject_data"].items():
         subj_pct = round(subj["completed"] / subj["total"] * 100, 1)
         pred_score = min(99, max(10, subj_pct * random.uniform(0.7, 1.1)))
-        subject_preds.append({
-            "subject_id": subj_key,
-            "subject_name": subj["name"],
-            "completion_pct": subj_pct,
-            "predicted_score": round(pred_score, 1),
-        })
+        subject_preds.append(
+            {
+                "subject_id": subj_key,
+                "subject_name": subj["name"],
+                "completion_pct": subj_pct,
+                "predicted_score": round(pred_score, 1),
+            }
+        )
 
     return {
         "predicted_score": round(predicted, 1),

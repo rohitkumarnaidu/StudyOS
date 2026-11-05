@@ -32,10 +32,13 @@ async def websocket_realtime(websocket: WebSocket) -> None:
             try:
                 message = json.loads(data)
             except json.JSONDecodeError:
-                await manager.send_personal(connection_id, {
-                    "type": "error",
-                    "message": "Invalid JSON",
-                })
+                await manager.send_personal(
+                    connection_id,
+                    {
+                        "type": "error",
+                        "message": "Invalid JSON",
+                    },
+                )
                 continue
 
             event_type = message.get("type", "unknown")
@@ -49,21 +52,27 @@ async def websocket_realtime(websocket: WebSocket) -> None:
                 room_id = message.get("room_id", "")
                 if room_id:
                     await manager.join_room(connection_id, room_id)
-                    await manager.send_personal(connection_id, {
-                        "type": "room_joined",
-                        "room_id": room_id,
-                        "members": manager.get_room_members(room_id),
-                    })
+                    await manager.send_personal(
+                        connection_id,
+                        {
+                            "type": "room_joined",
+                            "room_id": room_id,
+                            "members": manager.get_room_members(room_id),
+                        },
+                    )
                 continue
 
             if event_type == "leave_room":
                 room_id = message.get("room_id", "")
                 if room_id:
                     await manager.leave_room(connection_id, room_id)
-                    await manager.send_personal(connection_id, {
-                        "type": "room_left",
-                        "room_id": room_id,
-                    })
+                    await manager.send_personal(
+                        connection_id,
+                        {
+                            "type": "room_left",
+                            "room_id": room_id,
+                        },
+                    )
                 continue
 
             if event_type == "room_broadcast":
@@ -84,20 +93,26 @@ async def websocket_realtime(websocket: WebSocket) -> None:
                         connection_id,
                         metadata=message.get("metadata", {}),
                     )
-                    await manager.send_personal(connection_id, {
-                        "type": "presence_confirmed",
-                        "user_id": user_id,
-                        "online_count": presence.get_online_count(),
-                    })
+                    await manager.send_personal(
+                        connection_id,
+                        {
+                            "type": "presence_confirmed",
+                            "user_id": user_id,
+                            "online_count": presence.get_online_count(),
+                        },
+                    )
                 continue
 
             if event_type == "get_online_users":
                 online = presence.get_online_users()
-                await manager.send_personal(connection_id, {
-                    "type": "online_users",
-                    "users": online,
-                    "count": len(online),
-                })
+                await manager.send_personal(
+                    connection_id,
+                    {
+                        "type": "online_users",
+                        "users": online,
+                        "count": len(online),
+                    },
+                )
                 continue
 
             results = await registry.dispatch(event_type, message)

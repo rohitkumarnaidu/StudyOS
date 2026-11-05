@@ -23,6 +23,7 @@ def app() -> FastAPI:
     @app.get("/slow")
     async def slow() -> dict:
         import time
+
         time.sleep(0.1)
         return {"status": "slow"}
 

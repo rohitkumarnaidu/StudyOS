@@ -48,9 +48,7 @@ class ForgettingCurveModel:
         if days_elapsed <= 0:
             return self._baseline
 
-        retention = self._baseline * math.exp(
-            -self._decay_rate * days_elapsed / max(strength, 0.1)
-        )
+        retention = self._baseline * math.exp(-self._decay_rate * days_elapsed / max(strength, 0.1))
         return round(max(0.0, min(1.0, retention)), 3)
 
     def optimal_review_interval(self, target_retention: float = 0.8, strength: float = 1.0) -> int:
@@ -98,10 +96,7 @@ class RetentionTracker:
 
     def get_average_retention(self, days_elapsed: int) -> float:
         """Get average actual retention for items at a given elapsed time."""
-        relevant = [
-            r for r in self._records
-            if abs(r.days_since_review - days_elapsed) <= 1
-        ]
+        relevant = [r for r in self._records if abs(r.days_since_review - days_elapsed) <= 1]
         if not relevant:
             return 0.0
         return round(sum(r.actual_retention for r in relevant) / len(relevant), 3)
@@ -111,10 +106,7 @@ class RetentionTracker:
         if not self._records:
             return 0.0
 
-        errors = [
-            abs(r.predicted_retention - r.actual_retention)
-            for r in self._records
-        ]
+        errors = [abs(r.predicted_retention - r.actual_retention) for r in self._records]
         mae = sum(errors) / len(errors)
         return round(max(0.0, 1.0 - mae), 3)
 

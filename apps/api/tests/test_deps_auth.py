@@ -1,6 +1,6 @@
 """Tests for deps/auth.py — authentication dependency injection."""
 
-from unittest.mock import MagicMock, patch
+from unittest.mock import MagicMock
 
 import pytest
 from fastapi import HTTPException, status
@@ -61,6 +61,7 @@ class TestGetAuthService:
     def test_returns_auth_service_instance(self):
         """Returns an AuthService instance."""
         from studyos_api.services.auth_service import AuthService
+
         service = get_auth_service()
         assert isinstance(service, AuthService)
 

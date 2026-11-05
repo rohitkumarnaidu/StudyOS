@@ -498,6 +498,7 @@ QUESTION_BANK: list[dict[str, Any]] = [
 # Data classes
 # ---------------------------------------------------------------------------
 
+
 @dataclass
 class QuizSession:
     """A quiz attempt by a user."""
@@ -562,6 +563,7 @@ class MistakeEntry:
 # ---------------------------------------------------------------------------
 # Service
 # ---------------------------------------------------------------------------
+
 
 class QuizService:
     """In-memory quiz session and mistake management."""
@@ -662,16 +664,18 @@ class QuizService:
         for qid in session.question_ids:
             q = self._find_question(qid)
             if q:
-                questions.append({
-                    "id": q["id"],
-                    "question_text": q["question_text"],
-                    "question_type": "mcq",
-                    "option_a": q["option_a"],
-                    "option_b": q["option_b"],
-                    "option_c": q["option_c"],
-                    "option_d": q["option_d"],
-                    "difficulty": q["difficulty"],
-                })
+                questions.append(
+                    {
+                        "id": q["id"],
+                        "question_text": q["question_text"],
+                        "question_type": "mcq",
+                        "option_a": q["option_a"],
+                        "option_b": q["option_b"],
+                        "option_c": q["option_c"],
+                        "option_d": q["option_d"],
+                        "difficulty": q["difficulty"],
+                    }
+                )
         return questions
 
     def submit_answer(
@@ -754,7 +758,8 @@ class QuizService:
         if chapter_id:
             # Filter by matching question's chapter
             mistakes = [
-                m for m in mistakes
+                m
+                for m in mistakes
                 if self._find_question(m.question_id)
                 and self._find_question(m.question_id)["chapter_id"] == chapter_id  # type: ignore[index]
             ]
@@ -802,17 +807,21 @@ class QuizService:
             if is_correct:
                 correct += 1
 
-            responses.append({
-                "question_id": qid,
-                "question_text": q["question_text"],
-                "user_answer": user_answer,
-                "correct_answer": q["correct_answer"],
-                "is_correct": is_correct,
-                "explanation": q.get("explanation"),
-                "difficulty": q["difficulty"],
-            })
+            responses.append(
+                {
+                    "question_id": qid,
+                    "question_text": q["question_text"],
+                    "user_answer": user_answer,
+                    "correct_answer": q["correct_answer"],
+                    "is_correct": is_correct,
+                    "explanation": q.get("explanation"),
+                    "difficulty": q["difficulty"],
+                }
+            )
 
-        incorrect = sum(1 for r in responses if not r["is_correct"] and r["user_answer"] is not None)
+        incorrect = sum(
+            1 for r in responses if not r["is_correct"] and r["user_answer"] is not None
+        )
         skipped = total - correct - incorrect
         score_percent = round((correct / total * 100), 1) if total > 0 else 0.0
 

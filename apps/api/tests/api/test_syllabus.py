@@ -40,6 +40,8 @@ async def test_get_chapter_detail_with_invalid_uuid_returns_422(api_client: Asyn
 
 @pytest.mark.api
 @pytest.mark.asyncio
-async def test_get_chapter_detail_with_nonexistent_uuid_returns_404(api_client: AsyncClient) -> None:
+async def test_get_chapter_detail_with_nonexistent_uuid_returns_404(
+    api_client: AsyncClient,
+) -> None:
     res = await api_client.get("/v1/syllabus/chapters/00000000-0000-0000-0000-000000000000")
     assert res.status_code in (404, 200)

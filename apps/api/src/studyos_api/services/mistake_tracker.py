@@ -96,18 +96,20 @@ class MistakeTracker:
         """Get all mistakes for a user."""
         return [m for m in self._mistakes if m.profile_id == profile_id]
 
-    def get_mistakes_by_type(self, profile_id: str, mistake_type: MistakeType) -> list[MistakeRecord]:
+    def get_mistakes_by_type(
+        self, profile_id: str, mistake_type: MistakeType
+    ) -> list[MistakeRecord]:
         """Get mistakes filtered by type."""
         return [
-            m for m in self._mistakes
+            m
+            for m in self._mistakes
             if m.profile_id == profile_id and m.mistake_type == mistake_type
         ]
 
     def get_mistakes_by_concept(self, profile_id: str, concept: str) -> list[MistakeRecord]:
         """Get mistakes related to a specific concept."""
         return [
-            m for m in self._mistakes
-            if m.profile_id == profile_id and concept in m.concept_tags
+            m for m in self._mistakes if m.profile_id == profile_id and concept in m.concept_tags
         ]
 
     def get_concept_frequency(self, profile_id: str) -> dict[str, int]:

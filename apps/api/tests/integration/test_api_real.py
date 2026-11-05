@@ -54,7 +54,9 @@ class TestSyllabusEndpoints:
         resp = client.get(f"/v1/syllabus/chapters?exam_id={exam_id}")
         assert resp.status_code == 200
         chapters_data = resp.json()
-        chapters = chapters_data.get("data", []) if isinstance(chapters_data, dict) else chapters_data
+        chapters = (
+            chapters_data.get("data", []) if isinstance(chapters_data, dict) else chapters_data
+        )
         assert len(chapters) >= 10  # NEET has many chapters
 
     def test_get_chapters(self, client) -> None:
@@ -68,7 +70,9 @@ class TestSyllabusEndpoints:
         resp = client.get(f"/v1/syllabus/chapters?exam_id={exam_id}")
         assert resp.status_code == 200
         chapters_data = resp.json()
-        chapters = chapters_data.get("data", []) if isinstance(chapters_data, dict) else chapters_data
+        chapters = (
+            chapters_data.get("data", []) if isinstance(chapters_data, dict) else chapters_data
+        )
         assert len(chapters) > 0
         # Get detail for first chapter
         chapter_id = chapters[0]["id"]

@@ -84,13 +84,15 @@ class NoteSearch:
 
             if score > 0:
                 snippet = self._extract_snippet(note.content, query_words)
-                results.append(SearchResult(
-                    note_id=note.note_id,
-                    note_title=note.title,
-                    chunk_content=snippet,
-                    score=score,
-                    match_type="keyword",
-                ))
+                results.append(
+                    SearchResult(
+                        note_id=note.note_id,
+                        note_title=note.title,
+                        chunk_content=snippet,
+                        score=score,
+                        match_type="keyword",
+                    )
+                )
 
         results.sort(key=lambda r: r.score, reverse=True)
         return results[:top_k]
@@ -107,14 +109,16 @@ class NoteSearch:
             for chunk in note.chunks:
                 sim = cosine_similarity(query_embedding, chunk.get("embedding", []))
                 if sim > 0.3:
-                    results.append(SearchResult(
-                        note_id=note.note_id,
-                        note_title=note.title,
-                        chunk_content=chunk.get("content", "")[:200],
-                        score=sim,
-                        page_number=chunk.get("page_number"),
-                        match_type="semantic",
-                    ))
+                    results.append(
+                        SearchResult(
+                            note_id=note.note_id,
+                            note_title=note.title,
+                            chunk_content=chunk.get("content", "")[:200],
+                            score=sim,
+                            page_number=chunk.get("page_number"),
+                            match_type="semantic",
+                        )
+                    )
 
         results.sort(key=lambda r: r.score, reverse=True)
         return results[:top_k]

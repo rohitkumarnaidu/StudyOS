@@ -1,17 +1,17 @@
 """Tests for AI service — mocking dependencies."""
 
-from unittest.mock import AsyncMock, MagicMock, patch
-from uuid import uuid4
+from unittest.mock import AsyncMock, MagicMock
 
 import pytest
 
-from studyos_api.ai.types import ChatMessage, CompletionResult, TokenUsage
+from studyos_api.ai.types import ChatMessage
 
 
 class TestAIService:
     @pytest.fixture
     def mock_settings(self):
         from studyos_api.core.config import Settings
+
         return Settings(
             ai_ollama_base_url="http://localhost:11434",
             ai_openai_api_key="test-key",
@@ -27,6 +27,7 @@ class TestAIService:
     @pytest.mark.asyncio
     async def test_session_key(self, mock_settings, mock_usage_sink) -> None:
         from studyos_api.ai.service import AIService
+
         mock_provider = MagicMock()
         mock_provider.provider_id = "openai"
         svc = AIService(
@@ -42,6 +43,7 @@ class TestAIService:
     @pytest.mark.asyncio
     async def test_merge_messages_no_memory(self, mock_settings, mock_usage_sink) -> None:
         from studyos_api.ai.service import AIService
+
         mock_provider = MagicMock()
         mock_provider.provider_id = "openai"
         svc = AIService(
@@ -57,6 +59,7 @@ class TestAIService:
     @pytest.mark.asyncio
     async def test_persist_turn_no_key(self, mock_settings, mock_usage_sink) -> None:
         from studyos_api.ai.service import AIService
+
         mock_provider = MagicMock()
         mock_provider.provider_id = "openai"
         svc = AIService(
@@ -75,6 +78,7 @@ class TestAIService:
     @pytest.mark.asyncio
     async def test_mcp_property(self, mock_settings, mock_usage_sink) -> None:
         from studyos_api.ai.service import AIService
+
         mock_provider = MagicMock()
         mock_provider.provider_id = "openai"
         svc = AIService(

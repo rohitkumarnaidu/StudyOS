@@ -30,6 +30,7 @@ async def create_bulk_import(
 ) -> dict[str, Any]:
     """Create a bulk import job."""
     import uuid
+
     job = bulk_svc.create_job(str(uuid.uuid4()), total_files=body.get("total_files", 0))
     return {
         "data": job.to_dict(),

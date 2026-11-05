@@ -27,6 +27,7 @@ def configure_test_env() -> None:
     os.environ["STUDYOS_EXPOSE_ERROR_DETAIL"] = "true"
     os.environ["STUDYOS_ALLOW_LEGACY_DEMO_BEARER"] = "true"
     from studyos_api.core.config import get_settings
+
     get_settings.cache_clear()
 
 
@@ -39,9 +40,10 @@ def client():
 
 @pytest.fixture
 def auth_headers():
+    import uuid
+
     from studyos_api.core.config import get_settings
     from studyos_api.security.tokens import mint_access_token
-    import uuid
 
     settings = get_settings()
     user_id = str(uuid.uuid4())
@@ -240,7 +242,11 @@ class TestTokenBudgetExhaustion:
     def test_ai_requests_blocked_when_budget_exhausted(self, client, auth_headers):
         with patch("studyos_api.api.v1.routes.ai.get_budget_enforcer") as mock_get:
             mock_enforcer = MagicMock()
-            mock_enforcer.check_budget.return_value = {"allowed": False, "daily_remaining": 0, "monthly_remaining": 0}
+            mock_enforcer.check_budget.return_value = {
+                "allowed": False,
+                "daily_remaining": 0,
+                "monthly_remaining": 0,
+            }
             mock_get.return_value = mock_enforcer
 
             resp = client.post(
@@ -253,7 +259,11 @@ class TestTokenBudgetExhaustion:
     def test_budget_check_allows_valid_requests(self, client, auth_headers):
         with patch("studyos_api.api.v1.routes.ai.get_budget_enforcer") as mock_get:
             mock_enforcer = MagicMock()
-            mock_enforcer.check_budget.return_value = {"allowed": True, "daily_remaining": 1000, "monthly_remaining": 5000}
+            mock_enforcer.check_budget.return_value = {
+                "allowed": True,
+                "daily_remaining": 1000,
+                "monthly_remaining": 5000,
+            }
             mock_get.return_value = mock_enforcer
 
             with patch("studyos_api.ai.provider_factory.build_llm_chain") as mock_chain:
@@ -271,7 +281,11 @@ class TestTokenBudgetExhaustion:
     def test_budget_tracking_records_usage(self, client, auth_headers):
         with patch("studyos_api.api.v1.routes.ai.get_budget_enforcer") as mock_get:
             mock_enforcer = MagicMock()
-            mock_enforcer.check_budget.return_value = {"allowed": True, "daily_remaining": 1000, "monthly_remaining": 5000}
+            mock_enforcer.check_budget.return_value = {
+                "allowed": True,
+                "daily_remaining": 1000,
+                "monthly_remaining": 5000,
+            }
             mock_enforcer.record_usage = MagicMock()
             mock_get.return_value = mock_enforcer
 

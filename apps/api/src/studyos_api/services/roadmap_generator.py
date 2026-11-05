@@ -5,7 +5,7 @@ from __future__ import annotations
 import random
 import uuid
 from dataclasses import dataclass
-from datetime import date, datetime, timedelta, UTC
+from datetime import UTC, date, datetime, timedelta
 from enum import Enum
 from typing import Any
 
@@ -306,9 +306,7 @@ class RoadmapGenerator:
                 day_type = "study"
                 study_days += 1
                 # Assign chapters for this day
-                day_chapters = self._assign_daily_chapters(
-                    all_chapters, chapter_idx, daily_minutes
-                )
+                day_chapters = self._assign_daily_chapters(all_chapters, chapter_idx, daily_minutes)
                 chapter_idx += len(day_chapters)
                 day_plan = DayPlan(
                     date=date_str,
@@ -334,9 +332,7 @@ class RoadmapGenerator:
         )
 
         self._roadmaps[roadmap_id] = roadmap
-        self._progress[profile_id] = {
-            roadmap_id: False for _ in days
-        }
+        self._progress[profile_id] = {roadmap_id: False for _ in days}
 
         logger.info(
             "roadmap.generated",
@@ -400,12 +396,9 @@ class RoadmapGenerator:
             return None
 
         total_chapters = sum(len(d.chapters) for d in roadmap.days)
-        completed_chapters = sum(
-            1 for d in roadmap.days for c in d.chapters if c.completed
-        )
+        completed_chapters = sum(1 for d in roadmap.days for c in d.chapters if c.completed)
         study_days_completed = sum(
-            1 for d in roadmap.days
-            if d.day_type == "study" and d.status == RoadmapStatus.COMPLETED
+            1 for d in roadmap.days if d.day_type == "study" and d.status == RoadmapStatus.COMPLETED
         )
 
         return {
@@ -416,7 +409,8 @@ class RoadmapGenerator:
             "study_days_completed": study_days_completed,
             "total_study_days": roadmap.study_days,
             "days_remaining": sum(
-                1 for d in roadmap.days
+                1
+                for d in roadmap.days
                 if d.date >= date.today().isoformat() and d.status == RoadmapStatus.PENDING
             ),
         }
@@ -447,14 +441,16 @@ class RoadmapGenerator:
                     # Subject weight multiplier
                     priority *= data["weight"]
 
-                    chapters.append({
-                        "name": name,
-                        "subject": subject,
-                        "grade": grade_key,
-                        "priority": min(int(priority), 100),
-                        "weight": weight,
-                        "dependencies": deps,
-                    })
+                    chapters.append(
+                        {
+                            "name": name,
+                            "subject": subject,
+                            "grade": grade_key,
+                            "priority": min(int(priority), 100),
+                            "weight": weight,
+                            "dependencies": deps,
+                        }
+                    )
 
         # Sort by priority (descending), then by dependencies
         chapters.sort(key=lambda c: (-c["priority"], len(c["dependencies"])))
@@ -488,14 +484,16 @@ class RoadmapGenerator:
             if est_minutes > remaining_minutes:
                 continue
 
-            assigned.append(ChapterTarget(
-                id=str(uuid.uuid4()),
-                name=ch["name"],
-                subject=ch["subject"],
-                grade=ch["grade"],
-                priority_score=ch["priority"],
-                estimated_minutes=est_minutes,
-            ))
+            assigned.append(
+                ChapterTarget(
+                    id=str(uuid.uuid4()),
+                    name=ch["name"],
+                    subject=ch["subject"],
+                    grade=ch["grade"],
+                    priority_score=ch["priority"],
+                    estimated_minutes=est_minutes,
+                )
+            )
 
             subjects_today.add(ch["subject"])
             remaining_minutes -= est_minutes

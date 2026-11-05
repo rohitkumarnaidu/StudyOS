@@ -2,8 +2,6 @@
 
 from __future__ import annotations
 
-import pytest
-
 from studyos_api.services.semantic_clusterer import SemanticClusterer
 
 

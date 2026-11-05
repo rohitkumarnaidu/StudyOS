@@ -1,15 +1,11 @@
 """Tests for chunker service."""
 
-import pytest
-
 from studyos_api.services.chunker import (
     TextChunk,
-    recursive_split,
-    chunk_document,
     _merge_splits,
     _split_by_chars,
-    DEFAULT_CHUNK_SIZE,
-    DEFAULT_CHUNK_OVERLAP,
+    chunk_document,
+    recursive_split,
 )
 
 

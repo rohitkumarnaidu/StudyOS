@@ -24,7 +24,9 @@ class FeatureFlag:
     created_at: float = field(default_factory=time.time)
     updated_at: float = field(default_factory=time.time)
 
-    def is_enabled_for(self, user_id: str | None = None, context: dict[str, Any] | None = None) -> bool:
+    def is_enabled_for(
+        self, user_id: str | None = None, context: dict[str, Any] | None = None
+    ) -> bool:
         """Evaluate if this flag is enabled for a specific user/context."""
         if not self.enabled:
             return False
@@ -100,12 +102,11 @@ class FeatureFlagService:
             return False
         return flag.is_enabled_for(user_id, context)
 
-    def get_all_flags(self, user_id: str | None = None, context: dict[str, Any] | None = None) -> dict[str, bool]:
+    def get_all_flags(
+        self, user_id: str | None = None, context: dict[str, Any] | None = None
+    ) -> dict[str, bool]:
         """Get evaluation of all flags for a user/context."""
-        return {
-            key: flag.is_enabled_for(user_id, context)
-            for key, flag in self._flags.items()
-        }
+        return {key: flag.is_enabled_for(user_id, context) for key, flag in self._flags.items()}
 
     def delete_flag(self, key: str) -> bool:
         """Delete a feature flag."""

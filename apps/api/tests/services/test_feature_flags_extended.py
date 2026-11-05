@@ -1,7 +1,5 @@
 """Extended tests for feature flags — additional coverage."""
 
-import pytest
-
 from studyos_api.services.feature_flags import FeatureFlagService
 
 
@@ -38,19 +36,13 @@ class TestFeatureFlagServiceEdgeCases:
     def test_rollout_percentage_boundary_50(self):
         svc = FeatureFlagService()
         svc.set_flag("half", enabled=True, rollout_percentage=50.0)
-        enabled_count = sum(
-            1 for i in range(1000)
-            if svc.is_enabled("half", user_id=f"user{i}")
-        )
+        enabled_count = sum(1 for i in range(1000) if svc.is_enabled("half", user_id=f"user{i}"))
         assert 400 < enabled_count < 600
 
     def test_rollout_percentage_boundary_1(self):
         svc = FeatureFlagService()
         svc.set_flag("rare", enabled=True, rollout_percentage=1.0)
-        enabled_count = sum(
-            1 for i in range(1000)
-            if svc.is_enabled("rare", user_id=f"user{i}")
-        )
+        enabled_count = sum(1 for i in range(1000) if svc.is_enabled("rare", user_id=f"user{i}"))
         assert enabled_count < 30
 
     def test_multiple_conditions_all_must_match(self):
@@ -60,8 +52,22 @@ class TestFeatureFlagServiceEdgeCases:
             enabled=True,
             conditions={"plan": "premium", "region": "us", "platform": "mobile"},
         )
-        assert svc.is_enabled("complex", user_id="u1", context={"plan": "premium", "region": "us", "platform": "mobile"}) is True
-        assert svc.is_enabled("complex", user_id="u1", context={"plan": "premium", "region": "eu", "platform": "mobile"}) is False
+        assert (
+            svc.is_enabled(
+                "complex",
+                user_id="u1",
+                context={"plan": "premium", "region": "us", "platform": "mobile"},
+            )
+            is True
+        )
+        assert (
+            svc.is_enabled(
+                "complex",
+                user_id="u1",
+                context={"plan": "premium", "region": "eu", "platform": "mobile"},
+            )
+            is False
+        )
 
 
 class TestFeatureFlagSync:

@@ -21,7 +21,9 @@ class PriorityScorer:
         self._pool = pool
 
     async def compute_all_scores(
-        self, profile_id: UUID, exam_date: date | None = None,
+        self,
+        profile_id: UUID,
+        exam_date: date | None = None,
     ) -> list[dict[str, Any]]:
         """Compute priority scores for all chapters for a user."""
         if self._pool is None:
@@ -92,18 +94,20 @@ class PriorityScorer:
                     round(exam_proximity_factor, 2),
                 )
 
-                scores.append({
-                    "chapter_id": str(chapter_id),
-                    "chapter_name": chapter["name"],
-                    "subject_name": chapter["subject_name"],
-                    "score": round(score, 2),
-                    "weightage_factor": round(weightage_factor, 2),
-                    "weak_area_factor": round(weak_area_factor, 2),
-                    "time_remaining_factor": round(time_factor, 2),
-                    "exam_proximity_factor": round(exam_proximity_factor, 2),
-                    "completion_rate": completion_rate,
-                    "quiz_avg": quiz_avg,
-                })
+                scores.append(
+                    {
+                        "chapter_id": str(chapter_id),
+                        "chapter_name": chapter["name"],
+                        "subject_name": chapter["subject_name"],
+                        "score": round(score, 2),
+                        "weightage_factor": round(weightage_factor, 2),
+                        "weak_area_factor": round(weak_area_factor, 2),
+                        "time_remaining_factor": round(time_factor, 2),
+                        "exam_proximity_factor": round(exam_proximity_factor, 2),
+                        "completion_rate": completion_rate,
+                        "quiz_avg": quiz_avg,
+                    }
+                )
 
             scores.sort(key=lambda x: x["score"], reverse=True)
             return scores
@@ -174,7 +178,10 @@ class PriorityScorer:
         return 0.4
 
     async def _get_chapter_progress(
-        self, conn: asyncpg.Connection, profile_id: UUID, chapter_id: UUID,
+        self,
+        conn: asyncpg.Connection,
+        profile_id: UUID,
+        chapter_id: UUID,
     ) -> dict[str, float]:
         row = await conn.fetchrow(
             """
@@ -198,7 +205,10 @@ class PriorityScorer:
         return {"total": total, "completed": completed, "completion_rate": completion_rate}
 
     async def _get_chapter_quiz_avg(
-        self, conn: asyncpg.Connection, profile_id: UUID, chapter_id: UUID,
+        self,
+        conn: asyncpg.Connection,
+        profile_id: UUID,
+        chapter_id: UUID,
     ) -> float:
         row = await conn.fetchrow(
             """

@@ -3,8 +3,8 @@
 from __future__ import annotations
 
 import asyncio
-from typing import TYPE_CHECKING, Any
 from collections.abc import Callable, Coroutine
+from typing import TYPE_CHECKING, Any
 
 import structlog
 
@@ -38,7 +38,9 @@ class EventConsumer:
         self._processed_count = 0
         self._error_count = 0
 
-    def register(self, event_type: str, handler: Callable[[StudyOSEvent], Coroutine[Any, Any, None]]) -> None:
+    def register(
+        self, event_type: str, handler: Callable[[StudyOSEvent], Coroutine[Any, Any, None]]
+    ) -> None:
         """Register a handler for an event type."""
         self._handlers[event_type] = handler
         self._bus.register_handler(event_type, handler)
@@ -74,7 +76,9 @@ class EventConsumer:
     async def stop(self) -> None:
         """Stop the consumer."""
         self._running = False
-        logger.info("event_consumer.stopped", processed=self._processed_count, errors=self._error_count)
+        logger.info(
+            "event_consumer.stopped", processed=self._processed_count, errors=self._error_count
+        )
 
     async def _process_message(self, msg_id: str, fields: dict[str, str]) -> None:
         try:
@@ -133,7 +137,7 @@ class RetryableEventConsumer(EventConsumer):
         except Exception:
             self._retry_counts[retry_key] = current_retries + 1
             self._error_count += 1
-            delay = _RETRY_DELAY_SECONDS * (2 ** current_retries)
+            delay = _RETRY_DELAY_SECONDS * (2**current_retries)
             logger.warning(
                 "event_consumer.retry_scheduled",
                 event_type=event.event_type,

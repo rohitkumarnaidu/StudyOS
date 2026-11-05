@@ -52,9 +52,7 @@ class TestEventConsumer:
 
         consumer.register("study.completed", handler)
         assert "study.completed" in consumer._handlers
-        mock_event_bus.register_handler.assert_called_once_with(
-            "study.completed", handler
-        )
+        mock_event_bus.register_handler.assert_called_once_with("study.completed", handler)
 
     @pytest.mark.asyncio
     async def test_start_empty_stream(self, mock_event_bus):
@@ -63,10 +61,12 @@ class TestEventConsumer:
 
         async def stop_after_delay():
             import asyncio
+
             await asyncio.sleep(0.1)
             await consumer.stop()
 
         import asyncio
+
         await asyncio.gather(consumer.start(), stop_after_delay())
         assert consumer._running is False
 
@@ -139,9 +139,7 @@ class TestRetryableEventConsumer:
         assert consumer._retry_counts == {}
 
     def test_init_custom_max_retries(self, mock_event_bus):
-        consumer = RetryableEventConsumer(
-            event_bus=mock_event_bus, max_retries=5
-        )
+        consumer = RetryableEventConsumer(event_bus=mock_event_bus, max_retries=5)
         assert consumer._max_retries == 5
 
     @pytest.mark.asyncio
@@ -166,9 +164,7 @@ class TestRetryableEventConsumer:
 
     @pytest.mark.asyncio
     async def test_process_message_failure_retries(self, mock_event_bus):
-        consumer = RetryableEventConsumer(
-            event_bus=mock_event_bus, max_retries=2
-        )
+        consumer = RetryableEventConsumer(event_bus=mock_event_bus, max_retries=2)
         call_count = 0
 
         async def fail_twice_then_succeed(event):
@@ -198,9 +194,7 @@ class TestRetryableEventConsumer:
 
     @pytest.mark.asyncio
     async def test_process_message_exceeds_max_retries_moves_to_dlq(self, mock_event_bus):
-        consumer = RetryableEventConsumer(
-            event_bus=mock_event_bus, max_retries=1
-        )
+        consumer = RetryableEventConsumer(event_bus=mock_event_bus, max_retries=1)
         mock_event_bus.dispatch = AsyncMock(side_effect=Exception("Handler failed"))
         profile_id = uuid4()
         event_id = uuid4()
@@ -221,9 +215,7 @@ class TestRetryableEventConsumer:
 
     @pytest.mark.asyncio
     async def test_retry_delay_exponential(self, mock_event_bus):
-        consumer = RetryableEventConsumer(
-            event_bus=mock_event_bus, max_retries=3
-        )
+        consumer = RetryableEventConsumer(event_bus=mock_event_bus, max_retries=3)
         profile_id = uuid4()
         event_id = uuid4()
         fields = {
@@ -254,9 +246,7 @@ class TestRetryableEventConsumer:
 
     @pytest.mark.asyncio
     async def test_successful_retry_clears_count(self, mock_event_bus):
-        consumer = RetryableEventConsumer(
-            event_bus=mock_event_bus, max_retries=3
-        )
+        consumer = RetryableEventConsumer(event_bus=mock_event_bus, max_retries=3)
         profile_id = uuid4()
         event_id = uuid4()
         fields = {

@@ -77,6 +77,7 @@ class TestWebhookEvent:
             delivery_id="abc-123",
         )
         import json
+
         data = json.loads(event.to_json())
         assert data["id"] == "abc-123"
         assert data["event"] == "user.created"
@@ -220,9 +221,8 @@ class TestWebhookDeliveryService:
         mock_client.post.return_value = mock_response
 
         import asyncio
-        asyncio.run(
-            service.deliver(event, "https://example.com/webhook", mock_client)
-        )
+
+        asyncio.run(service.deliver(event, "https://example.com/webhook", mock_client))
 
         call_kwargs = mock_client.post.call_args[1]
         headers = call_kwargs["headers"]

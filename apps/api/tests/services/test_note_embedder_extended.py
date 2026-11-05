@@ -95,9 +95,7 @@ class TestNoteEmbedderMockEmbedding:
 class TestNoteEmbedderRealApi:
     def test_real_api_call_success(self) -> None:
         mock_response = MagicMock()
-        mock_response.json.return_value = {
-            "data": [{"embedding": [0.1, 0.2, 0.3, 0.4]}]
-        }
+        mock_response.json.return_value = {"data": [{"embedding": [0.1, 0.2, 0.3, 0.4]}]}
         mock_response.raise_for_status = MagicMock()
 
         with patch("httpx.post", return_value=mock_response) as mock_post:

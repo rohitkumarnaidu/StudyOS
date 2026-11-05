@@ -32,6 +32,7 @@ MIN_ATTEMPTS_FOR_ANALYSIS = 3
 # Data classes
 # ---------------------------------------------------------------------------
 
+
 @dataclass
 class TopicPerformance:
     """Aggregated performance metrics for a single topic."""
@@ -139,6 +140,7 @@ class WeakAreaReport:
 # Weakness scoring
 # ---------------------------------------------------------------------------
 
+
 def _recency_factor(last_attempt_at: str, now: datetime | None = None) -> float:
     """Calculate recency factor: more recent = higher influence.
 
@@ -190,6 +192,7 @@ def _calculate_weakness_score(
 # ---------------------------------------------------------------------------
 # Service
 # ---------------------------------------------------------------------------
+
 
 class WeakAreaDetector:
     """Analyzes quiz session results to identify weak topics and generate recommendations."""
@@ -320,9 +323,7 @@ class WeakAreaDetector:
                 else:
                     incorrect_times.append(qr.get("time_taken", 0.0))
 
-            analysis["avg_time_correct"] = round(
-                sum(correct_times) / max(len(correct_times), 1), 1
-            )
+            analysis["avg_time_correct"] = round(sum(correct_times) / max(len(correct_times), 1), 1)
             analysis["avg_time_incorrect"] = round(
                 sum(incorrect_times) / max(len(incorrect_times), 1), 1
             )
@@ -389,21 +390,23 @@ class WeakAreaDetector:
             else:
                 severity = "low"
 
-            scored_areas.append({
-                "topic": perf.topic,
-                "chapter_id": perf.chapter_id,
-                "subject": perf.subject,
-                "accuracy": round(accuracy, 3),
-                "total_attempts": perf.total_attempts,
-                "correct_attempts": perf.correct_attempts,
-                "weakness_score": score,
-                "severity": severity,
-                "recency_factor": round(recency, 3),
-                "weight": weight,
-                "avg_time_per_question": round(perf.avg_time_per_question, 1),
-                "last_attempt_at": perf.last_attempt_at,
-                "accuracy_trend": self._compute_trend(perf.accuracy_history),
-            })
+            scored_areas.append(
+                {
+                    "topic": perf.topic,
+                    "chapter_id": perf.chapter_id,
+                    "subject": perf.subject,
+                    "accuracy": round(accuracy, 3),
+                    "total_attempts": perf.total_attempts,
+                    "correct_attempts": perf.correct_attempts,
+                    "weakness_score": score,
+                    "severity": severity,
+                    "recency_factor": round(recency, 3),
+                    "weight": weight,
+                    "avg_time_per_question": round(perf.avg_time_per_question, 1),
+                    "last_attempt_at": perf.last_attempt_at,
+                    "accuracy_trend": self._compute_trend(perf.accuracy_history),
+                }
+            )
 
         # Sort by weakness score descending
         scored_areas.sort(key=lambda x: x["weakness_score"], reverse=True)
@@ -469,8 +472,10 @@ class WeakAreaDetector:
                 older = history[:-5]
                 recent_avg = sum(recent) / len(recent)
                 older_avg = sum(older) / len(older) if older else recent_avg
-                stats["trend"] = "improving" if recent_avg > older_avg else (
-                    "declining" if recent_avg < older_avg else "stable"
+                stats["trend"] = (
+                    "improving"
+                    if recent_avg > older_avg
+                    else ("declining" if recent_avg < older_avg else "stable")
                 )
                 stats["recent_accuracy"] = round(recent_avg, 3)
             else:
@@ -571,16 +576,12 @@ class WeakAreaDetector:
 
         # Recent 5-session rolling average
         recent_5 = sessions[-5:]
-        recent_accuracy = round(
-            sum(s.accuracy for s in recent_5) / len(recent_5), 3
-        )
+        recent_accuracy = round(sum(s.accuracy for s in recent_5) / len(recent_5), 3)
 
         result = {
             "profile_id": profile_id,
             "total_sessions": len(sessions),
-            "overall_accuracy": round(
-                sum(s.accuracy for s in sessions) / len(sessions), 3
-            ),
+            "overall_accuracy": round(sum(s.accuracy for s in sessions) / len(sessions), 3),
             "first_half_accuracy": round(first_avg, 3),
             "second_half_accuracy": round(second_avg, 3),
             "accuracy_change": round(change, 3),
@@ -627,32 +628,38 @@ class WeakAreaDetector:
                     continue
                 seen_topics.add(topic_key)
 
-                recommendations.append({
-                    "type": "weak_area",
-                    "priority": "critical" if area["severity"] == "critical" else "high",
-                    "topic": area["topic"],
-                    "chapter_id": area["chapter_id"],
-                    "subject": area["subject"],
-                    "current_accuracy": area["accuracy"],
-                    "weakness_score": area["weakness_score"],
-                    "action": f"Practice {area['topic']} — accuracy is {area['accuracy']*100:.0f}%",
-                    "suggested_questions": min(20, max(10, int(20 * (1 - area["accuracy"])))),
-                    "reason": f"Consistently low accuracy ({area['accuracy']*100:.0f}%) across {area['total_attempts']} attempts",
-                })
+                recommendations.append(
+                    {
+                        "type": "weak_area",
+                        "priority": "critical" if area["severity"] == "critical" else "high",
+                        "topic": area["topic"],
+                        "chapter_id": area["chapter_id"],
+                        "subject": area["subject"],
+                        "current_accuracy": area["accuracy"],
+                        "weakness_score": area["weakness_score"],
+                        "action": f"Practice {area['topic']} — accuracy is {area['accuracy'] * 100:.0f}%",
+                        "suggested_questions": min(20, max(10, int(20 * (1 - area["accuracy"])))),
+                        "reason": f"Consistently low accuracy ({area['accuracy'] * 100:.0f}%) across {area['total_attempts']} attempts",
+                    }
+                )
 
         # 2. Declining subjects
         for subj, stats in subject_breakdown.items():
-            if stats.get("trend") == "declining" and subj not in [r.get("subject") for r in recommendations if r["type"] == "subject_review"]:
-                recommendations.append({
-                    "type": "subject_review",
-                    "priority": "high",
-                    "subject": subj,
-                    "current_accuracy": stats["accuracy"],
-                    "recent_accuracy": stats.get("recent_accuracy", stats["accuracy"]),
-                    "action": f"Review {subj} fundamentals — performance is declining",
-                    "suggested_questions": 15,
-                    "reason": f"Accuracy dropped from historical average to {stats.get('recent_accuracy', stats['accuracy'])*100:.0f}% recently",
-                })
+            if stats.get("trend") == "declining" and subj not in [
+                r.get("subject") for r in recommendations if r["type"] == "subject_review"
+            ]:
+                recommendations.append(
+                    {
+                        "type": "subject_review",
+                        "priority": "high",
+                        "subject": subj,
+                        "current_accuracy": stats["accuracy"],
+                        "recent_accuracy": stats.get("recent_accuracy", stats["accuracy"]),
+                        "action": f"Review {subj} fundamentals — performance is declining",
+                        "suggested_questions": 15,
+                        "reason": f"Accuracy dropped from historical average to {stats.get('recent_accuracy', stats['accuracy']) * 100:.0f}% recently",
+                    }
+                )
 
         # 3. Low-coverage topics (few attempts, moderate accuracy)
         profile_topics = self._topic_performance.get(profile_id, {})
@@ -661,18 +668,20 @@ class WeakAreaDetector:
                 topic_key_str = f"{perf.subject}:{perf.topic}"
                 if topic_key_str not in seen_topics:
                     seen_topics.add(topic_key_str)
-                    recommendations.append({
-                        "type": "more_practice",
-                        "priority": "medium",
-                        "topic": perf.topic,
-                        "chapter_id": perf.chapter_id,
-                        "subject": perf.subject,
-                        "current_accuracy": perf.accuracy,
-                        "total_attempts": perf.total_attempts,
-                        "action": f"More practice needed for {perf.topic}",
-                        "suggested_questions": 10,
-                        "reason": f"Only {perf.total_attempts} attempts so far — need more data",
-                    })
+                    recommendations.append(
+                        {
+                            "type": "more_practice",
+                            "priority": "medium",
+                            "topic": perf.topic,
+                            "chapter_id": perf.chapter_id,
+                            "subject": perf.subject,
+                            "current_accuracy": perf.accuracy,
+                            "total_attempts": perf.total_attempts,
+                            "action": f"More practice needed for {perf.topic}",
+                            "suggested_questions": 10,
+                            "reason": f"Only {perf.total_attempts} attempts so far — need more data",
+                        }
+                    )
 
         # 4. Spaced repetition: topics not attempted recently
         now = datetime.now(UTC)
@@ -691,18 +700,20 @@ class WeakAreaDetector:
                 topic_key_str = f"{perf.subject}:{perf.topic}"
                 if topic_key_str not in seen_topics:
                     seen_topics.add(topic_key_str)
-                    recommendations.append({
-                        "type": "spaced_review",
-                        "priority": "medium",
-                        "topic": perf.topic,
-                        "chapter_id": perf.chapter_id,
-                        "subject": perf.subject,
-                        "current_accuracy": perf.accuracy,
-                        "days_since_last_attempt": round(days_since, 0),
-                        "action": f"Review {perf.topic} — last attempted {int(days_since)} days ago",
-                        "suggested_questions": 10,
-                        "reason": f"Accuracy was {perf.accuracy*100:.0f}% and it's been {int(days_since)} days since last practice",
-                    })
+                    recommendations.append(
+                        {
+                            "type": "spaced_review",
+                            "priority": "medium",
+                            "topic": perf.topic,
+                            "chapter_id": perf.chapter_id,
+                            "subject": perf.subject,
+                            "current_accuracy": perf.accuracy,
+                            "days_since_last_attempt": round(days_since, 0),
+                            "action": f"Review {perf.topic} — last attempted {int(days_since)} days ago",
+                            "suggested_questions": 10,
+                            "reason": f"Accuracy was {perf.accuracy * 100:.0f}% and it's been {int(days_since)} days since last practice",
+                        }
+                    )
 
         # Sort by priority
         priority_order = {"critical": 0, "high": 1, "medium": 2, "low": 3}

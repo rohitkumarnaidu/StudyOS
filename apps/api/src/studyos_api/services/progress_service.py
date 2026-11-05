@@ -79,9 +79,7 @@ class ProgressService:
                 )
                 return dict(row) if row else {}
 
-    async def get_chapter_progress(
-        self, profile_id: UUID, chapter_id: UUID
-    ) -> dict[str, Any]:
+    async def get_chapter_progress(self, profile_id: UUID, chapter_id: UUID) -> dict[str, Any]:
         """Get progress for a specific chapter (completion %, subtopics completed)."""
         if self._pool is None:
             return {}
@@ -114,9 +112,7 @@ class ProgressService:
             total = total_row["total"] if total_row else 0
             completed = completed_row["completed"] if completed_row else 0
 
-            progress_pct = (
-                (completed / total * 100) if total > 0 else 0
-            )
+            progress_pct = (completed / total * 100) if total > 0 else 0
 
             return {
                 "chapter_id": str(chapter_id),
@@ -126,9 +122,7 @@ class ProgressService:
                 "progress_pct": round(progress_pct, 2),
             }
 
-    async def get_subject_progress(
-        self, profile_id: UUID, subject_id: UUID
-    ) -> dict[str, Any]:
+    async def get_subject_progress(self, profile_id: UUID, subject_id: UUID) -> dict[str, Any]:
         """Get aggregated progress for a subject (completion %, chapters breakdown)."""
         if self._pool is None:
             return {}
@@ -165,19 +159,17 @@ class ProgressService:
                 total_subtopics += total
                 total_completed += completed
 
-                chapters.append({
-                    "chapter_id": str(row["id"]),
-                    "chapter_name": row["name"],
-                    "total_subtopics": total,
-                    "completed_subtopics": completed,
-                    "progress_pct": round((completed / total * 100) if total > 0 else 0, 2),
-                })
+                chapters.append(
+                    {
+                        "chapter_id": str(row["id"]),
+                        "chapter_name": row["name"],
+                        "total_subtopics": total,
+                        "completed_subtopics": completed,
+                        "progress_pct": round((completed / total * 100) if total > 0 else 0, 2),
+                    }
+                )
 
-            overall_pct = (
-                (total_completed / total_subtopics * 100)
-                if total_subtopics > 0
-                else 0
-            )
+            overall_pct = (total_completed / total_subtopics * 100) if total_subtopics > 0 else 0
 
             return {
                 "subject_id": str(subject_id),
@@ -188,9 +180,7 @@ class ProgressService:
                 "chapters": chapters,
             }
 
-    async def get_exam_progress(
-        self, profile_id: UUID, exam_id: UUID
-    ) -> dict[str, Any]:
+    async def get_exam_progress(self, profile_id: UUID, exam_id: UUID) -> dict[str, Any]:
         """Get aggregated progress for entire exam (all subjects)."""
         if self._pool is None:
             return {}
@@ -228,19 +218,17 @@ class ProgressService:
                 total_subtopics += total
                 total_completed += completed
 
-                subjects.append({
-                    "subject_id": str(row["id"]),
-                    "subject_name": row["name"],
-                    "total_subtopics": total,
-                    "completed_subtopics": completed,
-                    "progress_pct": round((completed / total * 100) if total > 0 else 0, 2),
-                })
+                subjects.append(
+                    {
+                        "subject_id": str(row["id"]),
+                        "subject_name": row["name"],
+                        "total_subtopics": total,
+                        "completed_subtopics": completed,
+                        "progress_pct": round((completed / total * 100) if total > 0 else 0, 2),
+                    }
+                )
 
-            overall_pct = (
-                (total_completed / total_subtopics * 100)
-                if total_subtopics > 0
-                else 0
-            )
+            overall_pct = (total_completed / total_subtopics * 100) if total_subtopics > 0 else 0
 
             return {
                 "exam_id": str(exam_id),

@@ -1,9 +1,8 @@
 """Tests for langsmith_tracing service."""
 
-import os
 from unittest.mock import patch
 
-from studyos_api.ai.langsmith_tracing import trace_chat_call, record_trace_outputs
+from studyos_api.ai.langsmith_tracing import record_trace_outputs, trace_chat_call
 
 
 class TestTraceChatCall:

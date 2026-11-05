@@ -71,10 +71,7 @@ class TestFeatureFlag:
 
     def test_flag_rollout_partial(self) -> None:
         flag = FeatureFlag(key="test", enabled=True, rollout_percentage=50.0)
-        enabled_count = sum(
-            1 for i in range(1000)
-            if flag.is_enabled_for(f"user{i}")
-        )
+        enabled_count = sum(1 for i in range(1000) if flag.is_enabled_for(f"user{i}"))
         assert 300 < enabled_count < 700
 
 
@@ -116,7 +113,9 @@ class TestFeatureFlagService:
             enabled=True,
             conditions={"platform": "mobile"},
         )
-        assert service.is_enabled("feature", user_id="user1", context={"platform": "mobile"}) is True
+        assert (
+            service.is_enabled("feature", user_id="user1", context={"platform": "mobile"}) is True
+        )
         assert service.is_enabled("feature", user_id="user1", context={"platform": "web"}) is False
 
     def test_get_all_flags(self, service: FeatureFlagService) -> None:

@@ -2,8 +2,6 @@
 
 from __future__ import annotations
 
-import pytest
-
 from studyos_api.services.mistake_tracker import MistakeTracker, MistakeType
 
 
@@ -70,17 +68,34 @@ class TestMistakeTracker:
         assert all(m.mistake_type == MistakeType.CONCEPTUAL for m in conceptual)
 
     def test_get_mistakes_by_concept(self) -> None:
-        self.tracker.log_mistake("m1", "p1", "q1", MistakeType.CONCEPTUAL, concept_tags=["algebra"], timestamp="t1")
-        self.tracker.log_mistake("m2", "p1", "q2", MistakeType.CALCULATION, concept_tags=["geometry"], timestamp="t2")
-        self.tracker.log_mistake("m3", "p1", "q3", MistakeType.MISREAD, concept_tags=["algebra", "trigonometry"], timestamp="t3")
+        self.tracker.log_mistake(
+            "m1", "p1", "q1", MistakeType.CONCEPTUAL, concept_tags=["algebra"], timestamp="t1"
+        )
+        self.tracker.log_mistake(
+            "m2", "p1", "q2", MistakeType.CALCULATION, concept_tags=["geometry"], timestamp="t2"
+        )
+        self.tracker.log_mistake(
+            "m3",
+            "p1",
+            "q3",
+            MistakeType.MISREAD,
+            concept_tags=["algebra", "trigonometry"],
+            timestamp="t3",
+        )
 
         algebra_mistakes = self.tracker.get_mistakes_by_concept("p1", "algebra")
         assert len(algebra_mistakes) == 2
 
     def test_get_concept_frequency(self) -> None:
-        self.tracker.log_mistake("m1", "p1", "q1", MistakeType.CONCEPTUAL, concept_tags=["algebra"], timestamp="t1")
-        self.tracker.log_mistake("m2", "p1", "q2", MistakeType.CALCULATION, concept_tags=["algebra"], timestamp="t2")
-        self.tracker.log_mistake("m3", "p1", "q3", MistakeType.MISREAD, concept_tags=["geometry"], timestamp="t3")
+        self.tracker.log_mistake(
+            "m1", "p1", "q1", MistakeType.CONCEPTUAL, concept_tags=["algebra"], timestamp="t1"
+        )
+        self.tracker.log_mistake(
+            "m2", "p1", "q2", MistakeType.CALCULATION, concept_tags=["algebra"], timestamp="t2"
+        )
+        self.tracker.log_mistake(
+            "m3", "p1", "q3", MistakeType.MISREAD, concept_tags=["geometry"], timestamp="t3"
+        )
 
         freq = self.tracker.get_concept_frequency("p1")
         assert freq["algebra"] == 2
@@ -98,8 +113,24 @@ class TestMistakeTracker:
         assert dist["careless"] == 1
 
     def test_get_mistake_stats(self) -> None:
-        self.tracker.log_mistake("m1", "p1", "q1", MistakeType.CONCEPTUAL, confidence_level=0.5, time_taken_seconds=30.0, timestamp="t1")
-        self.tracker.log_mistake("m2", "p1", "q2", MistakeType.CALCULATION, confidence_level=0.8, time_taken_seconds=60.0, timestamp="t2")
+        self.tracker.log_mistake(
+            "m1",
+            "p1",
+            "q1",
+            MistakeType.CONCEPTUAL,
+            confidence_level=0.5,
+            time_taken_seconds=30.0,
+            timestamp="t1",
+        )
+        self.tracker.log_mistake(
+            "m2",
+            "p1",
+            "q2",
+            MistakeType.CALCULATION,
+            confidence_level=0.8,
+            time_taken_seconds=60.0,
+            timestamp="t2",
+        )
 
         stats = self.tracker.get_mistake_stats("p1")
         assert stats["total_mistakes"] == 2

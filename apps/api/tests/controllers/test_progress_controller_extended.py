@@ -20,7 +20,9 @@ class TestProgressControllerErrorPaths:
         return ProgressController(service=mock_service)
 
     @pytest.mark.asyncio
-    async def test_get_chapter_progress_failure(self, controller: ProgressController, mock_service: AsyncMock) -> None:
+    async def test_get_chapter_progress_failure(
+        self, controller: ProgressController, mock_service: AsyncMock
+    ) -> None:
         mock_request = MagicMock()
         mock_service.get_chapter_progress.return_value = None
         profile_id = uuid4()
@@ -34,7 +36,9 @@ class TestProgressControllerErrorPaths:
         mock_service.get_chapter_progress.assert_called_once_with(profile_id, chapter_id)
 
     @pytest.mark.asyncio
-    async def test_get_chapter_progress_empty_dict_failure(self, controller: ProgressController, mock_service: AsyncMock) -> None:
+    async def test_get_chapter_progress_empty_dict_failure(
+        self, controller: ProgressController, mock_service: AsyncMock
+    ) -> None:
         mock_request = MagicMock()
         mock_service.get_chapter_progress.return_value = {}
         profile_id = uuid4()
@@ -46,7 +50,9 @@ class TestProgressControllerErrorPaths:
         assert exc_info.value.status_code == 500
 
     @pytest.mark.asyncio
-    async def test_get_subject_progress_failure(self, controller: ProgressController, mock_service: AsyncMock) -> None:
+    async def test_get_subject_progress_failure(
+        self, controller: ProgressController, mock_service: AsyncMock
+    ) -> None:
         mock_request = MagicMock()
         mock_service.get_subject_progress.return_value = None
         profile_id = uuid4()
@@ -60,7 +66,9 @@ class TestProgressControllerErrorPaths:
         mock_service.get_subject_progress.assert_called_once_with(profile_id, subject_id)
 
     @pytest.mark.asyncio
-    async def test_get_subject_progress_empty_dict_failure(self, controller: ProgressController, mock_service: AsyncMock) -> None:
+    async def test_get_subject_progress_empty_dict_failure(
+        self, controller: ProgressController, mock_service: AsyncMock
+    ) -> None:
         mock_request = MagicMock()
         mock_service.get_subject_progress.return_value = {}
         profile_id = uuid4()
@@ -72,7 +80,9 @@ class TestProgressControllerErrorPaths:
         assert exc_info.value.status_code == 500
 
     @pytest.mark.asyncio
-    async def test_get_exam_progress_failure(self, controller: ProgressController, mock_service: AsyncMock) -> None:
+    async def test_get_exam_progress_failure(
+        self, controller: ProgressController, mock_service: AsyncMock
+    ) -> None:
         mock_request = MagicMock()
         mock_service.get_exam_progress.return_value = None
         profile_id = uuid4()
@@ -86,7 +96,9 @@ class TestProgressControllerErrorPaths:
         mock_service.get_exam_progress.assert_called_once_with(profile_id, exam_id)
 
     @pytest.mark.asyncio
-    async def test_get_exam_progress_empty_dict_failure(self, controller: ProgressController, mock_service: AsyncMock) -> None:
+    async def test_get_exam_progress_empty_dict_failure(
+        self, controller: ProgressController, mock_service: AsyncMock
+    ) -> None:
         mock_request = MagicMock()
         mock_service.get_exam_progress.return_value = {}
         profile_id = uuid4()
@@ -98,7 +110,9 @@ class TestProgressControllerErrorPaths:
         assert exc_info.value.status_code == 500
 
     @pytest.mark.asyncio
-    async def test_get_chapter_progress_success_includes_meta(self, controller: ProgressController, mock_service: AsyncMock) -> None:
+    async def test_get_chapter_progress_success_includes_meta(
+        self, controller: ProgressController, mock_service: AsyncMock
+    ) -> None:
         mock_request = MagicMock()
         mock_service.get_chapter_progress.return_value = {"completed": 3, "total": 10}
         profile_id = uuid4()
@@ -111,7 +125,9 @@ class TestProgressControllerErrorPaths:
         assert result["data"]["completed"] == 3
 
     @pytest.mark.asyncio
-    async def test_get_subject_progress_success_includes_meta(self, controller: ProgressController, mock_service: AsyncMock) -> None:
+    async def test_get_subject_progress_success_includes_meta(
+        self, controller: ProgressController, mock_service: AsyncMock
+    ) -> None:
         mock_request = MagicMock()
         mock_service.get_subject_progress.return_value = {"progress_pct": 60.0}
         profile_id = uuid4()
@@ -123,7 +139,9 @@ class TestProgressControllerErrorPaths:
         assert result["data"]["progress_pct"] == 60.0
 
     @pytest.mark.asyncio
-    async def test_get_exam_progress_success_includes_meta(self, controller: ProgressController, mock_service: AsyncMock) -> None:
+    async def test_get_exam_progress_success_includes_meta(
+        self, controller: ProgressController, mock_service: AsyncMock
+    ) -> None:
         mock_request = MagicMock()
         mock_service.get_exam_progress.return_value = {"progress_pct": 45.0}
         profile_id = uuid4()
