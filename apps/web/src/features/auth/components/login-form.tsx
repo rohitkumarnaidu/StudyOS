@@ -99,10 +99,10 @@ function LoginFormInner() {
         ) : null}
         <form className="space-y-4" onSubmit={form.handleSubmit(onSubmit)} noValidate>
           <FormField<LoginFormValues> name="email" label="Email" hint="Demo: demo@studyos.app">
-            <Input id="email" type="email" autoComplete="email" {...form.register("email")} />
+            <Input id="email" type="email" aria-label="Email" autoComplete="email" {...form.register("email")} />
           </FormField>
           <FormField<LoginFormValues> name="password" label="Password" hint="Demo password: demo">
-            <Input id="password" type="password" autoComplete="current-password" {...form.register("password")} />
+            <Input id="password" type="password" aria-label="Password" autoComplete="current-password" {...form.register("password")} />
           </FormField>
           <Button type="submit" className="w-full" disabled={form.formState.isSubmitting}>
             {form.formState.isSubmitting ? "Signing in…" : "Continue"}

@@ -14,34 +14,34 @@ export default function SyllabusPage() {
 }
 
 async function SyllabusContent() {
+  let defaultExam = null;
+  let chapters: any[] = [];
+
   try {
     const exams = await getExams();
-    const defaultExam = exams[0];
-    const chapters = defaultExam ? await getChapters(defaultExam.id) : [];
-
-    return (
-      <div className="space-y-6">
-        <div>
-          <h1 className="text-2xl font-semibold tracking-tight">Syllabus</h1>
-          <p className="text-sm text-muted-foreground">
-            Browse and track your NEET 2026 syllabus progress.
-          </p>
-        </div>
-
-        {defaultExam && (
-          <div>
-            <h2 className="text-lg font-semibold text-foreground mb-4">{defaultExam.title}</h2>
-            <ChapterList chapters={chapters} />
-          </div>
-        )}
-      </div>
-    );
+    defaultExam = exams[0];
+    if (defaultExam) {
+      chapters = await getChapters(defaultExam.id);
+    }
   } catch {
-    return (
-      <div className="space-y-6">
-        <h1 className="text-2xl font-semibold tracking-tight">Syllabus</h1>
-        <p className="text-sm text-muted-foreground">Browse and track your NEET 2026 syllabus progress.</p>
-      </div>
-    );
+    // Fallback when backend is unreachable during static build or test
   }
+
+  return (
+    <div className="space-y-6">
+      <div>
+        <h1 className="text-2xl font-semibold tracking-tight">Syllabus</h1>
+        <p className="text-sm text-muted-foreground">
+          Browse and track your NEET 2026 syllabus progress.
+        </p>
+      </div>
+
+      {defaultExam && (
+        <div>
+          <h2 className="text-lg font-semibold text-foreground mb-4">{defaultExam.title}</h2>
+          <ChapterList chapters={chapters} />
+        </div>
+      )}
+    </div>
+  );
 }

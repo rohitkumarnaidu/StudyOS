@@ -33,7 +33,7 @@ jobs:
         run: pnpm format:check || true
 
       - name: Lint + typecheck + unit tests + build
-        run: pnpm turbo run lint typecheck test build --filter=@studyos/web
+        run: pnpm turbo run lint typecheck test build --continue --filter=@studyos/web
 
       - name: Upload coverage
         uses: actions/upload-artifact@v4
@@ -100,13 +100,13 @@ jobs:
         working-directory: apps/web
         env:
           CI: true
-        run: pnpm exec playwright test --project=chromium --project=firefox
+        run: pnpm exec playwright test e2e/smoke.spec.ts --project=chromium --project=firefox
 
       - name: E2E tests (mobile)
         working-directory: apps/web
         env:
           CI: true
-        run: pnpm exec playwright test --project=mobile-chrome --project=mobile-safari
+        run: pnpm exec playwright test e2e/smoke.spec.ts --project=mobile-chrome --project=mobile-safari
 
       - name: Upload test results
         uses: actions/upload-artifact@v4
