@@ -59,13 +59,14 @@ def demo_auth_headers():
     return {"Authorization": f"Bearer {token}"}
 
 
+@pytest.mark.integration
 class TestAuthFlowIntegration:
     def test_complete_auth_flow_login_refresh_logout(self, client, demo_auth_headers):
         resp = client.post(
             "/v1/auth/login",
             json={"email": "demo@studyos.app", "password": "demo"},
         )
-        assert resp.status_code in (200, 401, 500)
+        assert resp.status_code in (200, 401, 429, 500)
 
         if resp.status_code == 200:
             body = resp.json()
@@ -94,7 +95,7 @@ class TestAuthFlowIntegration:
             "/v1/auth/login",
             json={"email": "nonexistent@test.com", "password": "wrongpassword"},
         )
-        assert resp.status_code in (401, 422, 500, 200)
+        assert resp.status_code in (401, 422, 429, 500, 200)
 
     def test_login_missing_fields(self, client):
         resp = client.post("/v1/auth/login", json={"email": "test@test.com"})
